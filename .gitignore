@@ -1,0 +1,4 @@
+*.sh
+env
+*.xml
+MOCK_DATA.json

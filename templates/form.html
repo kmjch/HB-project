@@ -1,0 +1,20 @@
+{% block title %}Form{% endblock %}
+
+{% block content %}
+
+<form>
+    <label>Search term*: <input type="text" id="term" value="term" required></label><br>
+    <label class="optional">Location: <input type="text" id="location" value="location"></label><br>
+    <label class="optional">Latitude: <input type="number" id="latitude" value="latitude"></label><br>
+    <label class="optional">Longitude: <input type="number" id="longitude" value="longitude"></label><br>
+    <label>Radius: <input type="number" id="radius" value="radius"></label><br>
+    <label>Categories: <input type="text" id="categories" value="categories"></label><br>
+    <!-- <input type="text" id="locale"> -->
+    <!-- <input type="number" id="limit"> -->
+    <!-- <input type="number" id="offset">  -->
+    <!-- commented out: not for user -->
+    <!-- <input type="text" id=""> -->
+    <input type="submit" value="Search">
+</form>
+
+{% endblock %}
