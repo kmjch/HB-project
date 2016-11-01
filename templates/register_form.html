@@ -1,36 +1,34 @@
-{% block title %}<b>Register Form</b>{% endblock %}
+{% extends 'base.html' %}
+
+{% block title %}Register Form{% endblock %}
 
 {% block content %}
 
-<br><br>
+<br>
 
-<form action="/register">
+<form action="/register-confirm" method="POST">
     <label>First name*: <input type="text" id="fname" name="fname" required></label><br>
     <label>Last name*: <input type="text" id="lname" name="lname" required></label><br>
-    <label>Email*: <input type="email" id="lname" name="lname" required></label><br>
-    <label>Username*: <input type="text" id="uname" name="uname" required></label><br>
+    <label>Email*: <input type="email" id="email" name="email" required></label><br>
+    <label>Username*: <input type="text" id="username" name="username" required></label><br>
     <label>Password*: <input type="password" id="password" name="password" required></label><br>
     
     The following are optional:<br>
-    <label>Phone number: <input type="number" id="work_zip" name="work_zip"></label><br>
+    <label>Phone number: <input type="text" id="phone_num" name="phone_num"></label><br>
     If you want to store your home and work addresses:<br>
-    <label>Home street address: <input type="text" id="home_st" name="home_st"></label><br>
+    <label>Home street address: <input type="text" id="home_str" name="home_str"></label><br>
     <label>City: <input type="text" id="home_cty" name="home_cty"></label><br>
-    <label>State: <input type="text" id="home_state" name="home_state"></label><br>
+    <label>State: <input type="text" id="home_sta" name="home_sta"></label><br>
     <label>Zip: <input type="number" id="home_zip" name="home_zip"></label><br>
-    
-    <label>Work street address: <input type="text" id="work_st" name="work_st"></label><br>
+
+    <label>Work street address: <input type="text" id="work_str" name="work_str"></label><br>
     <label>City: <input type="text" id="work_cty" name="work_cty"></label><br>
-    <label>State: <input type="text" id="work_state" name="work_state"></label><br>
+    <label>State: <input type="text" id="work_sta" name="work_sta"></label><br>
     <label>Zip: <input type="number" id="work_zip" name="work_zip"></label><br>
     
     
     {#<!-- <input type="hidden" name="submitting-search-form" value="hi"> -->#}
-    <input type="submit" value="Search for a good restaurant for us">
+    <input type="submit" value="Register">
 </form>
-
-{% if result %}
-    {{ result }}
-{% endif %}
 
 {% endblock %}

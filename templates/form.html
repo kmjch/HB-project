@@ -1,10 +1,14 @@
-{% block title %}<b>Form</b>{% endblock %}
+{% extends 'base.html' %}
+
+{% block title %}Search{% endblock %}
 
 {% block content %}
 
-<br><br>
+<br>
 
-<form action="/">
+<a href="/register">Register here</a><br>
+
+<form action="/register" method="POST">
     <label>Search term*: <input type="text" id="term1" name="term1"required></label><br>
     <label>Enter the address of where you are coming from:<br>
         Street address: <input type="text" id="st_address1" name="st_address1"></label><br>
@@ -21,7 +25,7 @@
         Street address:<input type="text2" id="st_address2" name="st_address2"></label><br>
     <label>City: <input type="text" id="city2" name="city2"></label><br>
     <label>State: <input type="text" id="state2" name="state2"></label><br>
-    <label>Radius: <input type="number" id="radius2" name="radius2" min=500 max=40000></label><br>
+    <label>Radius (in meters): <input type="number" id="radius2" name="radius2" min=500 max=40000></label><br>
     <label>Categories: <input type="text" id="categories2" name="categories2"></label><br>
 
     <br><br>

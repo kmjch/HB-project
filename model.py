@@ -26,17 +26,17 @@ class User(db.Model):
     username = db.Column(db.String(64), nullable=False)
     password = db.Column(db.String(64), nullable=False)
     # separate fields for home address
-    home_st = db.Column(db.String(64), nullable=True)
-    home_cty = db.Column(db.String(64), nullable=True)
-    home_state = db.Column(db.String(20), nullable=True)
-    home_zip = db.Column(db.String(15), nullable=True)
+    # home_str = db.Column(db.String(64), nullable=True)
+    # home_cty = db.Column(db.String(64), nullable=True)
+    # home_sta = db.Column(db.String(20), nullable=True)
+    # home_zip = db.Column(db.String(15), nullable=True)
     # separate fields for work address
-    work_st = db.Column(db.String(64), nullable=True)
-    work_cty = db.Column(db.String(64), nullable=True)
-    work_state = db.Column(db.String(20), nullable=True)
-    work_zip = db.Column(db.String(15), nullable=True)
+    # work_str = db.Column(db.String(64), nullable=True)
+    # work_cty = db.Column(db.String(64), nullable=True)
+    # work_sta = db.Column(db.String(20), nullable=True)
+    # work_zip = db.Column(db.String(15), nullable=True)
 
-    ph_num = db.Column(db.Integer, nullable=True)
+    phone_num = db.Column(db.String(64), nullable=True)
 
     def __repr__(self):
         """Provide helpful representation when printed."""
@@ -111,10 +111,10 @@ def example_data():
     f = open('MOCK_DATA.json')
     data = json.load(f)
 
-    users_exdata = [User(username='kmich', password='hihi', email='hi@gmail.com')]
-    for user in data:
-        users_exdata.append(User(username=user['username'], password=user['password'], email=user['email']))
-    db.session.add_all(users_exdata)
+    users_exdata = User(fname='Michelle', lname='Kim', email='jmichkim@gmail.com', username='kmich', password='hihi')
+    # for user in data:
+    #     users_exdata.append(User(username=user['username'], password=user['password'], email=user['email']))
+    db.session.add(users_exdata)
     db.session.commit()
 
 ##############################################################################

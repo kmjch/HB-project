@@ -2,3 +2,5 @@
 env
 *.xml
 MOCK_DATA.json
+*.pyc
+.DS_Store

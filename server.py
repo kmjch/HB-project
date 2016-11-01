@@ -103,10 +103,68 @@ def midpt_formula(coordinates):
     ym = (coordinates[1] + coordinates[3])/2.0
     return [xm, ym]
 
-# @app.route('/search-results')
-# def show_search_results():
-    # return render_template("search-results.html")
 
+@app.route('/search-results')
+def show_search_results():
+    return render_template("search-results.html")
+
+
+@app.route('/register')
+def show_register_form():
+    return render_template("register_form.html")
+
+
+@app.route('/register-confirm', methods=["POST"])
+def register_process():
+    """Process registration."""
+
+    # Get form variables
+    fname = request.form["fname"]
+    lname = request.form["lname"]
+    email = request.form["email"]
+    username = request.form["username"]
+    password = request.form["password"]
+    phone_num = request.form["phone_num"]
+    # home_str = request.form["home_str"]
+    # home_cty = request.form["home_cty"]
+    # home_sta = request.form["home_sta"]
+    # home_zip = request.form["home_zip"]
+    # work_str = request.form["work_str"]
+    # work_cty = request.form["work_cty"]
+    # work_sta = request.form["work_sta"]
+    # work_zip = request.form["work_zip"]
+
+    new_user = User(fname=fname, lname=lname, email=email, username=username,
+                    password=password, phone_num=phone_num)
+
+    """, home_str=home_str,
+                                home_cty=home_cty, home_sta=home_sta, home_zip=home_zip,
+                                work_str=work_str, work_cty=work_cty, work_sta=work_sta,
+                                work_zip=work_zip"""
+
+    db.session.add(new_user)
+    db.session.commit()
+    print "\n\n\n\n\n\n\ndid I commit?\n\n\n\n\n\n"
+
+    flash("Welcome to ET, %s!" % fname)
+    return redirect("/users/%s" % new_user.username)
+    # return redirect("/users/%s" % fname)
+
+
+@app.route("/users/<username>")
+def user_detail(username):
+    """Show info about user."""
+
+    user = User.query.filter_by(username=username).one()
+    return render_template("user.html", user=user)
+
+
+# doesn't work
+# def show_toolbar(request):
+#     return True
+# DEBUG_TOOLBAR_CONFIG = {
+#     "SHOW_TOOLBAR_CALLBACK" : show_toolbar,
+# }
 
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the
