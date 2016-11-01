@@ -19,7 +19,9 @@ class User(db.Model):
     __tablename__ = "users"
 
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    # the only required fields: email, username, password
+    # the only required fields: fname, lname, email, username, password
+    fname = db.Column(db.String(64), nullable=False)
+    lname = db.Column(db.String(64), nullable=False)
     email = db.Column(db.String(64), nullable=False)
     username = db.Column(db.String(64), nullable=False)
     password = db.Column(db.String(64), nullable=False)
@@ -36,7 +38,6 @@ class User(db.Model):
 
     ph_num = db.Column(db.Integer, nullable=True)
 
-
     def __repr__(self):
         """Provide helpful representation when printed."""
 
@@ -50,8 +51,8 @@ class UserExp(db.Model):
 
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     visit_id = db.Column(db.Integer,
-                       db.ForeignKey('visits.id'),
-                       nullable=False)
+                         db.ForeignKey('visits.id'),
+                         nullable=False)
     user_id = db.Column(db.Integer,
                         db.ForeignKey('users.id'),
                         nullable=False)
