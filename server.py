@@ -124,27 +124,13 @@ def register_process():
     email = request.form["email"]
     username = request.form["username"]
     password = request.form["password"]
-    phone_num = request.form["phone_num"]
-    # home_str = request.form["home_str"]
-    # home_cty = request.form["home_cty"]
-    # home_sta = request.form["home_sta"]
-    # home_zip = request.form["home_zip"]
-    # work_str = request.form["work_str"]
-    # work_cty = request.form["work_cty"]
-    # work_sta = request.form["work_sta"]
-    # work_zip = request.form["work_zip"]
+
 
     new_user = User(fname=fname, lname=lname, email=email, username=username,
-                    password=password, phone_num=phone_num)
-
-    """, home_str=home_str,
-                                home_cty=home_cty, home_sta=home_sta, home_zip=home_zip,
-                                work_str=work_str, work_cty=work_cty, work_sta=work_sta,
-                                work_zip=work_zip"""
+                    password=password)
 
     db.session.add(new_user)
     db.session.commit()
-    print "\n\n\n\n\n\n\ndid I commit?\n\n\n\n\n\n"
 
     flash("Welcome to ET, %s!" % fname)
     return redirect("/users/%s" % new_user.username)
