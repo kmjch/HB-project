@@ -24,17 +24,17 @@ class User(db.Model):
     username = db.Column(db.String(64), nullable=False)
     password = db.Column(db.String(64), nullable=False)
     # separate fields for home address
-    home_address_st = db.Column(db.String(64), nullable=True)
-    home_address_city = db.Column(db.String(64), nullable=True)
-    home_address_state = db.Column(db.String(20), nullable=True)
-    home_zipcode = db.Column(db.String(15), nullable=True)
+    home_st = db.Column(db.String(64), nullable=True)
+    home_cty = db.Column(db.String(64), nullable=True)
+    home_state = db.Column(db.String(20), nullable=True)
+    home_zip = db.Column(db.String(15), nullable=True)
     # separate fields for work address
-    work_address_st = db.Column(db.String(64), nullable=True)
-    work_address_city = db.Column(db.String(64), nullable=True)
-    work_address_state = db.Column(db.String(20), nullable=True)
-    work_zipcode = db.Column(db.String(15), nullable=True)
+    work_st = db.Column(db.String(64), nullable=True)
+    work_cty = db.Column(db.String(64), nullable=True)
+    work_state = db.Column(db.String(20), nullable=True)
+    work_zip = db.Column(db.String(15), nullable=True)
 
-    phone_number = db.Column(db.Integer, nullable=True)
+    ph_num = db.Column(db.Integer, nullable=True)
 
 
     def __repr__(self):
