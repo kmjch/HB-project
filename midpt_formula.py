@@ -1,6 +1,13 @@
+import os
+import googlemaps
+
 """All the calculations needed for finding the midpoint between two given addresses.
 Needed if user chooses the midpoint way of finding search results, which is the only
 way so far."""
+
+# must run 'source secrets.sh' before running this file to make
+# sure the environmental var's are set
+gmaps = googlemaps.Client(key=os.environ['GMAPS_KEY'])
 
 
 def mi_to_m(radius):

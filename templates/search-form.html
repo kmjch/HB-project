@@ -6,10 +6,11 @@
 
 <br>
 
-{% if result %}
-    {{ result }}
+{% if logged_in is not defined %}
+    <a href="/register">Register here</a> or <a href="/login">log in!</a><br><br>
 {% endif %}
-<a href="/register">Register here</a> or <a href="/login">log in!</a><br><br>
+
+
 
 
 <form action="/" method="GET">

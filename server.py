@@ -25,9 +25,6 @@ app.secret_key = "ABC"
 app.jinja_env.undefined = StrictUndefined
 app.jinja_env.auto_reload = True
 
-# must run 'source secrets.sh' before running this file to make
-# sure the environmental var's are set
-gmaps = googlemaps.Client(key=os.environ['GMAPS_KEY'])
 
 @app.route('/')
 def index():
