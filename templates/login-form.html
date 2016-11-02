@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+
+<br>
+
+Don't have a username yet? <a href="/register">Register here</a><br><br>
+
+<form action="/login-process" method="POST">
+    <label>Username*: <input type="text" id="username" name="username" required></label><br>
+    <label>Password*: <input type="password" id="password" name="password" required></label><br>
+
+    <input type="submit" value="Login">
+</form>
+
+{% endblock %}

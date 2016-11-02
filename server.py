@@ -11,6 +11,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from flask_sqlalchemy import SQLAlchemy
 
 from model import connect_to_db, db, User, UserExp, Visit, Restaurant
+from midpt_formula import *
 
 
 app = Flask(__name__)
@@ -73,40 +74,10 @@ def index():
         resp = requests.get(url=url, params=params_midpt, headers={'Authorization': 'Bearer ' + os.environ['YELP_KEY']})
         responses = resp.json()
 
-        # import pdb; pdb.set_trace()
         name_of_first_search_result = responses['businesses'][0]['name']
 
-        # return render_template("search-results.html", name_of_first_search_result=name_of_first_search_result)
-        return render_template("search-form.html", result=name_of_first_search_result)
-
-
-def mi_to_m(radius):
-    return radius * 1609.34
-
-
-def stricter_radius(radius1, radius2):
-    if radius1 > radius2:
-        return radius2
-    return radius1
-
-
-def geocoding(st_address, city, state):
-    """Turns the given address into a list containing latitude and longitude."""
-    geocoded_address = gmaps.geocode(", ".join([st_address, city, state]))
-    coords_list = geocoded_address[0]['geometry']['location'].values()
-    return coords_list
-
-
-def combine_coordinates_for_midpt(coords_list1, coords_list2):
-    """ Preps two coordinate pairs for the midpoint formula calculation. """
-    return coords_list1 + coords_list2
-
-
-def midpt_formula(coordinates):
-    """Takes two coordinate pairs and returns a coordinate pair that is midway."""
-    xm = (coordinates[0] + coordinates[2])/2.0
-    ym = (coordinates[1] + coordinates[3])/2.0
-    return [xm, ym]
+        return render_template("search-form.html", result=name_of_first_search_result,
+                               logged_in=session['username'])
 
 
 @app.route('/search-results')
@@ -140,6 +111,46 @@ def register_process():
     return redirect("/users/%s" % new_user.username)
 
 
+@app.route('/login', methods=['GET'])
+def login_form():
+    """Show login form."""
+
+    return render_template("login-form.html")
+
+
+@app.route('/login', methods=['POST'])
+def login_process():
+    """Process login."""
+
+    # Get form variables
+    username = request.form["username"]
+    password = request.form["password"]
+
+    user = User.query.filter_by(username=username).first()
+
+    if not user:
+        flash("We don't recognize your username. Want to register?")
+        return redirect("/login")
+
+    if user.password != password:
+        flash("Incorrect password")
+        return redirect("/login")
+
+    session["username"] = user.username
+
+    flash("Logged in")
+    return redirect("/users/%s" % user.username)
+
+
+@app.route('/logout')
+def logout():
+    """Log out."""
+
+    del session["username"]
+    flash("Logged Out.")
+    return redirect("/")
+
+
 @app.route("/users/<username>")
 def user_detail(username):
     """Show info about user."""
@@ -161,7 +172,6 @@ def process_user_details():
     """Process user details."""
 
     u = User.query.filter_by(username=session['username']).one()
-    print "\n\n\n\n\n\n\n", u, "\n\n\n\n\n\n\n"
 
     # Get form variables and set them to the user's attributes
     u.phone_num = request.form["phone_num"]

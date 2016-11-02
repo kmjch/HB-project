@@ -6,7 +6,11 @@
 
 <br>
 
-<a href="/register">Register here</a><br>
+{% if result %}
+    {{ result }}
+{% endif %}
+<a href="/register">Register here</a> or <a href="/login">log in!</a><br><br>
+
 
 <form action="/" method="GET">
     <label>Search term*: <input type="text" id="term1" name="term1"required></label><br>
