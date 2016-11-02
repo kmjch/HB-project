@@ -1,0 +1,21 @@
+id,fname,lname,email,username,password,home_str,home_cty,home_sta,home_zip,work_str,work_cty,work_sta,work_zip,phone_num
+
+from model.py
+
+
+
+
+home_str=user['home_str'],
+                                 home_cty=user['home_cty'],
+                                 home_sta=user['home_sta'],
+                                 home_zip=user['home_zip'],
+                                 work_str=user['work_str'],
+                                 work_cty=user['work_cty'],
+                                 work_sta=user['work_sta'],
+                                 work_zip=user['work_zip'],
+                                 phone_num=user['phone_num']
+
+from server.py
+
+
+, 

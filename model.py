@@ -19,17 +19,29 @@ class User(db.Model):
     __tablename__ = "users"
 
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    # the only required fields: fname, lname, email, username, password
+    # the only required fields, on registration form
     fname = db.Column(db.String(64), nullable=False)
     lname = db.Column(db.String(64), nullable=False)
     email = db.Column(db.String(64), nullable=False)
     username = db.Column(db.String(64), nullable=False)
     password = db.Column(db.String(64), nullable=False)
+    # separate fields for home address
+    home_str = db.Column(db.String(64), nullable=True)
+    home_cty = db.Column(db.String(64), nullable=True)
+    home_sta = db.Column(db.String(20), nullable=True)
+    home_zip = db.Column(db.String(15), nullable=True)
+    # separate fields for work address
+    work_str = db.Column(db.String(64), nullable=True)
+    work_cty = db.Column(db.String(64), nullable=True)
+    work_sta = db.Column(db.String(20), nullable=True)
+    work_zip = db.Column(db.String(15), nullable=True)
+
+    phone_num = db.Column(db.String(64), nullable=True)
 
     def __repr__(self):
         """Provide helpful representation when printed."""
 
-        return "<User user_id=%s username=%s>" % (self.user_id, self.username)
+        return "<User user_id=%s username=%s>" % (self.id, self.username)
 
 
 class UserExp(db.Model):

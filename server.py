@@ -6,7 +6,7 @@ import yelp
 
 from jinja2 import StrictUndefined
 
-from flask import Flask, jsonify, render_template, redirect, request, flash, session, url_for
+from flask import Flask, jsonify, render_template, redirect, request, flash, session, url_for, make_response
 from flask_debugtoolbar import DebugToolbarExtension
 from flask_sqlalchemy import SQLAlchemy
 
@@ -22,6 +22,7 @@ app.secret_key = "ABC"
 # silently. This is horrible. Fix this so that, instead, it raises an
 # error.
 app.jinja_env.undefined = StrictUndefined
+app.jinja_env.auto_reload = True
 
 # must run 'source secrets.sh' before running this file to make
 # sure the environmental var's are set
@@ -56,17 +57,17 @@ def index():
         params_midpt = {'term': term1 + ", " + term2,
                         'latitude': latitude,
                         'longitude': longitude,
-                        'radius': stricter_radius(radius1, radius2)}
+                        'radius': mi_to_m(stricter_radius(radius1, radius2))}
 
         params_user1 = {'term': term1,
                         'latitude': geocoding(st_address1, city1, state1)[0],
                         'longitude': geocoding(st_address1, city1, state1)[1],
-                        'radius': radius1}
+                        'radius': mi_to_m(radius1)}
 
         params_user2 = {'term': term2,
                         'latitude': geocoding(st_address2, city2, state2)[0],
                         'longitude': geocoding(st_address2, city2, state2)[1],
-                        'radius': radius2}
+                        'radius': mi_to_m(radius2)}
 
         url = 'https://api.yelp.com/v3/businesses/search'
         resp = requests.get(url=url, params=params_midpt, headers={'Authorization': 'Bearer ' + os.environ['YELP_KEY']})
@@ -77,6 +78,10 @@ def index():
 
         # return render_template("search-results.html", name_of_first_search_result=name_of_first_search_result)
         return render_template("form.html", result=name_of_first_search_result)
+
+
+def mi_to_m(radius):
+    return radius * 1609.34
 
 
 def stricter_radius(radius1, radius2):
@@ -114,7 +119,7 @@ def show_register_form():
     return render_template("register_form.html")
 
 
-@app.route('/register-confirm', methods=["POST"])
+@app.route('/register-process', methods=["POST"])
 def register_process():
     """Process registration."""
 
@@ -125,7 +130,6 @@ def register_process():
     username = request.form["username"]
     password = request.form["password"]
 
-
     new_user = User(fname=fname, lname=lname, email=email, username=username,
                     password=password)
 
@@ -134,15 +138,51 @@ def register_process():
 
     flash("Welcome to ET, %s!" % fname)
     return redirect("/users/%s" % new_user.username)
-    # return redirect("/users/%s" % fname)
 
 
 @app.route("/users/<username>")
 def user_detail(username):
     """Show info about user."""
 
+    session['username'] = username
     user = User.query.filter_by(username=username).one()
     return render_template("user.html", user=user)
+
+
+@app.route('/add-user-details')
+def show_user_detail_form():
+    """ Shows form for inputting more details and reads cookie. """
+
+    return render_template("add-user-details.html")
+
+
+@app.route('/process-user-details', methods=["POST"])
+def process_user_details():
+    """Process user details."""
+
+    u = User.query.filter_by(username=session['username']).one()
+    print "\n\n\n\n\n\n\n", u, "\n\n\n\n\n\n\n"
+
+    # Get form variables and set them to the user's attributes
+    u.phone_num = request.form["phone_num"]
+
+    u.phone_num
+    u.home_str = request.form["home_str"]
+    u.home_cty = request.form["home_cty"]
+    u.home_sta = request.form["home_sta"]
+    u.home_zip = request.form["home_zip"]
+    u.work_str = request.form["work_str"]
+    u.work_cty = request.form["work_cty"]
+    u.work_sta = request.form["work_sta"]
+    u.work_zip = request.form["work_zip"]
+
+    db.session.add(u)
+    db.session.commit()
+    # print u.username
+
+    flash("Updated your profile!")
+    return redirect("/users/%s" % session['username'])
+
 
 
 # doesn't work
