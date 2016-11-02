@@ -125,6 +125,7 @@ def login_process():
     # Get form variables
     username = request.form["username"]
     password = request.form["password"]
+    print "\n\n\n\n", username, "\n\n\n\n\n"
 
     user = User.query.filter_by(username=username).first()
 
@@ -137,6 +138,7 @@ def login_process():
         return redirect("/login")
 
     session["username"] = user.username
+    print "\n\n\n\n\n", session['username']
 
     flash("Logged in")
     return redirect("/users/%s" % user.username)
