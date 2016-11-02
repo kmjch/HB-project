@@ -31,7 +31,8 @@ def index():
     """ I have only the form so far, so it'll be the homepage. """
 
     if not request.args.get('submitting-search-form'):
-        return render_template("search-form.html", result=None)
+        return render_template("search-form.html", result=None,
+                               logged_in=session['username'])
     else:
         # Get form variables
         term1 = request.args.get("term1")
@@ -74,7 +75,7 @@ def index():
         name_of_first_search_result = responses['businesses'][0]['name']
 
         return render_template("search-form.html", result=name_of_first_search_result,
-                               logged_in=session['username'])
+                               logged_in=session["username"])
 
 
 @app.route('/search-results')

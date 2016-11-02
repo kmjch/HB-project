@@ -6,7 +6,9 @@
 
 <br>
 
-{% if logged_in is not defined %}
+{% if logged_in is defined %}
+   <a href="/logout">Log out</a> 
+{% else %}
     <a href="/register">Register here</a> or <a href="/login">log in!</a><br><br>
 {% endif %}
 
