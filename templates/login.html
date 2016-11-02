@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+
+<br>
+
+<a href="/register">Register here</a><br>
+
+<form action="/" method="GET">
+    <label>Search term*: <input type="text" id="term1" name="term1"required></label><br>
+    <label>Enter the address of where you are coming from:<br>
+        Street address: <input type="text" id="st_address1" name="st_address1"></label><br>
+    <label>City: <input type="text" id="city1" name="city1"></label><br>
+    <label>State: <input type="text" id="state1" name="state1"></label><br>
+    <label>Radius (in mi): <input type="number" id="radius1" name="radius1" min=0.310686 max=24.854848></label><br>
+    <!-- feature to implement later: provide option for meters -->
+    <label>Categories: <input type="text" id="categories1" name="categories1"></label><br>
+    <!-- add avg rating at least, price, and when you want to meet up -->
+
+    <br><br>
+
+    <label>Search term*: <input type="text" id="term2" name="term2" required></label><br>
+    <label>Enter the address of where you are coming from:<br>
+        Street address:<input type="text2" id="st_address2" name="st_address2"></label><br>
+    <label>City: <input type="text" id="city2" name="city2"></label><br>
+    <label>State: <input type="text" id="state2" name="state2"></label><br>
+    <label>Radius (in mi): <input type="number" id="radius2" name="radius2" min=0.310686 max=24.854848></label><br>
+    <label>Categories: <input type="text" id="categories2" name="categories2"></label><br>
+
+    <br><br>
+    <input type="hidden" name="submitting-search-form" value="hi">
+    <input type="submit" value="Search for a good restaurant for us">
+</form>
+
+{% if result %}
+    {{ result }}
+{% endif %}
+
+{% endblock %}

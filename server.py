@@ -33,7 +33,7 @@ def index():
     """ I have only the form so far, so it'll be the homepage. """
 
     if not request.args.get('submitting-search-form'):
-        return render_template("form.html", result=None)
+        return render_template("search-form.html", result=None)
     else:
         # Get form variables
         term1 = request.args.get("term1")
@@ -77,7 +77,7 @@ def index():
         name_of_first_search_result = responses['businesses'][0]['name']
 
         # return render_template("search-results.html", name_of_first_search_result=name_of_first_search_result)
-        return render_template("form.html", result=name_of_first_search_result)
+        return render_template("search-form.html", result=name_of_first_search_result)
 
 
 def mi_to_m(radius):
@@ -116,7 +116,7 @@ def show_search_results():
 
 @app.route('/register')
 def show_register_form():
-    return render_template("register_form.html")
+    return render_template("register-form.html")
 
 
 @app.route('/register-process', methods=["POST"])
