@@ -112,12 +112,16 @@ def register_process():
         flash("Welcome to ET, %s!" % fname)
         return redirect("/users/%s" % new_user.username)
 
+    ################
+
     elif check_email != []:
         flash("Email already taken. Do you mean to log in?")
         return render_template("register-form.html")
     elif check_username != []:
         flash("Username already taken. Do you mean to log in?")
         return render_template("register-form.html")
+
+    # need to change these, but will do later because this is not a priority
 
 
 @app.route('/login', methods=['GET'])
