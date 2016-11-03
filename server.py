@@ -30,58 +30,58 @@ app.jinja_env.auto_reload = True
 def index():
     """ I have only the form so far, so it'll be the homepage. """
 
-    if not request.args.get('submitting-search-form'):
-        return render_template("search-form.html", result=None,
-                               GMAPS_JS_KEY=os.environ['GMAPS_JS_KEY'],
-                               latitude=37.7886679, longitude=-122.4114987)
-    else:
-        # Get form variables
-        term1 = request.args.get("term1")
-        st_address1 = request.args.get("st_address1")
-        city1 = request.args.get("city1")
-        state1 = request.args.get("state1")
-        radius1 = float(request.args.get("radius1"))
-        categories1 = request.args.get("categories1")
+    return render_template("search-form.html", result=None,
+                           GMAPS_JS_KEY=os.environ['GMAPS_JS_KEY'],
+                           latitude=37.7886679, longitude=-122.4114987)
 
-        term2 = request.args.get("term2")
-        st_address2 = request.args.get("st_address2")
-        city2 = request.args.get("city2")
-        state2 = request.args.get("state2")
-        radius2 = float(request.args.get("radius2"))
-        categories2 = request.args.get("categories2")
+# do all this in ajax
+        # # Get form variables
+        # term1 = request.args.get("term1")
+        # st_address1 = request.args.get("st_address1")
+        # city1 = request.args.get("city1")
+        # state1 = request.args.get("state1")
+        # radius1 = float(request.args.get("radius1"))
+        # categories1 = request.args.get("categories1")
+
+        # term2 = request.args.get("term2")
+        # st_address2 = request.args.get("st_address2")
+        # city2 = request.args.get("city2")
+        # state2 = request.args.get("state2")
+        # radius2 = float(request.args.get("radius2"))
+        # categories2 = request.args.get("categories2")
 
         # should I replace this with a for loop for variable # of people to meet up?
 
-        latitude, longitude = midpt_formula(combine_coordinates_for_midpt(geocoding(st_address1, city1, state1), geocoding(st_address2, city2, state2)))
 
-        params_midpt = {'term': term1 + ", " + term2,
-                        'latitude': latitude,
-                        'longitude': longitude,
-                        'radius': mi_to_m(stricter_radius(radius1, radius2))}
+@app.route('/search.json')
+def search_process():
 
-        params_user1 = {'term': term1,
-                        'latitude': geocoding(st_address1, city1, state1)[0],
-                        'longitude': geocoding(st_address1, city1, state1)[1],
-                        'radius': mi_to_m(radius1)}
+    latitude, longitude = midpt_formula(combine_coordinates_for_midpt(geocoding(st_address1, city1, state1), geocoding(st_address2, city2, state2)))
 
-        params_user2 = {'term': term2,
-                        'latitude': geocoding(st_address2, city2, state2)[0],
-                        'longitude': geocoding(st_address2, city2, state2)[1],
-                        'radius': mi_to_m(radius2)}
+    params_midpt = {'term': term1 + ", " + term2,
+                    'latitude': latitude,
+                    'longitude': longitude,
+                    'radius': mi_to_m(stricter_radius(radius1, radius2))}
 
-        url = 'https://api.yelp.com/v3/businesses/search'
-        resp = requests.get(url=url, params=params_midpt, headers={'Authorization': 'Bearer ' + os.environ['YELP_KEY']})
-        responses = resp.json()
+    params_user1 = {'term': term1,
+                    'latitude': geocoding(st_address1, city1, state1)[0],
+                    'longitude': geocoding(st_address1, city1, state1)[1],
+                    'radius': mi_to_m(radius1)}
 
-        name_of_first_search_result = responses['businesses'][0]['name']
+    params_user2 = {'term': term2,
+                    'latitude': geocoding(st_address2, city2, state2)[0],
+                    'longitude': geocoding(st_address2, city2, state2)[1],
+                    'radius': mi_to_m(radius2)}
 
-        return render_template("search-form.html", result=name_of_first_search_result,
-                               GMAPS_JS_KEY=os.environ['GMAPS_JS_KEY'],
-                               latitude=latitude, longitude=longitude)
+    url = 'https://api.yelp.com/v3/businesses/search'
+    resp = requests.get(url=url, params=params_midpt, headers={'Authorization': 'Bearer ' + os.environ['YELP_KEY']})
+    responses = resp.json()
 
-@app.route('/search-results')
-def show_search_results():
-    return render_template("search-results.html")
+    # for business in enumerate(responses['businesses']):
+    #     responses['businesses'][business]['name']
+    # name_of_first_result = responses['businesses'][0]['name']
+
+    return jsonify(responses)
 
 
 @app.route('/register')
@@ -223,5 +223,9 @@ if __name__ == "__main__":
 
     # Use the DebugToolbar
     DebugToolbarExtension(app)
+
+    # Use the Flask Login Library
+    # login_manager = LoginManager()
+    # login_manager.init_app(app)
 
     app.run(debug=True, host="0.0.0.0")

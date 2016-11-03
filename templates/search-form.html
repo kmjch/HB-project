@@ -1,11 +1,20 @@
 {% extends 'base.html' %}
 
 {% block title %}Search{% endblock %}
-<script src="https://code.jquery.com/jquery.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key={{ GMAPS_JS_KEY }}&callback=initMap"
+async defer></script>
 
 {% block content %}
 
 <br><br>
+
+<div id="flash-msgs">
+    <ul>
+        {% for message in get_flashed_messages() %}
+            <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+</div>
 
 <form action="/" method="GET">
     For person 1:<br>
@@ -31,7 +40,7 @@
 
     <br><br>
     <input type="hidden" name="submitting-search-form" value="hi">
-    <input type="submit" value="Search for a good restaurant for us">
+    <input type="submit" id="search" value="Search for a good restaurant for us">
 </form>
 
 {% if result %}
@@ -40,9 +49,6 @@
 
 <br><br><div id="map"></div>
 
-<script src="static/show_map.js"></script>
 
-<script src="https://maps.googleapis.com/maps/api/js?key={{ GMAPS_JS_KEY }}&callback=initMap"
-async defer></script>
 
 {% endblock %}

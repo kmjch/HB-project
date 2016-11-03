@@ -5,15 +5,18 @@
     <title>{% block title %}Eat Together{% endblock %}</title>
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
     <link rel="stylesheet" href="/static/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <script src="static/search_process.js"></script>
 </head>
 <body>
-    <a href="/"><img src="/static/logo.jpg" width="100" height="51" alt="logo"></a><br>
+    <h1><a href="/">Eat Together</a></h1>
     
     {% if 'username' in session %}
         Hi {{ session['username'] }}! <br>
         <a href="/logout">Log out</a>
     {% else %}
-        <a href="/register">Register here</a> or <a href="/login">log in!</a><br><br>        
+        <a href="/register">Register here</a> or <a href="/login">log in!</a><br><br>      
     {% endif %}
 
     {% block content %}Content here{% endblock %}
