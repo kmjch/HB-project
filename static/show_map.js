@@ -12,3 +12,6 @@ function initMap() {
           title: 'Hello World!'
         });
 }
+
+// to do:
+// can pass in object coordinates = {'lat': latitude, 'lng': longitude} from python to html as jinja variable {{ coordinates }}
