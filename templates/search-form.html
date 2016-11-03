@@ -1,8 +1,6 @@
 {% extends 'base.html' %}
 
 {% block title %}Search{% endblock %}
-<script src="https://maps.googleapis.com/maps/api/js?key={{ GMAPS_JS_KEY }}&callback=initMap"
-async defer></script>
 
 {% block content %}
 
@@ -20,22 +18,22 @@ async defer></script>
     For person 1:<br>
     <label>Search term*: <input type="text" id="term1" name="term1" value="Chinese" required></label><br>
     <label>Enter the address of where you are coming from:<br>
-        Street address: <input type="text" id="st_address1" name="st_address1"></label><br>
-    <label>City: <input type="text" id="city1" name="city1"></label><br>
-    <label>State: <input type="text" id="state1" name="state1"></label><br>
-    <label>Radius (in mi): <input type="number" id="radius1" name="radius1"></label><br>
+        Street address: <input type="text" id="st_address1" name="st_address1" value="2540 college ave"></label><br>
+    <label>City: <input type="text" id="city1" name="city1" value="Berkeley"></label><br>
+    <label>State: <input type="text" id="state1" name="state1" value="CA"></label><br>
+    <label>Radius (in mi): <input type="number" id="radius1" name="radius1" value="2"></label><br>
     <!-- feature to implement later: provide option for meters -->
     <label>Categories: <input type="text" id="categories1" name="categories1"></label><br>
     <!-- add avg rating at least, price, and when you want to meet up -->
 
     <br>For person 2:<br>
 
-    <label>Search term*: <input type="text" id="term2" name="term2" required></label><br>
+    <label>Search term: <input type="text" id="term2" name="term2" value=""></label><br>
     <label>Enter the address of where you are coming from:<br>
-        Street address:<input type="text2" id="st_address2" name="st_address2"></label><br>
-    <label>City: <input type="text" id="city2" name="city2"></label><br>
-    <label>State: <input type="text" id="state2" name="state2"></label><br>
-    <label>Radius (in mi): <input type="number" id="radius2" name="radius2"></label><br>
+        Street address:<input type="text2" id="st_address2" name="st_address2" value="2310 telegraph ave"></label><br>
+    <label>City: <input type="text" id="city2" name="city2" value="Berkeley"></label><br>
+    <label>State: <input type="text" id="state2" name="state2" value="CA"></label><br>
+    <label>Radius (in mi): <input type="number" id="radius2" name="radius2" value="2"></label><br>
     <label>Categories: <input type="text" id="categories2" name="categories2"></label><br>
 
     <br><br>
@@ -43,11 +41,12 @@ async defer></script>
     <input type="submit" id="search" value="Search for a good restaurant for us">
 </form>
 
-{% if result %}
-    {{ result }}
-{% endif %}
+<div id="search-results"></div>
 
-<br><br><div id="map"></div>
+<br><div id="map"></div>
+<script src="https://maps.googleapis.com/maps/api/js?key={{ GMAPS_JS_KEY }}&callback=initMap"
+async defer></script>
+<script src="static/search_process.js"></script>
 
 
 

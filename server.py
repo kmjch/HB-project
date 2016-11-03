@@ -30,32 +30,23 @@ app.jinja_env.auto_reload = True
 def index():
     """ I have only the form so far, so it'll be the homepage. """
 
-    return render_template("search-form.html", result=None,
-                           GMAPS_JS_KEY=os.environ['GMAPS_JS_KEY'],
-                           latitude=37.7886679, longitude=-122.4114987)
-
-# do all this in ajax
-        # # Get form variables
-        # term1 = request.args.get("term1")
-        # st_address1 = request.args.get("st_address1")
-        # city1 = request.args.get("city1")
-        # state1 = request.args.get("state1")
-        # radius1 = float(request.args.get("radius1"))
-        # categories1 = request.args.get("categories1")
-
-        # term2 = request.args.get("term2")
-        # st_address2 = request.args.get("st_address2")
-        # city2 = request.args.get("city2")
-        # state2 = request.args.get("state2")
-        # radius2 = float(request.args.get("radius2"))
-        # categories2 = request.args.get("categories2")
-
-        # should I replace this with a for loop for variable # of people to meet up?
+    return render_template("search-form.html",
+                           GMAPS_JS_KEY=os.environ['GMAPS_JS_KEY'])
 
 
 @app.route('/search.json')
 def search_process():
 
+    term1 = request.args.get("term1")
+    st_address1 = request.args.get("st_address1")
+    city1 = request.args.get("city1")
+    state1 = request.args.get("state1")
+    radius1 = request.args.get("radius1")
+    term2 = request.args.get("term2")
+    st_address2 = request.args.get("st_address2")
+    city2 = request.args.get("city2")
+    state2 = request.args.get("state2")
+    radius2 = request.args.get("radius2")
     latitude, longitude = midpt_formula(combine_coordinates_for_midpt(geocoding(st_address1, city1, state1), geocoding(st_address2, city2, state2)))
 
     params_midpt = {'term': term1 + ", " + term2,
@@ -75,13 +66,13 @@ def search_process():
 
     url = 'https://api.yelp.com/v3/businesses/search'
     resp = requests.get(url=url, params=params_midpt, headers={'Authorization': 'Bearer ' + os.environ['YELP_KEY']})
-    responses = resp.json()
+    results = resp.json()
 
-    # for business in enumerate(responses['businesses']):
-    #     responses['businesses'][business]['name']
-    # name_of_first_result = responses['businesses'][0]['name']
+    # for business in enumerate(results['businesses']):
+    #     results['businesses'][business]['name']
+    # name_of_first_result = results['businesses'][0]['name']
 
-    return jsonify(responses)
+    return jsonify(results)
 
 
 @app.route('/register')
