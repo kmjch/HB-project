@@ -9,10 +9,11 @@
 <body>
     <a href="/"><img src="/static/logo.jpg" width="100" height="51" alt="logo"></a><br>
     
-    {% if logged_in is defined %}
-       <a href="/logout">Log out</a>
+    {% if 'username' in session %}
+        Hi {{ session['username'] }}! <br>
+        <a href="/logout">Log out</a>
     {% else %}
-        <a href="/register">Register here</a> or <a href="/login">log in!</a><br><br>
+        <a href="/register">Register here</a> or <a href="/login">log in!</a><br><br>        
     {% endif %}
 
     {% block content %}Content here{% endblock %}

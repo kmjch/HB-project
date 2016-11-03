@@ -11,7 +11,10 @@ gmaps = googlemaps.Client(key=os.environ['GMAPS_KEY'])
 
 
 def mi_to_m(radius):
-    return radius * 1609.34
+    print "\n\n\n\n\n"
+    print type(radius)
+    print "\n\n\n\n\n"
+    return int(float(radius) * 1609.34)
 
 
 def stricter_radius(radius1, radius2):

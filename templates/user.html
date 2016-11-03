@@ -4,10 +4,14 @@
 
   <h2>{{ user.fname }}'s Account</h2>
 
-  username: {{ user.username }}
+  username: {{ user.username }}<br><br>
+  email: {{ user.email }}<br><br>
+  phone number: {{ user.phone_num }}<br><br>
+  home address:<br>
+  {{ user.home_str }}<br>{{ user.home_cty }}<br>{{ user.home_sta }} {{ user.home_zip }}<br>
+  work address:<br>
+  {{ user.work_str }}<br>{{ user.work_cty }}<br>{{ user.work_sta }} {{ user.work_zip }}<br>
 
-  <br><a href="/add-user-details">Add your phone number, home address, and work address for faster searching!</a>
-
-  
+  <br><a href="/add-user-details">Update your phone number and addresses!</a>
 
 {% endblock %}

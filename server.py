@@ -31,22 +31,21 @@ def index():
     """ I have only the form so far, so it'll be the homepage. """
 
     if not request.args.get('submitting-search-form'):
-        return render_template("search-form.html", result=None,
-                               logged_in=session['username'])
+        return render_template("search-form.html", result=None)
     else:
         # Get form variables
         term1 = request.args.get("term1")
         st_address1 = request.args.get("st_address1")
         city1 = request.args.get("city1")
         state1 = request.args.get("state1")
-        radius1 = request.args.get("radius1")
+        radius1 = float(request.args.get("radius1"))
         categories1 = request.args.get("categories1")
 
         term2 = request.args.get("term2")
         st_address2 = request.args.get("st_address2")
         city2 = request.args.get("city2")
         state2 = request.args.get("state2")
-        radius2 = request.args.get("radius2")
+        radius2 = float(request.args.get("radius2"))
         categories2 = request.args.get("categories2")
 
         # should I replace this with a for loop for variable # of people to meet up?
@@ -74,9 +73,7 @@ def index():
 
         name_of_first_search_result = responses['businesses'][0]['name']
 
-        return render_template("search-form.html", result=name_of_first_search_result,
-                               logged_in=session["username"])
-
+        return render_template("search-form.html", result=name_of_first_search_result)
 
 @app.route('/search-results')
 def show_search_results():
@@ -85,6 +82,7 @@ def show_search_results():
 
 @app.route('/register')
 def show_register_form():
+
     return render_template("register-form.html")
 
 
@@ -99,18 +97,31 @@ def register_process():
     username = request.form["username"]
     password = request.form["password"]
 
-    new_user = User(fname=fname, lname=lname, email=email, username=username,
-                    password=password)
+    # check if already in the database
+    check_email = User.query.filter_by(email=email).all()
+    check_username = User.query.filter_by(username=username).all()
 
-    db.session.add(new_user)
-    db.session.commit()
+    if check_email == [] and check_username == []:
 
-    flash("Welcome to ET, %s!" % fname)
-    return redirect("/users/%s" % new_user.username)
+        new_user = User(fname=fname, lname=lname, email=email, username=username,
+                        password=password)
+
+        db.session.add(new_user)
+        db.session.commit()
+
+        flash("Welcome to ET, %s!" % fname)
+        return redirect("/users/%s" % new_user.username)
+
+    elif check_email != []:
+        flash("Email already taken. Do you mean to log in?")
+        return render_template("register-form.html")
+    elif check_username != []:
+        flash("Username already taken. Do you mean to log in?")
+        return render_template("register-form.html")
 
 
 @app.route('/login', methods=['GET'])
-def login_form():
+def show_login_form():
     """Show login form."""
 
     return render_template("login-form.html")
@@ -123,7 +134,6 @@ def login_process():
     # Get form variables
     username = request.form["username"]
     password = request.form["password"]
-    print "\n\n\n\n", username, "\n\n\n\n\n"
 
     user = User.query.filter_by(username=username).first()
 
@@ -136,7 +146,6 @@ def login_process():
         return redirect("/login")
 
     session["username"] = user.username
-    print "\n\n\n\n\n", session['username']
 
     flash("Logged in")
     return redirect("/users/%s" % user.username)
@@ -155,8 +164,10 @@ def logout():
 def user_detail(username):
     """Show info about user."""
 
-    session['username'] = username
     user = User.query.filter_by(username=username).one()
+
+    session['username'] = user.username
+
     return render_template("user.html", user=user)
 
 
@@ -175,8 +186,6 @@ def process_user_details():
 
     # Get form variables and set them to the user's attributes
     u.phone_num = request.form["phone_num"]
-
-    u.phone_num
     u.home_str = request.form["home_str"]
     u.home_cty = request.form["home_cty"]
     u.home_sta = request.form["home_sta"]
@@ -194,13 +203,8 @@ def process_user_details():
     return redirect("/users/%s" % session['username'])
 
 
+# a function for showing nothing instead of 'None' if any of the fields are NULL, generalizing the variables so that any of the fields can use this same function
 
-# doesn't work
-# def show_toolbar(request):
-#     return True
-# DEBUG_TOOLBAR_CONFIG = {
-#     "SHOW_TOOLBAR_CALLBACK" : show_toolbar,
-# }
 
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the
@@ -212,4 +216,4 @@ if __name__ == "__main__":
     # Use the DebugToolbar
     DebugToolbarExtension(app)
 
-    app.run(host="0.0.0.0")
+    app.run(debug=True, host="0.0.0.0")
