@@ -71,7 +71,8 @@ $(document).ready(function(evt) {
 });
 
 function addToMap(responses) {
-  console.log("adding markers to the map");
+
+  // adding person 1 and person 2's locations
   var marker_person1 = new google.maps.Marker({
       position: {lat: responses.person1[0], lng: responses.person1[1]},
       label: "Person 1",
@@ -82,34 +83,23 @@ function addToMap(responses) {
       label: "Person 2",
       map: map
   });
-  var minLat = responses.person1[0];
-  var minLng = responses.person1[1];
-  var maxLat = responses.person1[0];
-  var maxLng = responses.person1[1];
   // do a for loop for when I get more than 2 people meeting up
+
+  // preparing bounds, and adding new markers as I go through the for loop
+  var bounds = new google.maps.LatLngBounds();
+
+  // looping through each result (up to 20) in the yelp search and extracting lat and lng
   for (var i = 0; i < responses['businesses'].length; i++) {
     var coords = [responses.businesses[i].coordinates.latitude, responses.businesses[i].coordinates.longitude];
     var latLng1 = {lat: coords[0], lng: coords[1]};
-    if (coords[0] < minLat) {
-      minLat = coords[0];
-    }
-    if (coords[0] > maxLat) {
-      maxLat = coords[0];
-    }
-    if (coords[1] < minLng) {
-      minLng = coords[1];
-    }
-    if (coords[1] > maxLng) {
-      maxLng = coords[1];
-    }
     var marker = new google.maps.Marker({
       position: latLng1,
       label: (i + 1).toString(),
       map: map
     });
+    bounds.extend(marker.getPosition());
   }
-  // map.panTo({lat: responses.midpt[0], lng: responses.midpt[1]});
-  // map.setZoom({zoom: 4});
-  map.panToBounds({east: maxLng, west: minLng, south: minLat, north: maxLat});
-  map.setClickableIcons({value:True});
+
+  // map will shift to include all search results
+  map.fitBounds(bounds);
 }
