@@ -68,6 +68,11 @@ def search_process():
     resp = requests.get(url=url, params=params_midpt, headers={'Authorization': 'Bearer ' + os.environ['YELP_KEY']})
     results = resp.json()
 
+    results['person1'] = geocoding(st_address1, city1, state1)
+    results['person2'] = geocoding(st_address2, city2, state2)
+    results['midpt'] = [latitude, longitude]
+    # do a for loop for when I get more than 2 people meeting up
+
     # for business in enumerate(results['businesses']):
     #     results['businesses'][business]['name']
     # name_of_first_result = results['businesses'][0]['name']

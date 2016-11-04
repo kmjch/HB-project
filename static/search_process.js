@@ -66,24 +66,42 @@ $(document).ready(function(evt) {
     $.get('/search.json', formData, function(responses) {
       $('#search-results').html(responses.businesses[0].name);
       addToMap(responses);
-      console.log('called addToMap');
     });
   });
 });
 
 function addToMap(responses) {
   console.log("adding markers to the map");
-  // now create markers for address1 and address2
+  var marker_person1 = new google.maps.Marker({
+      position: {lat: responses.person1[0], lng: responses.person1[1]},
+      label: "Person 1",
+      map: map
+  });
+  var marker_person2 = new google.maps.Marker({
+      position: {lat: responses.person2[0], lng: responses.person2[1]},
+      label: "Person 2",
+      map: map
+  });
+  // do a for loop for when I get more than 2 people meeting up
   for (var i = 0; i < responses['businesses'].length; i++) {
     var coords = [responses.businesses[i].coordinates.latitude, responses.businesses[i].coordinates.longitude];
     var latLng = {lat: coords[0], lng: coords[1]};
+    // var minLat = 
     var marker = new google.maps.Marker({
       position: latLng,
+      label: (i + 1).toString(),
       map: map
     });
   }
+  map.setCenter({lat: responses.midpt[0], lng: responses.midpt[1]});
 }
 
-
-// to do:
-// can pass in object coordinates = {'lat': latitude, 'lng': longitude} from python to html as jinja variable {{ coordinates }}
+// function minValue(value) {
+//   var comparedVal = value;
+//   if (value < comparedVal) {
+    
+//   }
+// }
+// function maxValue(value, comparedVal = -181) {
+//   if ()
+// }
