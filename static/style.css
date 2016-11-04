@@ -2,5 +2,6 @@ html {
     font-family: 'Source Sans Pro', sans-serif;
 }
 #map {
-    height: 500px;
+    height: 800px;
+    width: 800px;
 }

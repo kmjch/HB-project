@@ -82,26 +82,34 @@ function addToMap(responses) {
       label: "Person 2",
       map: map
   });
+  var minLat = responses.person1[0];
+  var minLng = responses.person1[1];
+  var maxLat = responses.person1[0];
+  var maxLng = responses.person1[1];
   // do a for loop for when I get more than 2 people meeting up
   for (var i = 0; i < responses['businesses'].length; i++) {
     var coords = [responses.businesses[i].coordinates.latitude, responses.businesses[i].coordinates.longitude];
-    var latLng = {lat: coords[0], lng: coords[1]};
-    // var minLat = 
+    var latLng1 = {lat: coords[0], lng: coords[1]};
+    if (coords[0] < minLat) {
+      minLat = coords[0];
+    }
+    if (coords[0] > maxLat) {
+      maxLat = coords[0];
+    }
+    if (coords[1] < minLng) {
+      minLng = coords[1];
+    }
+    if (coords[1] > maxLng) {
+      maxLng = coords[1];
+    }
     var marker = new google.maps.Marker({
-      position: latLng,
+      position: latLng1,
       label: (i + 1).toString(),
       map: map
     });
   }
-  map.setCenter({lat: responses.midpt[0], lng: responses.midpt[1]});
+  // map.panTo({lat: responses.midpt[0], lng: responses.midpt[1]});
+  // map.setZoom({zoom: 4});
+  map.panToBounds({east: maxLng, west: minLng, south: minLat, north: maxLat});
+  map.setClickableIcons({value:True});
 }
-
-// function minValue(value) {
-//   var comparedVal = value;
-//   if (value < comparedVal) {
-    
-//   }
-// }
-// function maxValue(value, comparedVal = -181) {
-//   if ()
-// }

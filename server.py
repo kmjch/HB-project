@@ -73,10 +73,6 @@ def search_process():
     results['midpt'] = [latitude, longitude]
     # do a for loop for when I get more than 2 people meeting up
 
-    # for business in enumerate(results['businesses']):
-    #     results['businesses'][business]['name']
-    # name_of_first_result = results['businesses'][0]['name']
-
     return jsonify(results)
 
 
