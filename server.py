@@ -49,7 +49,7 @@ def search_process():
     radius2 = request.args.get("radius2")
     latitude, longitude = midpt_formula(combine_coordinates_for_midpt(geocoding(st_address1, city1, state1), geocoding(st_address2, city2, state2)))
 
-    params_midpt = {'term': term1 + ", " + term2,
+    params_midpt = {'term': avoid_term_duplicates(term1, term2),
                     'latitude': latitude,
                     'longitude': longitude,
                     'radius': mi_to_m(stricter_radius(radius1, radius2))}
@@ -78,6 +78,12 @@ def search_process():
     # name_of_first_result = results['businesses'][0]['name']
 
     return jsonify(results)
+
+
+def avoid_term_duplicates(term1, term2):
+    if term1.lower() == term2.lower():
+        return term1
+    return term1 + ", " + term2
 
 
 @app.route('/register')
