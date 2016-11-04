@@ -1,7 +1,9 @@
+var map;
+
 function initMap() {
   var myLatLng = {lat: 37.7886679, lng: -122.4114987};
 
-  var map = new google.maps.Map(document.getElementById('map'), {
+  map = new google.maps.Map(document.getElementById('map'), {
     zoom: 16,
     center: myLatLng
   });
@@ -62,11 +64,25 @@ $(document).ready(function(evt) {
 
     // show search results based on formData
     $.get('/search.json', formData, function(responses) {
-      $('#search-results').html(responses['businesses'][0]['name']);
+      $('#search-results').html(responses.businesses[0].name);
+      addToMap(responses);
+      console.log('called addToMap');
     });
   });
 });
 
+function addToMap(responses) {
+  console.log("adding markers to the map");
+  // now create markers for address1 and address2
+  for (var i = 0; i < responses['businesses'].length; i++) {
+    var coords = [responses.businesses[i].coordinates.latitude, responses.businesses[i].coordinates.longitude];
+    var latLng = {lat: coords[0], lng: coords[1]};
+    var marker = new google.maps.Marker({
+      position: latLng,
+      map: map
+    });
+  }
+}
 
 
 // to do:
