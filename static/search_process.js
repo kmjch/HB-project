@@ -101,23 +101,31 @@ function addToMap(responses) {
       label: (i + 1).toString(),
       map: map
     });
+    var infoWindow = new google.maps.InfoWindow({
+      content: html
+    });
 
     // define the content of the window
     html = (
             '<div class="window-content">' +
-                '<p><b>' + responses.businesses[i].name + '</b></p>' +         // Famous Bao
+                '<p><b>' + responses.businesses[i].name + '</b></p>' +         // Famous Bao 
                 '<p>' + responses.businesses[i].phone + '</p>' +               // phone #
                 '<p>' + responses.businesses[i].location.address1 + '</p>' +   // 2431 durant ave
                 '<p>' + responses.businesses[i].location.address2 + '</p>' +   // Unit A
                 '<p>' + responses.businesses[i].location.city + ', ' +         // Berkeley, CA 94704
-                responses.businesses[i].location.state +
+                responses.businesses[i].location.state + ' ' +
                 responses.businesses[i].location.zip_code + '</p>' +
                 '<p>Price level: ' + responses.businesses[i].price + '</p>' +  // Price Level: $
                 '<p>Rating: ' + responses.businesses[i].rating + '</p>' +      // Rating: 3.5
                 '<p><a href="' + responses.businesses[i].url + '">See ' +      // See Famous Bao on Yelp
                 responses.businesses[i].name + ' on Yelp</a></p>' +
             '</div>');
+    
+    marker.addListener('click', function() {
+      infoWindow.open(map, marker);
+    });
 
+    // include the new marker in the boundaries of the map
     bounds.extend(marker.getPosition());
   }
 
