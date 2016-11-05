@@ -72,6 +72,8 @@ $(document).ready(function(evt) {
 
 function addToMap(responses) {
 
+  var marker, html;
+
   // adding person 1 and person 2's locations
   var marker_person1 = new google.maps.Marker({
       position: {lat: responses.person1[0], lng: responses.person1[1]},
@@ -86,20 +88,40 @@ function addToMap(responses) {
   // do a for loop for when I get more than 2 people meeting up
 
   // preparing bounds, and adding new markers as I go through the for loop
+  // var markers = [];
+  // var infoWindows = [];
   var bounds = new google.maps.LatLngBounds();
 
   // looping through each result (up to 20) in the yelp search and extracting lat and lng
   for (var i = 0; i < responses['businesses'].length; i++) {
     var coords = [responses.businesses[i].coordinates.latitude, responses.businesses[i].coordinates.longitude];
-    var latLng1 = {lat: coords[0], lng: coords[1]};
-    var marker = new google.maps.Marker({
-      position: latLng1,
+    var latLng = {lat: coords[0], lng: coords[1]};
+    marker = new google.maps.Marker({
+      position: latLng,
       label: (i + 1).toString(),
       map: map
     });
+
+    // define the content of the window
+    html = (
+            '<div class="window-content">' +
+                '<p><b>' + responses.businesses[i].name + '</b></p>' +         // Famous Bao
+                '<p>' + responses.businesses[i].phone + '</p>' +               // phone #
+                '<p>' + responses.businesses[i].location.address1 + '</p>' +   // 2431 durant ave
+                '<p>' + responses.businesses[i].location.address2 + '</p>' +   // Unit A
+                '<p>' + responses.businesses[i].location.city + ', ' +         // Berkeley, CA 94704
+                responses.businesses[i].location.state +
+                responses.businesses[i].location.zip_code + '</p>' +
+                '<p>Price level: ' + responses.businesses[i].price + '</p>' +  // Price Level: $
+                '<p>Rating: ' + responses.businesses[i].rating + '</p>' +      // Rating: 3.5
+                '<p><a href="' + responses.businesses[i].url + '">See ' +      // See Famous Bao on Yelp
+                responses.businesses[i].name + ' on Yelp</a></p>' +
+            '</div>');
+
     bounds.extend(marker.getPosition());
   }
 
   // map will shift to include all search results
   map.fitBounds(bounds);
 }
+
