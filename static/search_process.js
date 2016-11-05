@@ -64,7 +64,11 @@ $(document).ready(function(evt) {
 
     // show search results based on formData
     $.get('/search.json', formData, function(responses) {
-      $('#search-results').html(responses.businesses[0].name);
+      var businessArray = [];
+      for (var i = 0; i < responses['businesses'].length; i++) {
+        businessArray.push("<a href='" + responses.businesses[i].url + "'>" + (i + 1) + ". " + responses.businesses[i].name + "</a>");
+      }
+      $('#search-results').html(businessArray.join("<br>"));
       addToMap(responses);
     });
   });
