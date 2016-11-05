@@ -66,7 +66,9 @@ $(document).ready(function(evt) {
     $.get('/search.json', formData, function(responses) {
       var businessArray = [];
       for (var i = 0; i < responses['businesses'].length; i++) {
-        businessArray.push("<a href='" + responses.businesses[i].url + "'>" + (i + 1) + ". " + responses.businesses[i].name + "</a>");
+        businessArray.push(
+          (i + 1) + ". " + "<a href='" + responses.businesses[i].url + "'>" +
+          responses.businesses[i].name + "</a>");
       }
       $('#search-results').html(businessArray.join("<br>"));
       addToMap(responses);
