@@ -8,7 +8,7 @@ function initMap() {
     center: myLatLng
   });
 
-  var infoWindow = new google.maps.InfoWindow({map: map});
+  var infoWindow;
 
 // for geolocation to work, have to run on localhost rather than 0.0.0.0
   if (navigator.geolocation) {
@@ -17,7 +17,7 @@ function initMap() {
         lat: position.coords.latitude,
         lng: position.coords.longitude
       };
-
+      infoWindow = new google.maps.InfoWindow({map: map});
       infoWindow.setPosition(pos);
       infoWindow.setContent('Location found.');
       map.setCenter(pos);
