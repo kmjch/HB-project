@@ -10,6 +10,13 @@
     
 </head>
 <body>
+    <div id="flash-msgs">
+        <ul>
+            {% for message in get_flashed_messages() %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    </div>
     <h1><a href="/">Eat Together</a></h1>
     
     {% if 'username' in session %}
