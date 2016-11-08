@@ -30,14 +30,14 @@ app.jinja_env.auto_reload = True
 
 @app.route('/')
 def index():
-    """ I have only the form so far, so it'll be the homepage. """
-
+    """ The search form is the homepage. """
     return render_template("search-form.html",
                            GMAPS_JS_KEY=os.environ['GMAPS_JS_KEY'])
 
 
 @app.route('/search.json')
 def search_process():
+    """ Processes the request from AJAX to submit a search into the Yelp API. """
 
     # processing search parameters for person 1
     term1 = request.args.get("term1")
@@ -55,13 +55,18 @@ def search_process():
     radius2 = request.args.get("radius2")
     price2 = str(request.args.get("price2"))
 
+    # processing search parameters common to each person
     open_now = request.args.get("open_now")
     time = request.args.get("time")
     sort_by = request.args.get("sort_by")
     limit = request.args.get("limit")
 
-    mid_lat, mid_lng = midpt_formula(combine_coordinates_for_midpt(geocoding(st_address1, city1, state1), geocoding(st_address2, city2, state2)))
+    # uses the Google Maps API to geocode and functions written in midpt_formula.py
+    # to find the midpoint of the two given addresses
+    mid_lat, mid_lng = midpt_formula(combine_coordinates_for_midpt(geocoding(st_address1, city1, state1),
+                                                                   geocoding(st_address2, city2, state2)))
 
+    # the dictionary of search parameters to submit to the Yelp API
     params_midpt = {'term': avoid_term_duplicates(term1, term2),
                     'latitude': mid_lat,
                     'longitude': mid_lng,
@@ -69,9 +74,12 @@ def search_process():
                     'sort_by': sort_by,
                     'limit': limit}
 
+    # adds the search parameter price if either user inputs a price
     if price1 or price2:
         params_midpt['price'] = avoid_price_duplicates(price1, price2)
 
+    # adds the business hours parameter if they specify whether they would want
+    # to go to the business now or at a future time
     if time:
         params_midpt['open_at'] = unix_time(time)
     else:
@@ -91,25 +99,31 @@ def search_process():
     #                 'price': price2,
     #                 }
 
+    # Yelp API request
     url = 'https://api.yelp.com/v3/businesses/search'
     resp = requests.get(url=url, params=params_midpt, headers={'Authorization': 'Bearer ' + os.environ['YELP_KEY']})
     results = resp.json()
 
+    # sends the locations of each person for creating markers on the map
     results['person1'] = geocoding(st_address1, city1, state1)
     results['person2'] = geocoding(st_address2, city2, state2)
-    results['midpt'] = [mid_lat, mid_lng]
     # do a for loop for when I get more than 2 people meeting up
 
-    import pdb; pdb.set_trace()
+    # import pdb; pdb.set_trace()
 
     return jsonify(results)
 
 
 def unix_time(time_str):
+    """ If the user specifies a time "later" on the form, converts the given time into
+    unix for Yelp API """
     if time_str:
         d = datetime.strptime(str(time_str), "%Y-%m-%dT%H:%M")
         unix = time.mktime(d.timetuple())
         return int(unix)
+
+
+# Cleaning up price and term values for the Yelp API search
 
 
 def avoid_price_duplicates(price1, price2):
@@ -122,15 +136,17 @@ def avoid_term_duplicates(term1, term2):
     return term1 + ", " + term2
 
 
+# Other pages
+
 @app.route('/register')
 def show_register_form():
-
+    """ Display the signup form. """
     return render_template("register-form.html")
 
 
 @app.route('/register-process', methods=["POST"])
 def register_process():
-    """Process registration."""
+    """Process registration of new user."""
 
     # Get form variables
     fname = request.form["fname"]

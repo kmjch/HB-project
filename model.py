@@ -132,9 +132,8 @@ def add_sample_restaurants():
     f = open('sample_restaurants.json')
     data = json.load(f)
     restaurants = []
-    for restaurant, i in data:
-        restaurants.append(Restaurant(id=i,yelp_id=))
-        f['businesses'][0]['id']
+    for restaurant, i in enumerate(data['businesses']):
+        print restaurant, i
 
 
 def make_sample_user_visits():
