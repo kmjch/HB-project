@@ -4,7 +4,7 @@ import googlemaps
 import requests
 import yelp
 import time
-import datetime
+from datetime import datetime
 
 from jinja2 import StrictUndefined
 
@@ -55,11 +55,10 @@ def search_process():
     radius2 = request.args.get("radius2")
     price2 = str(request.args.get("price2"))
 
+    open_now = request.args.get("open_now")
     time = request.args.get("time")
     sort_by = request.args.get("sort_by")
     limit = request.args.get("limit")
-
-    import pdb; pdb.set_trace()
 
     mid_lat, mid_lng = midpt_formula(combine_coordinates_for_midpt(geocoding(st_address1, city1, state1), geocoding(st_address2, city2, state2)))
 
@@ -70,7 +69,10 @@ def search_process():
                     'price': avoid_price_duplicates(price1, price2),
                     'sort_by': sort_by,
                     'limit': limit,
-                    'open_at': process_time(time)}
+                    'open_at': process_time(time),
+                    'open_now': open_now}
+
+    import pdb; pdb.set_trace()
 
     params_user1 = {'term': term1,
                     'latitude': geocoding(st_address1, city1, state1)[0],
@@ -98,9 +100,11 @@ def search_process():
     return jsonify(results)
 
 
-def process_time(d):
-    # unixtime = time.mktime(d.timetuple())
-    pass
+def process_time(time_str):
+    if time_str:
+        d = datetime.strptime(str(time_str), "%Y-%m-%dT%H:%M")
+        unixtime = time.mktime(d.timetuple())
+        return int(unixtime)
 
 
 def avoid_price_duplicates(price1, price2):
