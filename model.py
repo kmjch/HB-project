@@ -12,7 +12,7 @@ db = SQLAlchemy()
 
 
 ##############################################################################
-# Model definitions
+# Creates the database tables for User, UserExperiences, Visits, and Restaurants
 
 class User(db.Model):
     """User of app."""
@@ -107,7 +107,7 @@ class Restaurant(db.Model):
 
 
 ##############################################################################
-# Seed sample data
+# Seed sample data for above tables
 
 def make_sample_user_data():
     """ Create some sample user data. """
