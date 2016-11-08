@@ -1,5 +1,5 @@
 var map;
-var open_now = true;
+var open_now;
 
 
 // toggles the form input for 
@@ -12,7 +12,6 @@ function showField(evt) {
     open_now = true;
   } else if (chooseWhen === "later") {
     $('#time').css("display", "block");
-    open_now = false;
   }
 }
 

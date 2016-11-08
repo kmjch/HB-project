@@ -12,7 +12,7 @@ from flask import Flask, jsonify, render_template, redirect, request, flash, ses
 from flask_debugtoolbar import DebugToolbarExtension
 from flask_sqlalchemy import SQLAlchemy
 
-from model import connect_to_db, db, User, UserExp, Visit, Restaurant
+from model import *
 from midpt_formula import *
 
 
@@ -66,27 +66,30 @@ def search_process():
                     'latitude': mid_lat,
                     'longitude': mid_lng,
                     'radius': mi_to_m(stricter_radius(radius1, radius2)),
-                    'price': avoid_price_duplicates(price1, price2),
                     'sort_by': sort_by,
-                    'limit': limit,
-                    'open_at': process_time(time),
-                    'open_now': open_now}
+                    'limit': limit}
 
-    import pdb; pdb.set_trace()
+    if price1 or price2:
+        params_midpt['price'] = avoid_price_duplicates(price1, price2)
 
-    params_user1 = {'term': term1,
-                    'latitude': geocoding(st_address1, city1, state1)[0],
-                    'longitude': geocoding(st_address1, city1, state1)[1],
-                    'radius': mi_to_m(radius1),
-                    'price': price1,
-                    }
+    if time:
+        params_midpt['open_at'] = unix_time(time)
+    else:
+        params_midpt['open_now'] = open_now
 
-    params_user2 = {'term': term2,
-                    'latitude': geocoding(st_address2, city2, state2)[0],
-                    'longitude': geocoding(st_address2, city2, state2)[1],
-                    'radius': mi_to_m(radius2),
-                    'price': price2,
-                    }
+    # params_user1 = {'term': term1,
+    #                 'latitude': geocoding(st_address1, city1, state1)[0],
+    #                 'longitude': geocoding(st_address1, city1, state1)[1],
+    #                 'radius': mi_to_m(radius1),
+    #                 'price': price1,
+    #                 }
+
+    # params_user2 = {'term': term2,
+    #                 'latitude': geocoding(st_address2, city2, state2)[0],
+    #                 'longitude': geocoding(st_address2, city2, state2)[1],
+    #                 'radius': mi_to_m(radius2),
+    #                 'price': price2,
+    #                 }
 
     url = 'https://api.yelp.com/v3/businesses/search'
     resp = requests.get(url=url, params=params_midpt, headers={'Authorization': 'Bearer ' + os.environ['YELP_KEY']})
@@ -97,20 +100,20 @@ def search_process():
     results['midpt'] = [mid_lat, mid_lng]
     # do a for loop for when I get more than 2 people meeting up
 
+    import pdb; pdb.set_trace()
+
     return jsonify(results)
 
 
-def process_time(time_str):
+def unix_time(time_str):
     if time_str:
         d = datetime.strptime(str(time_str), "%Y-%m-%dT%H:%M")
-        unixtime = time.mktime(d.timetuple())
-        return int(unixtime)
+        unix = time.mktime(d.timetuple())
+        return int(unix)
 
 
 def avoid_price_duplicates(price1, price2):
-    # you have '12' and '123'
     return ','.join(list(set(price1 + price2)))
-
 
 
 def avoid_term_duplicates(term1, term2):

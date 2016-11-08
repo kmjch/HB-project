@@ -1,6 +1,7 @@
 """Models and database functions for Ratings project."""
 
 from flask_sqlalchemy import SQLAlchemy
+from random import randint
 import json
 
 # This is the connection to the PostgreSQL database; we're getting this through
@@ -105,8 +106,11 @@ class Restaurant(db.Model):
         return "<Restaurant id=%d name=%s>" % (self.id, self.name)
 
 
-def example_data():
-    """ Create some sample data. """
+##############################################################################
+# Seed sample data
+
+def make_sample_user_data():
+    """ Create some sample user data. """
 
     f = open('MOCK_DATA.json')
     data = json.load(f)
@@ -120,6 +124,35 @@ def example_data():
                                  password=user['password']))
     db.session.add_all(users_exdata)
     db.session.commit()
+
+
+def add_sample_restaurants():
+    """ Add some real restaurants from Berkeley to the database. """
+
+    # f = open('sample_restaurants.json')
+    # data = json.load(f)
+    # restaurants = []
+    # for restaurant, i in data:
+    #     restaurants.append(Restaurant(id=i,yelp_id=))
+    #     f['businesses']
+
+
+def make_sample_user_visits():
+    """ Create some sample data about user visits. """
+    visits = db.session.query(Visit.id).all()
+    for visit_id in visits:
+        while uv1.user_id == uv2.user_id:
+            uv1 = UserExp(visit_id=visit_id, user_id=randint(0, 1000), rating=randint(0, 5))
+            uv2 = UserExp(visit_id=visit_id, user_id=randint(0, 1000), rating=randint(0, 5))
+            new_user_visits = [uv1, uv2]
+        db.session.add_all(new_user_visits)
+        db.session.commit()
+
+
+def add_sample_visits():
+    """ Add sample data regarding visits by multiple users to the same restaurant, currently for 2 people. """
+
+    pass
 
 ##############################################################################
 # Helper functions
