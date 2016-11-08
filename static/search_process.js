@@ -1,4 +1,19 @@
 var map;
+var open_now = false;
+
+
+// toggles the form input for 
+$('#choose_when').change(showField);
+
+function showField(evt) {
+  var chooseWhen = $('#choose_when').val();
+  if (chooseWhen === "now") {
+    $('#time').attr("display", "none");
+    console.log("open_now = true");
+  } else if (chooseWhen === "later") {
+    $('#time').attr("display", "block");
+  }
+}
 
 function initMap() {
   var myLatLng = {lat: 37.7886679, lng: -122.4114987};
@@ -42,18 +57,31 @@ $(document).ready(function(evt) {
   $("#search").click(function(evt) {
     evt.preventDefault();
 
+    var price1 = [];
+    $.each($("input[name='price1']:checked"), function() {
+      price1.push($(this).val());
+    });
+    var price2 = [];
+    $.each($("input[name='price2']:checked"), function() {
+      price2.push($(this).val());
+    });
+
     // creates an object out of the form input values
     var formData = {
-      term1: $('#term1').val(),
-      st_address1: $('#st_address1').val(),
-      city1: $('#city1').val(),
-      state1: $('#state1').val(),
-      radius1: $('#radius1').val(),
-      term2: $('#term2').val(),
-      st_address2: $('#st_address2').val(),
-      city2: $('#city2').val(),
-      state2: $('#state2').val(),
-      radius2: $('#radius2').val()
+      'term1': $('#term1').val(),
+      'st_address1': $('#st_address1').val(),
+      'city1': $('#city1').val(),
+      'state1': $('#state1').val(),
+      'radius1': $('#radius1').val(),
+      'term2': $('#term2').val(),
+      'st_address2': $('#st_address2').val(),
+      'city2': $('#city2').val(),
+      'state2': $('#state2').val(),
+      'radius2': $('#radius2').val(),
+      'price1': price1.join(''),
+      'price2': price2.join(''),
+      'open_now': open_now,
+      'time': $('#time').val()
     };
 
     // showing that the page is responding
@@ -78,8 +106,6 @@ $(document).ready(function(evt) {
 
 function addToMap(responses) {
 
-  var marker, html;
-
   // adding person 1 and person 2's locations
   var marker_person1 = new google.maps.Marker({
       position: {lat: responses.person1[0], lng: responses.person1[1]},
@@ -94,12 +120,14 @@ function addToMap(responses) {
   // do a for loop for when I get more than 2 people meeting up
 
   // preparing bounds, and adding new markers as I go through the for loop
-  // var markers = [];
-  // var infoWindows = [];
   var bounds = new google.maps.LatLngBounds();
+  var infoWindow = new google.maps.InfoWindow({ width: 150 });
 
   // looping through each result (up to 20) in the yelp search and extracting lat and lng
+  var marker, html;
+
   for (var i = 0; i < responses['businesses'].length; i++) {
+
     var coords = [responses.businesses[i].coordinates.latitude, responses.businesses[i].coordinates.longitude];
     var latLng = {lat: coords[0], lng: coords[1]};
     marker = new google.maps.Marker({
@@ -107,9 +135,9 @@ function addToMap(responses) {
       label: (i + 1).toString(),
       map: map
     });
-    var infoWindow = new google.maps.InfoWindow({
-      content: html
-    });
+    // infoWindow = new google.maps.InfoWindow({
+    //   content: html
+    // });
 
     // define the content of the window
     html = (
@@ -131,8 +159,18 @@ function addToMap(responses) {
       infoWindow.open(map, marker);
     });
 
+    bindInfoWindow(marker, map, infoWindow, html);
+
     // include the new marker in the boundaries of the map
     bounds.extend(marker.getPosition());
+  }
+
+  function bindInfoWindow(marker, map, infoWindow, html) {
+      google.maps.event.addListener(marker, 'click', function () {
+          infoWindow.close();
+          infoWindow.setContent(html);
+          infoWindow.open(map, marker);
+      });
   }
 
   // map will shift to include all search results

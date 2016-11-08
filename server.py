@@ -3,6 +3,8 @@ import sys
 import googlemaps
 import requests
 import yelp
+import time
+import datetime
 
 from jinja2 import StrictUndefined
 
@@ -37,32 +39,52 @@ def index():
 @app.route('/search.json')
 def search_process():
 
+    # processing search parameters for person 1
     term1 = request.args.get("term1")
     st_address1 = request.args.get("st_address1")
     city1 = request.args.get("city1")
     state1 = request.args.get("state1")
     radius1 = request.args.get("radius1")
+    price1 = str(request.args.get("price1"))
+
+    # processing search parameters for person 2
     term2 = request.args.get("term2")
     st_address2 = request.args.get("st_address2")
     city2 = request.args.get("city2")
     state2 = request.args.get("state2")
     radius2 = request.args.get("radius2")
-    latitude, longitude = midpt_formula(combine_coordinates_for_midpt(geocoding(st_address1, city1, state1), geocoding(st_address2, city2, state2)))
+    price2 = str(request.args.get("price2"))
+
+    time = request.args.get("time")
+    sort_by = request.args.get("sort_by")
+    limit = request.args.get("limit")
+
+    import pdb; pdb.set_trace()
+
+    mid_lat, mid_lng = midpt_formula(combine_coordinates_for_midpt(geocoding(st_address1, city1, state1), geocoding(st_address2, city2, state2)))
 
     params_midpt = {'term': avoid_term_duplicates(term1, term2),
-                    'latitude': latitude,
-                    'longitude': longitude,
-                    'radius': mi_to_m(stricter_radius(radius1, radius2))}
+                    'latitude': mid_lat,
+                    'longitude': mid_lng,
+                    'radius': mi_to_m(stricter_radius(radius1, radius2)),
+                    'price': avoid_price_duplicates(price1, price2),
+                    'sort_by': sort_by,
+                    'limit': limit,
+                    'open_at': process_time(time)}
 
     params_user1 = {'term': term1,
                     'latitude': geocoding(st_address1, city1, state1)[0],
                     'longitude': geocoding(st_address1, city1, state1)[1],
-                    'radius': mi_to_m(radius1)}
+                    'radius': mi_to_m(radius1),
+                    'price': price1,
+                    }
 
     params_user2 = {'term': term2,
                     'latitude': geocoding(st_address2, city2, state2)[0],
                     'longitude': geocoding(st_address2, city2, state2)[1],
-                    'radius': mi_to_m(radius2)}
+                    'radius': mi_to_m(radius2),
+                    'price': price2,
+                    }
 
     url = 'https://api.yelp.com/v3/businesses/search'
     resp = requests.get(url=url, params=params_midpt, headers={'Authorization': 'Bearer ' + os.environ['YELP_KEY']})
@@ -70,10 +92,21 @@ def search_process():
 
     results['person1'] = geocoding(st_address1, city1, state1)
     results['person2'] = geocoding(st_address2, city2, state2)
-    results['midpt'] = [latitude, longitude]
+    results['midpt'] = [mid_lat, mid_lng]
     # do a for loop for when I get more than 2 people meeting up
 
     return jsonify(results)
+
+
+def process_time(d):
+    # unixtime = time.mktime(d.timetuple())
+    pass
+
+
+def avoid_price_duplicates(price1, price2):
+    # you have '12' and '123'
+    return ','.join(list(set(price1 + price2)))
+
 
 
 def avoid_term_duplicates(term1, term2):
