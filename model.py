@@ -129,12 +129,12 @@ def make_sample_user_data():
 def add_sample_restaurants():
     """ Add some real restaurants from Berkeley to the database. """
 
-    # f = open('sample_restaurants.json')
-    # data = json.load(f)
-    # restaurants = []
-    # for restaurant, i in data:
-    #     restaurants.append(Restaurant(id=i,yelp_id=))
-    #     f['businesses']
+    f = open('sample_restaurants.json')
+    data = json.load(f)
+    restaurants = []
+    for restaurant, i in data:
+        restaurants.append(Restaurant(id=i,yelp_id=))
+        f['businesses'][0]['id']
 
 
 def make_sample_user_visits():
