@@ -3,8 +3,6 @@ import sys
 import googlemaps
 import requests
 import yelp
-import time
-from datetime import datetime
 
 from jinja2 import StrictUndefined
 
@@ -14,6 +12,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 from model import *
 from midpt_formula import *
+from yelp_utils import *
 
 
 app = Flask(__name__)
@@ -63,8 +62,9 @@ def search_process():
 
     # uses the Google Maps API to geocode and functions written in midpt_formula.py
     # to find the midpoint of the two given addresses
-    mid_lat, mid_lng = midpt_formula(combine_coordinates_for_midpt(geocoding(st_address1, city1, state1),
-                                                                   geocoding(st_address2, city2, state2)))
+    p1_loc = geocoding(st_address1, city1, state1)
+    p2_loc = geocoding(st_address2, city2, state2)
+    mid_lat, mid_lng = midpt_formula(p1_loc, p2_loc)
 
     # the dictionary of search parameters to submit to the Yelp API
     params_midpt = {'term': avoid_term_duplicates(term1, term2),
@@ -105,35 +105,13 @@ def search_process():
     results = resp.json()
 
     # sends the locations of each person for creating markers on the map
-    results['person1'] = geocoding(st_address1, city1, state1)
-    results['person2'] = geocoding(st_address2, city2, state2)
+    results['person1'] = p1_loc
+    results['person2'] = p2_loc
     # do a for loop for when I get more than 2 people meeting up
 
-    # import pdb; pdb.set_trace()
+    import pdb; pdb.set_trace()
 
     return jsonify(results)
-
-
-def unix_time(time_str):
-    """ If the user specifies a time "later" on the form, converts the given time into
-    unix for Yelp API """
-    if time_str:
-        d = datetime.strptime(str(time_str), "%Y-%m-%dT%H:%M")
-        unix = time.mktime(d.timetuple())
-        return int(unix)
-
-
-# Cleaning up price and term values for the Yelp API search
-
-
-def avoid_price_duplicates(price1, price2):
-    return ','.join(list(set(price1 + price2)))
-
-
-def avoid_term_duplicates(term1, term2):
-    if term1.lower() == term2.lower():
-        return term1
-    return term1 + ", " + term2
 
 
 # Other pages

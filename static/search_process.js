@@ -53,7 +53,7 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
 }
 
 
-$(document).ready(function(evt) {
+$(document).ready(function() {
   $("#search").click(function(evt) {
     evt.preventDefault();
 
@@ -80,9 +80,15 @@ $(document).ready(function(evt) {
       'radius2': $('#radius2').val(),
       'price1': price1.join(''),
       'price2': price2.join(''),
-      'open_now': open_now,
-      'time': $('#time').val()
+      'sort_by': $("input[name='sort_by']").val(),
+      'limit': $("#limit").val()
     };
+
+    if (open_now) {
+      formData['open_now'] = true;
+    } else {
+      formData['time'] = $('#time').val();
+    }
 
     // showing that the page is responding
     $('#search-results').html("loading the best restaurants for you...");

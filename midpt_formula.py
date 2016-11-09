@@ -23,17 +23,12 @@ def stricter_radius(radius1, radius2):
 def geocoding(st_address, city, state):
     """Turns the given address into a list containing latitude and longitude."""
     geocoded_address = gmaps.geocode(", ".join([st_address, city, state]))
-    coords_list = geocoded_address[0]['geometry']['location'].values()
-    return coords_list
+    coords = geocoded_address[0]['geometry']['location'].values()
+    return coords
 
 
-def combine_coordinates_for_midpt(coords_list1, coords_list2):
-    """ Preps two coordinate pairs for the midpoint formula calculation. """
-    return coords_list1 + coords_list2
-
-
-def midpt_formula(coordinates):
+def midpt_formula(loc1, loc2):
     """Takes two coordinate pairs and returns a coordinate pair that is midway."""
-    xm = (coordinates[0] + coordinates[2])/2.0
-    ym = (coordinates[1] + coordinates[3])/2.0
+    xm = (loc1[0] + loc2[0])/2.0
+    ym = (loc1[1] + loc2[1])/2.0
     return [xm, ym]

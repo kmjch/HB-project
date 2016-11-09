@@ -132,8 +132,9 @@ def add_sample_restaurants():
     f = open('sample_restaurants.json')
     data = json.load(f)
     restaurants = []
-    for restaurant, i in enumerate(data['businesses']):
-        print restaurant, i
+    for restaurant in data['businesses']:
+        restaurants.append
+        # in progress
 
 
 def make_sample_user_visits():
