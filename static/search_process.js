@@ -1,5 +1,5 @@
-var map;
-var open_now;
+var map, open_now;
+var markers = [];
 
 
 // toggles the form input for 
@@ -45,6 +45,7 @@ function initMap() {
     handleLocationError(false, infoWindow, map.getCenter());
   }
 }
+
 function handleLocationError(browserHasGeolocation, infoWindow, pos) {
   infoWindow.setPosition(pos);
   infoWindow.setContent(browserHasGeolocation ?
@@ -80,7 +81,7 @@ $(document).ready(function() {
       'radius2': $('#radius2').val(),
       'price1': price1.join(''),
       'price2': price2.join(''),
-      'sort_by': $("input[name='sort_by']").val(),
+      'sort_by': $("#sort_by").val(),
       'limit': $("#limit").val()
     };
 
@@ -112,6 +113,15 @@ $(document).ready(function() {
 
 function addToMap(responses) {
 
+  // clears map with new search
+  function setMapOnAll(map) {
+    for (var i = 0; i < markers.length; i++) {
+      markers[i].setMap(map);
+    }
+  }
+
+  setMapOnAll(null);
+
   // adding person 1 and person 2's locations
   var marker_person1 = new google.maps.Marker({
       position: {lat: responses.person1[0], lng: responses.person1[1]},
@@ -123,6 +133,8 @@ function addToMap(responses) {
       label: "Person 2",
       map: map
   });
+  markers.push(marker_person1);
+  markers.push(marker_person2);
   // do a for loop for when I get more than 2 people meeting up
 
   // preparing bounds, and adding new markers as I go through the for loop
@@ -141,9 +153,7 @@ function addToMap(responses) {
       label: (i + 1).toString(),
       map: map
     });
-    // infoWindow = new google.maps.InfoWindow({
-    //   content: html
-    // });
+    markers.push(marker);
 
     // define the content of the window
     html = (

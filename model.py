@@ -2,7 +2,7 @@
 
 from flask_sqlalchemy import SQLAlchemy
 from random import randint
-import json
+import json, datetime
 
 # This is the connection to the PostgreSQL database; we're getting this through
 # the Flask-SQLAlchemy helper library. On this, we can find the `session`
@@ -133,26 +133,42 @@ def add_sample_restaurants():
     data = json.load(f)
     restaurants = []
     for restaurant in data['businesses']:
-        restaurants.append
-        # in progress
+        restaurants.append(Restaurant(yelp_id=restaurant['id'],
+                                      name=restaurant['name']))
+    db.session.add_all(restaurants)
+    db.session.commit()
+
+
+def add_sample_visits():
+    """ Add sample data regarding visits by multiple users to the same restaurant, currently for 2 people. """
+    visits = []
+    i = 0
+    while i < 600:
+        visits.append(Visit(rest_id=randint(1, 20), date=datetime.datetime.now()))
+        i += 1
+    db.session.add_all(visits)
+    db.session.commit()
 
 
 def make_sample_user_visits():
     """ Create some sample data about user visits. """
     visits = db.session.query(Visit.id).all()
+    new_user_visits = []
     for visit_id in visits:
-        while uv1.user_id == uv2.user_id:
-            uv1 = UserExp(visit_id=visit_id, user_id=randint(0, 1000), rating=randint(0, 5))
-            uv2 = UserExp(visit_id=visit_id, user_id=randint(0, 1000), rating=randint(0, 5))
+        uv1 = UserExp(visit_id=visit_id, user_id=randint(1, 1000), rating=randint(1, 5))
+        uv2 = UserExp(visit_id=visit_id, user_id=randint(1, 1000), rating=randint(1, 5))
+        if uv1.user_id != uv2.user_id:
             new_user_visits = [uv1, uv2]
-        db.session.add_all(new_user_visits)
-        db.session.commit()
+            db.session.add_all(new_user_visits)
+    db.session.commit()
 
 
-def add_sample_visits():
-    """ Add sample data regarding visits by multiple users to the same restaurant, currently for 2 people. """
+def seed_data():
+    make_sample_user_data()
+    add_sample_restaurants()
+    add_sample_visits()
+    make_sample_user_visits()
 
-    pass
 
 ##############################################################################
 # Helper functions

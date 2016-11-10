@@ -82,7 +82,7 @@ def search_process():
     # to go to the business now or at a future time
     if time:
         params_midpt['open_at'] = unix_time(time)
-    else:
+    elif open_now:
         params_midpt['open_now'] = open_now
 
     # params_user1 = {'term': term1,
