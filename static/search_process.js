@@ -99,12 +99,13 @@ $(document).ready(function() {
 
     // show search results based on formData
     $.get('/search.json', formData, function(responses) {
-      var businessArray = [];
+      var businessArray = ["<ol>"];
       for (var i = 0; i < responses['businesses'].length; i++) {
         businessArray.push(
-          (i + 1) + ". " + "<a href='" + responses.businesses[i].url + "'>" +
-          responses.businesses[i].name + "</a>");
+          (i + 1) + ". " + "<a href='" + responses.businesses[i].url + "' id='yelp_link" +
+          (i + 1) + "'>" + responses.businesses[i].name + "</a>");
       }
+      businessArray.push("</ol>");
       $('#search-results').html(businessArray.join("<br>"));
       addToMap(responses);
     });
