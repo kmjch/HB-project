@@ -109,7 +109,7 @@ def search_process():
     results['person2'] = p2_loc
     # do a for loop for when I get more than 2 people meeting up
 
-    import pdb; pdb.set_trace()
+    # import pdb; pdb.set_trace()
 
     return jsonify(results)
 

@@ -1,7 +1,6 @@
 var map, open_now;
 var markers = [];
 
-
 // toggles the form input for 
 $('#choose_when').change(showField);
 
@@ -99,18 +98,39 @@ $(document).ready(function() {
 
     // show search results based on formData
     $.get('/search.json', formData, function(responses) {
-      var businessArray = ["<ol>"];
+      var businessArray = ["<ol id='results_list'>"];
       for (var i = 0; i < responses['businesses'].length; i++) {
         businessArray.push(
-          (i + 1) + ". " + "<a href='" + responses.businesses[i].url + "' id='yelp_link" +
-          (i + 1) + "'>" + responses.businesses[i].name + "</a>");
+          "<li class='search-result'><a href='" + responses.businesses[i].url + "'>" +
+          responses.businesses[i].name + "</a></li>");
       }
       businessArray.push("</ol>");
-      $('#search-results').html(businessArray.join("<br>"));
+      $('#search-results').html(businessArray.join(""));
       addToMap(responses);
+      addHovers();
     });
+
+    
+
+    //
   });
 });
+
+function addHovers() {
+  console.log('addHover called!!');
+  $(".search-result").hover(function() {
+      $(this).append($("<span id='popup'> <button type='button' id='save_search1'>Save this location</button></span>"));
+      $('#save_search1').click(function (evt) {
+        $('#popup').append($("<form> <label>With who? <input type='text' id='with_who'></label> <label>When? <input type='date' id='when'></label> <button type='button' id='save'>Save</button></form>"));
+      });
+      }, function() {
+        $(this).find("span:last").remove();
+      }
+      
+    );
+
+    
+}
 
 function addToMap(responses) {
 
@@ -129,13 +149,15 @@ function addToMap(responses) {
       label: "Person 1",
       map: map
   });
+  markers.push(marker_person1);
+
   var marker_person2 = new google.maps.Marker({
       position: {lat: responses.person2[0], lng: responses.person2[1]},
       label: "Person 2",
       map: map
   });
-  markers.push(marker_person1);
   markers.push(marker_person2);
+
   // do a for loop for when I get more than 2 people meeting up
 
   // preparing bounds, and adding new markers as I go through the for loop
