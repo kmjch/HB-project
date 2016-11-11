@@ -109,10 +109,46 @@ def search_process():
     results['person2'] = p2_loc
     # do a for loop for when I get more than 2 people meeting up
 
-    # import pdb; pdb.set_trace()
+    import pdb; pdb.set_trace()
 
     return jsonify(results)
 
+
+@app.route('/add_visit.json')
+def add_visit():
+    """ Adds the visit to the database. """
+
+    # checks to see if user is logged in
+    username = session['username']
+    user = User.query.filter_by(username=username).first()
+
+    # finds the friend searched for on the database
+    friend = request.args.get("with_who")
+    friend_user = User.query.filter_by(username=friend).first()
+
+    when = request.args.get("when")
+    rating = request.args.get("rating")
+
+    # finds the restaurant's ID, adds the restaurant to the database if not in yet
+    restaurant = request.args.get("restaurant")
+    r_yelp_id = request.args.get("yelp_id")
+    if not Restaurant.query.filter_by(name=restaurant).all():
+        new_restaurant = Restaurant(yelp_id=r_yelp_id, name=restaurant)
+        db.session.add(new_restaurant)
+        db.session.commit()
+    rest_id = db.session.query(Restaurant.id).filter_by(yelp_id=r_yelp_id).first()
+
+    # Adding to the visits and uservisits tables
+    new_visit = Visit(rest_id=rest_id, date=when)
+    db.session.add(new_visit)
+    db.session.commit()
+    new_visit_id = db.session.query(Visit.id).filter_by(rest_id=rest_id,
+                                                        date=date).order_by(Visit.date.desc()).first()
+    new_visit_exp = UserExp(visit_id=new_visit_id, user_id=user.id, rating=rating)
+    f_new_visit_exp = UserExp(visit_id=new_visit_id, user_id=friend_user.id)
+    db.session.add(new_visit_exp)
+    db.session.add(f_new_visit_exp)
+    db.session.commit()
 
 # Other pages
 
@@ -140,7 +176,7 @@ def register_process():
     if check_email == [] and check_username == []:
 
         new_user = User(fname=fname, lname=lname, email=email, username=username,
-                        password=password)
+                            password=password)
 
         db.session.add(new_user)
         db.session.commit()

@@ -58,7 +58,6 @@ class UserExp(db.Model):
                         db.ForeignKey('users.id'),
                         nullable=False)
     rating = db.Column(db.Integer, nullable=True)
-    visited = db.Column(db.Boolean, nullable=False, default=False)
 
     # define relationship to users--there are many user_exp's to one user
     user = db.relationship("User", backref='user_exps')

@@ -96,41 +96,63 @@ $(document).ready(function() {
 
     // should I replace this with a for loop for variable # of people to meet up?
 
-    // show search results based on formData
+    // show search results based on formData, looping through to list names
     $.get('/search.json', formData, function(responses) {
       var businessArray = ["<ol id='results_list'>"];
       for (var i = 0; i < responses['businesses'].length; i++) {
         businessArray.push(
-          "<li class='search-result'><a href='" + responses.businesses[i].url + "'>" +
+          "<li class='result' id='search-result" + i + "' data-id='" + responses.businesses[i].id +
+          "'><a href='" + responses.businesses[i].url + "'>" +
           responses.businesses[i].name + "</a></li>");
       }
       businessArray.push("</ol>");
       $('#search-results').html(businessArray.join(""));
+
+      // add search results as markers onto the map
       addToMap(responses);
-      addHovers();
+      
+      // hover over the business listing to be able to save
+      $(".result").hover(function() {
+        // when you mouse over the link, a button to save the location appears
+        // would like "this" to refer to the li that this appears on because I want to use that index
+        var id = $(this).data('id');
+        $(this).append($("<span id='popup'> <button type='button' data-id='" + id + "' id='save_search_result'>Save this location</button></span>"));
+
+        // when you click the button to save location, a form appears to ask more
+        $('#save_search_result').click(function (evt) {
+          $('#popup').append($("<span><form> <label>With whom? <input type='text' id='with_who'></label> <label>When? <input type='date' id='when'></label> <label>Rating <input type='num' id='rating'></label> <button type='button' data-id='" + id + "' id='save_visit'>Save</button></form></span>"));
+
+          // when you click on save, sends an ajax request to save to the database
+          $('#save_visit').click(function (evt) {
+            var id = $(this).data('id');
+            var visitData = {
+              'friend': $('#with_who').val(),
+              'when': $('#when').val(),
+              'rating': $('#rating').val(),
+              'restaurant': id
+              'yelp_id': responses.businesses[i].yelp_id
+            };
+            // sending the object visitData to server.py
+            $.get('/save_visit.json', visitData, function () {
+              $('#popup').html("<span>Saved!</span>");
+            });
+          });
+        });
+        // when your mouse leaves the link
+        }, function() {
+          $(this).find("#popup").remove();
+        }
+      );
+
     });
-
-    
-
-    //
   });
 });
 
-function addHovers() {
-  console.log('addHover called!!');
-  $(".search-result").hover(function() {
-      $(this).append($("<span id='popup'> <button type='button' id='save_search1'>Save this location</button></span>"));
-      $('#save_search1').click(function (evt) {
-        $('#popup').append($("<form> <label>With who? <input type='text' id='with_who'></label> <label>When? <input type='date' id='when'></label> <button type='button' id='save'>Save</button></form>"));
-      });
-      }, function() {
-        $(this).find("span:last").remove();
-      }
-      
-    );
+// function addHovers() {
+
 
     
-}
+// }
 
 function addToMap(responses) {
 
