@@ -100,10 +100,12 @@ $(document).ready(function() {
     $.get('/search.json', formData, function(responses) {
       var businessArray = ["<ol id='results_list'>"];
       for (var i = 0; i < responses['businesses'].length; i++) {
+        var name = responses.businesses[i].name;
+        var url = responses.businesses[i].url;
+        var id = responses.businesses[i].id;
         businessArray.push(
-          "<li class='result' id='search-result" + i + "' data-id='" + responses.businesses[i] +
-          "'><a href='" + responses.businesses[i].url + "'>" +
-          responses.businesses[i].name + "</a></li>");
+          "<li class='result' id='search-result" + i + "' data-id='" + id +
+          "' data-name='" + name + "'><a href='" + url + "'>" + name + "</a></li>");
       }
       businessArray.push("</ol>");
       $('#search-results').html(businessArray.join(""));
@@ -115,23 +117,26 @@ $(document).ready(function() {
       $(".result").hover(function() {
         // when you mouse over the link, a button to save the location appears
         // would like "this" to refer to the li that this appears on because I want to use that index
-        var id = $(this).data('id').id;
-        $(this).append($("<span id='popup'> <button type='button' data-id='" + id + "' id='save_search_result'>Save this location</button></span>"));
+        var id = $(this).data('id');
+        var name = $(this).data('name');
+        $(this).append($("<span id='popup'> <button type='button' data-id='" + id + "' data-name='" + name + "' id='save_search_result'>Save this location</button></span>"));
 
         // when you click the button to save location, a form appears to ask more
         $('#save_search_result').click(function (evt) {
-          $('#popup').append($("<span><form> <label>With whom? <input type='text' id='with_who'></label> <label>When? <input type='date' id='when'></label> <label>Rating <input type='num' id='rating'></label> <button type='button' data-id='" + id + "' id='save_visit'>Save</button></form></span>"));
+          $('#popup').append($("<span><form> <label>With whom? <input type='text' id='with_who'></label> <label>When? <input type='date' id='when'></label> <label>Rating <input type='num' id='rating'></label> <button type='button' data-id='" + id + "' data-name='" + name + "' id='save_visit'>Save</button></form></span>"));
 
           // when you click on save, sends an ajax request to save to the database
           $('#save_visit').click(function (evt) {
             var id = $(this).data('id');
+            var name = $(this).data('name');
             var visitData = {
               'friend': $('#with_who').val(),
               'when': $('#when').val(),
               'rating': $('#rating').val(),
-              'restaurant': id.name,
-              'yelp_id': id.id
+              'restaurant': name,
+              'yelp_id': id
             };
+            console.log(visitData);
             // sending the object visitData to server.py
             $.get('/save_visit.json', visitData, function () {
               $('#popup').html("<span>Saved!</span>");
