@@ -101,7 +101,7 @@ $(document).ready(function() {
       var businessArray = ["<ol id='results_list'>"];
       for (var i = 0; i < responses['businesses'].length; i++) {
         businessArray.push(
-          "<li class='result' id='search-result" + i + "' data-id='" + responses.businesses[i].id +
+          "<li class='result' id='search-result" + i + "' data-id='" + responses.businesses[i] +
           "'><a href='" + responses.businesses[i].url + "'>" +
           responses.businesses[i].name + "</a></li>");
       }
@@ -115,7 +115,7 @@ $(document).ready(function() {
       $(".result").hover(function() {
         // when you mouse over the link, a button to save the location appears
         // would like "this" to refer to the li that this appears on because I want to use that index
-        var id = $(this).data('id');
+        var id = $(this).data('id').id;
         $(this).append($("<span id='popup'> <button type='button' data-id='" + id + "' id='save_search_result'>Save this location</button></span>"));
 
         // when you click the button to save location, a form appears to ask more
@@ -129,8 +129,8 @@ $(document).ready(function() {
               'friend': $('#with_who').val(),
               'when': $('#when').val(),
               'rating': $('#rating').val(),
-              'restaurant': id
-              'yelp_id': responses.businesses[i].yelp_id
+              'restaurant': id.name,
+              'yelp_id': id.id
             };
             // sending the object visitData to server.py
             $.get('/save_visit.json', visitData, function () {
