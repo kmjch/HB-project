@@ -119,18 +119,24 @@ $(document).ready(function() {
         // would like "this" to refer to the li that this appears on because I want to use that index
         var id = $(this).data('id');
         var name = $(this).data('name');
-        $(this).append($("<span id='popup'> <button type='button' data-id='" + id + "' data-name='" + name + "' id='save_search_result'>Save this location</button></span>"));
+        $(this).append($("<span id='popup'> <button type='button' data-id='" + id +
+          "' data-name='" + name + "' id='save_search_result'>Save this location" +
+          "</button></span>"));
 
         // when you click the button to save location, a form appears to ask more
         $('#save_search_result').click(function (evt) {
-          $('#popup').append($("<span><form> <label>With whom? <input type='text' id='with_who'></label> <label>When? <input type='date' id='when'></label> <label>Rating <input type='num' id='rating'></label> <button type='button' data-id='" + id + "' data-name='" + name + "' id='save_visit'>Save</button></form></span>"));
+          $('#popup').append($("<span><form> <label>With whom? <input type='text'" +
+            "id='with_whom' value='mjk'></label> <label>When? <input type='date' id='when'></label>" +
+            "<label>Rating <input type='num' id='rating' value='5'></label> <button type='button'" +
+            " data-id='" + id + "' data-name='" + name + "' id='save_visit'>Save" +
+            "</button></form></span>"));
 
           // when you click on save, sends an ajax request to save to the database
           $('#save_visit').click(function (evt) {
             var id = $(this).data('id');
             var name = $(this).data('name');
             var visitData = {
-              'friend': $('#with_who').val(),
+              'friend': $('#with_whom').val(),
               'when': $('#when').val(),
               'rating': $('#rating').val(),
               'restaurant': name,
@@ -138,8 +144,8 @@ $(document).ready(function() {
             };
             console.log(visitData);
             // sending the object visitData to server.py
-            $.get('/save_visit.json', visitData, function () {
-              $('#popup').html("<span>Saved!</span>");
+            $.get('/add_visit.json', visitData, function (results) {
+              $('#popup').html(results);
             });
           });
         });
@@ -196,7 +202,8 @@ function addToMap(responses) {
 
   for (var i = 0; i < responses['businesses'].length; i++) {
 
-    var coords = [responses.businesses[i].coordinates.latitude, responses.businesses[i].coordinates.longitude];
+    var coords = [responses.businesses[i].coordinates.latitude,
+                  responses.businesses[i].coordinates.longitude];
     var latLng = {lat: coords[0], lng: coords[1]};
     marker = new google.maps.Marker({
       position: latLng,
