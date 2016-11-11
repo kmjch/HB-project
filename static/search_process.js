@@ -126,8 +126,8 @@ $(document).ready(function() {
         // when you click the button to save location, a form appears to ask more
         $('#save_search_result').click(function (evt) {
           $('#popup').append($("<span><form> <label>With whom? <input type='text'" +
-            "id='with_whom' value='mjk'></label> <label>When? <input type='date' id='when'></label>" +
-            "<label>Rating <input type='num' id='rating' value='5'></label> <button type='button'" +
+            "id='with_whom'></label> <label>When? <input type='date' id='when'></label>" +
+            "<label>Rating <input type='num' id='rating'></label> <button type='button'" +
             " data-id='" + id + "' data-name='" + name + "' id='save_visit'>Save" +
             "</button></form></span>"));
 
@@ -151,7 +151,8 @@ $(document).ready(function() {
         });
         // when your mouse leaves the link
         }, function() {
-          $(this).find("#popup").remove();
+          $(this).find('#popup').remove();
+          $(this).find('span:last').remove();
         }
       );
 
