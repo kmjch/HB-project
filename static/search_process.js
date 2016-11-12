@@ -116,7 +116,6 @@ $(document).ready(function() {
       // hover over the business listing to be able to save
       $(".result").hover(function() {
         // when you mouse over the link, a button to save the location appears
-        // would like "this" to refer to the li that this appears on because I want to use that index
         var id = $(this).data('id');
         var name = $(this).data('name');
         $(this).append($("<span id='popup'> <button type='button' data-id='" + id +

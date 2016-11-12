@@ -11,11 +11,9 @@
 </head>
 <body>
     <div id="flash-msgs">
-        <ul>
-            {% for message in get_flashed_messages() %}
-                <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
+        {% for message in get_flashed_messages() %}
+            {{ message }}
+        {% endfor %}
     </div>
     <h1><a href="/">Eat Together</a></h1>
     
