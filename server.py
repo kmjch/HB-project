@@ -66,6 +66,8 @@ def search_process():
     p2_loc = geocoding(st_address2, city2, state2)
     mid_lat, mid_lng = midpt_formula(p1_loc, p2_loc)
 
+    # import pdb; pdb.set_trace()
+
     # the dictionary of search parameters to submit to the Yelp API
     params_midpt = {'term': avoid_term_duplicates(term1, term2),
                     'latitude': mid_lat,
@@ -118,8 +120,6 @@ def add_visit():
 
     # checks to see if user is logged in
 
-    # import pdb; pdb.set_trace()
-
     if session.get('username'):
         username = session['username']
         user = User.query.filter_by(username=username).first()
@@ -153,6 +153,7 @@ def add_visit():
         db.session.commit()
         return " Saved!"
 
+    # if not logged in, cannot save
     else:
         return "    [<a href='/login'>Login to save</a>]"
 

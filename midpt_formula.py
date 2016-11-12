@@ -11,10 +11,12 @@ gmaps = googlemaps.Client(key=os.environ['GMAPS_KEY'])
 
 
 def mi_to_m(radius):
+    """Converts miles to meters, rounded to the nearest whole number."""
     return int(float(radius) * 1609.34)
 
 
 def stricter_radius(radius1, radius2):
+    """Chooses the smaller radius given from either person."""
     if radius1 > radius2:
         return radius2
     return radius1
