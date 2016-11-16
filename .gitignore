@@ -4,3 +4,4 @@ env
 MOCK_DATA.json
 *.pyc
 .DS_Store
+htmlcov/
