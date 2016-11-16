@@ -66,7 +66,7 @@ def search_process():
     p2_loc = geocoding(st_address2, city2, state2)
     mid_lat, mid_lng = midpt_formula(p1_loc, p2_loc)
 
-    # import pdb; pdb.set_trace()
+    
 
     # the dictionary of search parameters to submit to the Yelp API
     params_midpt = {'term': avoid_term_duplicates(term1, term2),
@@ -87,31 +87,57 @@ def search_process():
     elif open_now:
         params_midpt['open_now'] = open_now
 
-    # params_user1 = {'term': term1,
-    #                 'latitude': geocoding(st_address1, city1, state1)[0],
-    #                 'longitude': geocoding(st_address1, city1, state1)[1],
-    #                 'radius': mi_to_m(radius1),
-    #                 'price': price1,
-    #                 }
+    params_user1 = {'term': term1,
+                    'latitude': geocoding(st_address1, city1, state1)[0],
+                    'longitude': geocoding(st_address1, city1, state1)[1],
+                    'radius': mi_to_m(radius1),
+                    }
 
-    # params_user2 = {'term': term2,
-    #                 'latitude': geocoding(st_address2, city2, state2)[0],
-    #                 'longitude': geocoding(st_address2, city2, state2)[1],
-    #                 'radius': mi_to_m(radius2),
-    #                 'price': price2,
-    #                 }
+    params_user2 = {'term': term2,
+                    'latitude': geocoding(st_address2, city2, state2)[0],
+                    'longitude': geocoding(st_address2, city2, state2)[1],
+                    'radius': mi_to_m(radius2),
+                    }
 
     # Yelp API request
     url = 'https://api.yelp.com/v3/businesses/search'
-    resp = requests.get(url=url, params=params_midpt, headers={'Authorization': 'Bearer ' + os.environ['YELP_KEY']})
-    results = resp.json()
+    resp1 = requests.get(url=url, params=params_user1, headers={'Authorization': 'Bearer ' + os.environ['YELP_KEY']})
+    results1 = resp1.json()
+    print "\n\n\n\nresults1: ", results1
+    resp2 = requests.get(url=url, params=params_user2, headers={'Authorization': 'Bearer ' + os.environ['YELP_KEY']})
+    results2 = resp2.json()
+    print "\n\n\n\nresults2: ", results2
 
-    # sends the locations of each person for creating markers on the map
-    results['person1'] = p1_loc
-    results['person2'] = p2_loc
-    # do a for loop for when I get more than 2 people meeting up
+    def get_id(business):
+        return business['id']
+    def get_common(results1, results2):
+        list1 = map(get_id, results1['businesses'])
+        list2 = map(get_id, results2['businesses'])
+        return set(list1) & set(list2)
 
-    return jsonify(results)
+    def get_common_restaurants(results1, results2):
+        new_list = []
+        for business in results1['businesses']:
+            if business['id'] in get_common(results1, results2):
+                new_list.append(business)
+        return new_list
+
+    new_dictionary = {}
+    new_dictionary['person1'] = p1_loc
+    new_dictionary['person2'] = p2_loc
+    new_dictionary['businesses'] = get_common_restaurants(results1, results2)
+
+    return jsonify(new_dictionary)
+
+    # import pdb; pdb.set_trace()
+
+
+    # # sends the locations of each person for creating markers on the map
+    # results1['person1'] = p1_loc
+
+    # # do a for loop for when I get more than 2 people meeting up
+
+    # return jsonify(results)
 
 
 @app.route('/add_visit.json')

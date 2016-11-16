@@ -103,6 +103,7 @@ $(document).ready(function() {
         var name = responses.businesses[i].name;
         var url = responses.businesses[i].url;
         var id = responses.businesses[i].id;
+        console.log(name);
         businessArray.push(
           "<li class='result' id='search-result" + i + "' data-id='" + id +
           "' data-name='" + name + "'><a href='" + url + "'>" + name + "</a></li>");

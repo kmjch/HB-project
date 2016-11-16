@@ -1,0 +1,730 @@
+var TestResponses = {
+  search: {
+    success: {
+      {
+        "businesses": [
+          {
+            "rating": 4.5,
+            "price": "$$",
+            "categories": [
+              {
+                "alias": "japanese",
+                "title": "Japanese"
+              },
+              {
+                "alias": "tapasmallplates",
+                "title": "Tapas\/Small Plates"
+              },
+              {
+                "alias": "tapas",
+                "title": "Tapas Bars"
+              }
+            ],
+            "phone": "+15108482758",
+            "id": "kiraku-berkeley",
+            "is_closed": false,
+            "distance": 347.4165621812,
+            "review_count": 626,
+            "name": "Kiraku",
+            "url": "https:\/\/www.yelp.com\/biz\/kiraku-berkeley?adjust_creative=iA8WqqDFclQ9iBGrnq8GMw&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=iA8WqqDFclQ9iBGrnq8GMw",
+            "coordinates": {
+              "latitude": 37.863683,
+              "longitude": -122.258976
+            },
+            "image_url": "https:\/\/s3-media1.fl.yelpcdn.com\/bphoto\/mnf1iVpCRpe5k3GDL0bwOw\/o.jpg",
+            "location": {
+              "city": "Berkeley",
+              "address1": "2566B Telegraph Ave",
+              "address2": "",
+              "address3": "",
+              "state": "CA",
+              "country": "US",
+              "zip_code": "94704"
+            }
+          },
+          {
+            "rating": 4.5,
+            "price": "$",
+            "categories": [
+              {
+                "alias": "burgers",
+                "title": "Burgers"
+              },
+              {
+                "alias": "tradamerican",
+                "title": "American (Traditional)"
+              }
+            ],
+            "phone": "+15106795171",
+            "id": "the-snack-shack-berkeley",
+            "is_closed": false,
+            "distance": 1062.5492897544,
+            "review_count": 67,
+            "name": "The Snack Shack",
+            "url": "https:\/\/www.yelp.com\/biz\/the-snack-shack-berkeley?adjust_creative=iA8WqqDFclQ9iBGrnq8GMw&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=iA8WqqDFclQ9iBGrnq8GMw",
+            "coordinates": {
+              "latitude": 37.875514737109,
+              "longitude": -122.25980840542
+            },
+            "image_url": "https:\/\/s3-media3.fl.yelpcdn.com\/bphoto\/pL_cI-igDhn8WnfPLq8skQ\/o.jpg",
+            "location": {
+              "city": "Berkeley",
+              "address1": "2505 Hearst Ave",
+              "address2": "",
+              "address3": "",
+              "state": "CA",
+              "country": "US",
+              "zip_code": "94709"
+            }
+          },
+          {
+            "rating": 4.5,
+            "price": "$$$",
+            "categories": [
+              {
+                "alias": "newamerican",
+                "title": "American (New)"
+              }
+            ],
+            "phone": "+15106546607",
+            "id": "wood-tavern-oakland",
+            "is_closed": false,
+            "distance": 1771.389755422,
+            "review_count": 1599,
+            "name": "Wood Tavern",
+            "url": "https:\/\/www.yelp.com\/biz\/wood-tavern-oakland?adjust_creative=iA8WqqDFclQ9iBGrnq8GMw&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=iA8WqqDFclQ9iBGrnq8GMw",
+            "coordinates": {
+              "latitude": 37.850677245435,
+              "longitude": -122.25261360521
+            },
+            "image_url": "https:\/\/s3-media4.fl.yelpcdn.com\/bphoto\/jcs_ip0K1PajEib84KDKBg\/o.jpg",
+            "location": {
+              "city": "Oakland",
+              "address1": "6317 College Ave",
+              "address2": "",
+              "address3": "",
+              "state": "CA",
+              "country": "US",
+              "zip_code": "94618"
+            }
+          },
+          {
+            "rating": 4,
+            "price": "$",
+            "categories": [
+              {
+                "alias": "asianfusion",
+                "title": "Asian Fusion"
+              },
+              {
+                "alias": "japanese",
+                "title": "Japanese"
+              },
+              {
+                "alias": "korean",
+                "title": "Korean"
+              }
+            ],
+            "phone": "+15109625652",
+            "id": "koja-kitchen-berkeley",
+            "is_closed": false,
+            "distance": 196.3729703654,
+            "review_count": 410,
+            "name": "KoJa Kitchen",
+            "url": "https:\/\/www.yelp.com\/biz\/koja-kitchen-berkeley?adjust_creative=iA8WqqDFclQ9iBGrnq8GMw&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=iA8WqqDFclQ9iBGrnq8GMw",
+            "coordinates": {
+              "latitude": 37.8670846,
+              "longitude": -122.2587409
+            },
+            "image_url": "https:\/\/s3-media2.fl.yelpcdn.com\/bphoto\/Pgrf6jL27nX-mWd8z7GE6w\/o.jpg",
+            "location": {
+              "city": "Berkeley",
+              "address1": "2395 Telegraph Ave",
+              "address2": "",
+              "address3": "",
+              "state": "CA",
+              "country": "US",
+              "zip_code": "94704"
+            }
+          },
+          {
+            "rating": 4,
+            "price": "$$",
+            "categories": [
+              {
+                "alias": "cajun",
+                "title": "Cajun\/Creole"
+              },
+              {
+                "alias": "southern",
+                "title": "Southern"
+              },
+              {
+                "alias": "seafood",
+                "title": "Seafood"
+              }
+            ],
+            "phone": "+15105486900",
+            "id": "angelines-louisiana-kitchen-berkeley",
+            "is_closed": false,
+            "distance": 972.161980033,
+            "review_count": 3342,
+            "name": "Angeline's Louisiana Kitchen",
+            "url": "https:\/\/www.yelp.com\/biz\/angelines-louisiana-kitchen-berkeley?adjust_creative=iA8WqqDFclQ9iBGrnq8GMw&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=iA8WqqDFclQ9iBGrnq8GMw",
+            "coordinates": {
+              "latitude": 37.868181243539,
+              "longitude": -122.26760476828
+            },
+            "image_url": "https:\/\/s3-media3.fl.yelpcdn.com\/bphoto\/7JmU5f54Ga5mGEdmLwKt2A\/o.jpg",
+            "location": {
+              "city": "Berkeley",
+              "address1": "2261 Shattuck Ave",
+              "address2": "",
+              "address3": "",
+              "state": "CA",
+              "country": "US",
+              "zip_code": "94704"
+            }
+          },
+          {
+            "rating": 4,
+            "price": "$$",
+            "categories": [
+              {
+                "alias": "asianfusion",
+                "title": "Asian Fusion"
+              },
+              {
+                "alias": "burmese",
+                "title": "Burmese"
+              },
+              {
+                "alias": "chinese",
+                "title": "Chinese"
+              }
+            ],
+            "phone": "+15106479744",
+            "id": "royal-rangoon-berkeley-2",
+            "is_closed": false,
+            "distance": 852.667438962,
+            "review_count": 448,
+            "name": "Royal Rangoon",
+            "url": "https:\/\/www.yelp.com\/biz\/royal-rangoon-berkeley-2?adjust_creative=iA8WqqDFclQ9iBGrnq8GMw&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=iA8WqqDFclQ9iBGrnq8GMw",
+            "coordinates": {
+              "latitude": 37.858954,
+              "longitude": -122.259683
+            },
+            "image_url": "https:\/\/s3-media2.fl.yelpcdn.com\/bphoto\/IhxqmmN09_lZf_7MmLUDBQ\/o.jpg",
+            "location": {
+              "city": "Berkeley",
+              "address1": "2826 Telegraph Ave",
+              "address2": null,
+              "address3": "",
+              "state": "CA",
+              "country": "US",
+              "zip_code": "94705"
+            }
+          },
+          {
+            "rating": 4,
+            "price": "$$",
+            "categories": [
+              {
+                "alias": "newamerican",
+                "title": "American (New)"
+              },
+              {
+                "alias": "breakfast_brunch",
+                "title": "Breakfast & Brunch"
+              }
+            ],
+            "phone": "+15108090400",
+            "id": "gather-berkeley",
+            "is_closed": false,
+            "distance": 895.2369603456,
+            "review_count": 1856,
+            "name": "Gather",
+            "url": "https:\/\/www.yelp.com\/biz\/gather-berkeley?adjust_creative=iA8WqqDFclQ9iBGrnq8GMw&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=iA8WqqDFclQ9iBGrnq8GMw",
+            "coordinates": {
+              "latitude": 37.869478102798,
+              "longitude": -122.26611424801
+            },
+            "image_url": "https:\/\/s3-media4.fl.yelpcdn.com\/bphoto\/JRrIPa7VH6puszI-PWqLYA\/o.jpg",
+            "location": {
+              "city": "Berkeley",
+              "address1": "2200 Oxford St",
+              "address2": "",
+              "address3": "",
+              "state": "CA",
+              "country": "US",
+              "zip_code": "94704"
+            }
+          },
+          {
+            "rating": 4,
+            "price": "$$",
+            "categories": [
+              {
+                "alias": "burgers",
+                "title": "Burgers"
+              },
+              {
+                "alias": "bars",
+                "title": "Bars"
+              },
+              {
+                "alias": "newamerican",
+                "title": "American (New)"
+              }
+            ],
+            "phone": "+15108098282",
+            "id": "eureka-berkeley-3",
+            "is_closed": false,
+            "distance": 1118.07126226,
+            "review_count": 1009,
+            "name": "Eureka!",
+            "url": "https:\/\/www.yelp.com\/biz\/eureka-berkeley-3?adjust_creative=iA8WqqDFclQ9iBGrnq8GMw&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=iA8WqqDFclQ9iBGrnq8GMw",
+            "coordinates": {
+              "latitude": 37.870236934134,
+              "longitude": -122.26846005768
+            },
+            "image_url": "https:\/\/s3-media3.fl.yelpcdn.com\/bphoto\/Wd6ZwWorA-U3cWEQAPziwg\/o.jpg",
+            "location": {
+              "city": "Berkeley",
+              "address1": "2068 Center St",
+              "address2": "",
+              "address3": "",
+              "state": "CA",
+              "country": "US",
+              "zip_code": "94704"
+            }
+          },
+          {
+            "rating": 4,
+            "price": "$$",
+            "categories": [
+              {
+                "alias": "japanese",
+                "title": "Japanese"
+              },
+              {
+                "alias": "asianfusion",
+                "title": "Asian Fusion"
+              },
+              {
+                "alias": "poke",
+                "title": "Poke"
+              }
+            ],
+            "phone": "+15106479494",
+            "id": "simply-bowl-berkeley",
+            "is_closed": false,
+            "distance": 1116.066909757,
+            "review_count": 392,
+            "name": "Simply Bowl",
+            "url": "https:\/\/www.yelp.com\/biz\/simply-bowl-berkeley?adjust_creative=iA8WqqDFclQ9iBGrnq8GMw&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=iA8WqqDFclQ9iBGrnq8GMw",
+            "coordinates": {
+              "latitude": 37.8720016,
+              "longitude": -122.2670135
+            },
+            "image_url": "https:\/\/s3-media2.fl.yelpcdn.com\/bphoto\/A22x5as3d7ZYld43UyeRmw\/o.jpg",
+            "location": {
+              "city": "Berkeley",
+              "address1": "2156 University Ave",
+              "address2": "",
+              "address3": "",
+              "state": "CA",
+              "country": "US",
+              "zip_code": "94704"
+            }
+          },
+          {
+            "rating": 4.5,
+            "price": "$$",
+            "categories": [
+              {
+                "alias": "sandwiches",
+                "title": "Sandwiches"
+              },
+              {
+                "alias": "newamerican",
+                "title": "American (New)"
+              }
+            ],
+            "phone": "+15106540100",
+            "id": "southie-oakland",
+            "is_closed": false,
+            "distance": 1776.230489208,
+            "review_count": 605,
+            "name": "Southie",
+            "url": "https:\/\/www.yelp.com\/biz\/southie-oakland?adjust_creative=iA8WqqDFclQ9iBGrnq8GMw&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=iA8WqqDFclQ9iBGrnq8GMw",
+            "coordinates": {
+              "latitude": 37.850638829385,
+              "longitude": -122.25257899673
+            },
+            "image_url": "https:\/\/s3-media3.fl.yelpcdn.com\/bphoto\/1hOLR6PrNShOFbSwpoF8fQ\/o.jpg",
+            "location": {
+              "city": "Oakland",
+              "address1": "6311 College Ave",
+              "address2": "",
+              "address3": "",
+              "state": "CA",
+              "country": "US",
+              "zip_code": "94618"
+            }
+          },
+          {
+            "rating": 4.5,
+            "price": "$",
+            "categories": [
+              {
+                "alias": "brazilian",
+                "title": "Brazilian"
+              }
+            ],
+            "phone": "+15108458011",
+            "id": "brazil-fresh-squeeze-cafe-berkeley",
+            "is_closed": false,
+            "distance": 1120.9897359764,
+            "review_count": 1120,
+            "name": "Brazil Fresh Squeeze Cafe",
+            "url": "https:\/\/www.yelp.com\/biz\/brazil-fresh-squeeze-cafe-berkeley?adjust_creative=iA8WqqDFclQ9iBGrnq8GMw&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=iA8WqqDFclQ9iBGrnq8GMw",
+            "coordinates": {
+              "latitude": 37.872552852207,
+              "longitude": -122.26674645696
+            },
+            "image_url": "https:\/\/s3-media3.fl.yelpcdn.com\/bphoto\/-iK-67o89UJM1gUKXbEUkQ\/o.jpg",
+            "location": {
+              "city": "Berkeley",
+              "address1": "2161 University Ave",
+              "address2": "",
+              "address3": "",
+              "state": "CA",
+              "country": "US",
+              "zip_code": "94704"
+            }
+          },
+          {
+            "rating": 4,
+            "price": "$",
+            "categories": [
+              {
+                "alias": "italian",
+                "title": "Italian"
+              }
+            ],
+            "phone": "+15105484860",
+            "id": "gypsys-trattoria-italiano-berkeley",
+            "is_closed": false,
+            "distance": 229.464364286,
+            "review_count": 1202,
+            "name": "Gypsy's Trattoria Italiano",
+            "url": "https:\/\/www.yelp.com\/biz\/gypsys-trattoria-italiano-berkeley?adjust_creative=iA8WqqDFclQ9iBGrnq8GMw&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=iA8WqqDFclQ9iBGrnq8GMw",
+            "coordinates": {
+              "latitude": 37.868045487626,
+              "longitude": -122.25808485862
+            },
+            "image_url": "https:\/\/s3-media4.fl.yelpcdn.com\/bphoto\/fF1Ey-oqhZyk3im6kg3eWA\/o.jpg",
+            "location": {
+              "city": "Berkeley",
+              "address1": "2519 Durant Ave",
+              "address2": "Ste A",
+              "address3": "",
+              "state": "CA",
+              "country": "US",
+              "zip_code": "94704"
+            }
+          },
+          {
+            "rating": 4,
+            "price": "$$",
+            "categories": [
+              {
+                "alias": "bars",
+                "title": "Bars"
+              },
+              {
+                "alias": "newamerican",
+                "title": "American (New)"
+              },
+              {
+                "alias": "breakfast_brunch",
+                "title": "Breakfast & Brunch"
+              }
+            ],
+            "phone": "+15105407900",
+            "id": "tigerlily-berkeley-berkeley",
+            "is_closed": false,
+            "distance": 1843.117878288,
+            "review_count": 298,
+            "name": "Tigerlily Berkeley",
+            "url": "https:\/\/www.yelp.com\/biz\/tigerlily-berkeley-berkeley?adjust_creative=iA8WqqDFclQ9iBGrnq8GMw&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=iA8WqqDFclQ9iBGrnq8GMw",
+            "coordinates": {
+              "latitude": 37.879740402845,
+              "longitude": -122.26899094044
+            },
+            "image_url": "https:\/\/s3-media3.fl.yelpcdn.com\/bphoto\/-E5196LgvCA2PSreUvDm8g\/o.jpg",
+            "location": {
+              "city": "Berkeley",
+              "address1": "1513 Shattuck Ave",
+              "address2": "",
+              "address3": "",
+              "state": "CA",
+              "country": "US",
+              "zip_code": "94709"
+            }
+          },
+          {
+            "rating": 4,
+            "price": "$",
+            "categories": [
+              {
+                "alias": "comfortfood",
+                "title": "Comfort Food"
+              },
+              {
+                "alias": "hotdogs",
+                "title": "Fast Food"
+              },
+              {
+                "alias": "poutineries",
+                "title": "Poutineries"
+              }
+            ],
+            "phone": "+15105407500",
+            "id": "smokes-poutinerie-berkeley",
+            "is_closed": false,
+            "distance": 206.1375764418,
+            "review_count": 556,
+            "name": "Smoke's Poutinerie",
+            "url": "https:\/\/www.yelp.com\/biz\/smokes-poutinerie-berkeley?adjust_creative=iA8WqqDFclQ9iBGrnq8GMw&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=iA8WqqDFclQ9iBGrnq8GMw",
+            "coordinates": {
+              "latitude": 37.867806761235,
+              "longitude": -122.25806995227
+            },
+            "image_url": "https:\/\/s3-media1.fl.yelpcdn.com\/bphoto\/aLTOuVOe3Lc-h6Wx67lm0Q\/o.jpg",
+            "location": {
+              "city": "Berkeley",
+              "address1": "2518 Durant Ave",
+              "address2": "Unit A",
+              "address3": "",
+              "state": "CA",
+              "country": "US",
+              "zip_code": "94704"
+            }
+          },
+          {
+            "rating": 4,
+            "price": "$",
+            "categories": [
+              {
+                "alias": "noodles",
+                "title": "Noodles"
+              }
+            ],
+            "phone": "+15108458677",
+            "id": "toss-noodle-bar-berkeley",
+            "is_closed": false,
+            "distance": 1006.1249924976,
+            "review_count": 593,
+            "name": "Toss Noodle Bar",
+            "url": "https:\/\/www.yelp.com\/biz\/toss-noodle-bar-berkeley?adjust_creative=iA8WqqDFclQ9iBGrnq8GMw&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=iA8WqqDFclQ9iBGrnq8GMw",
+            "coordinates": {
+              "latitude": 37.8681334,
+              "longitude": -122.2679719
+            },
+            "image_url": "https:\/\/s3-media3.fl.yelpcdn.com\/bphoto\/vzTHeY7C4nF25z-Wj408cQ\/o.jpg",
+            "location": {
+              "city": "Berkeley",
+              "address1": "2272 Shattuck Ave",
+              "address2": "",
+              "address3": "",
+              "state": "CA",
+              "country": "US",
+              "zip_code": "94704"
+            }
+          },
+          {
+            "rating": 4.5,
+            "price": "$",
+            "categories": [
+              {
+                "alias": "cafes",
+                "title": "Cafes"
+              },
+              {
+                "alias": "pizza",
+                "title": "Pizza"
+              },
+              {
+                "alias": "sandwiches",
+                "title": "Sandwiches"
+              }
+            ],
+            "phone": "+15107041332",
+            "id": "tivoli-caffe-berkeley",
+            "is_closed": false,
+            "distance": 296.5918025204,
+            "review_count": 187,
+            "name": "Tivoli Caffe",
+            "url": "https:\/\/www.yelp.com\/biz\/tivoli-caffe-berkeley?adjust_creative=iA8WqqDFclQ9iBGrnq8GMw&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=iA8WqqDFclQ9iBGrnq8GMw",
+            "coordinates": {
+              "latitude": 37.8687827,
+              "longitude": -122.2578922
+            },
+            "image_url": "https:\/\/s3-media1.fl.yelpcdn.com\/bphoto\/ceLo4armKCcNEkCwKaFK3g\/o.jpg",
+            "location": {
+              "city": "Berkeley",
+              "address1": "2554 Bancroft  Way",
+              "address2": "",
+              "address3": "",
+              "state": "CA",
+              "country": "US",
+              "zip_code": "94704"
+            }
+          },
+          {
+            "rating": 4,
+            "price": "$",
+            "categories": [
+              {
+                "alias": "burgers",
+                "title": "Burgers"
+              },
+              {
+                "alias": "salad",
+                "title": "Salad"
+              },
+              {
+                "alias": "sandwiches",
+                "title": "Sandwiches"
+              }
+            ],
+            "phone": "+15106444992",
+            "id": "the-station-berkeley",
+            "is_closed": false,
+            "distance": 1326.3487298196,
+            "review_count": 162,
+            "name": "The Station",
+            "url": "https:\/\/www.yelp.com\/biz\/the-station-berkeley?adjust_creative=iA8WqqDFclQ9iBGrnq8GMw&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=iA8WqqDFclQ9iBGrnq8GMw",
+            "coordinates": {
+              "latitude": 37.8588226,
+              "longitude": -122.2449543
+            },
+            "image_url": "https:\/\/s3-media1.fl.yelpcdn.com\/bphoto\/Z2ENAcSXOcTWxivgjgMhJw\/o.jpg",
+            "location": {
+              "city": "Berkeley",
+              "address1": "2984 Russell St",
+              "address2": "",
+              "address3": "",
+              "state": "CA",
+              "country": "US",
+              "zip_code": "94705"
+            }
+          },
+          {
+            "rating": 4,
+            "price": "$$",
+            "categories": [
+              {
+                "alias": "chinese",
+                "title": "Chinese"
+              }
+            ],
+            "phone": "+15108437996",
+            "id": "great-china-berkeley",
+            "is_closed": false,
+            "distance": 839.990024046,
+            "review_count": 1493,
+            "name": "Great China",
+            "url": "https:\/\/www.yelp.com\/biz\/great-china-berkeley?adjust_creative=iA8WqqDFclQ9iBGrnq8GMw&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=iA8WqqDFclQ9iBGrnq8GMw",
+            "coordinates": {
+              "latitude": 37.867681886579,
+              "longitude": -122.26615783488
+            },
+            "image_url": "https:\/\/s3-media3.fl.yelpcdn.com\/bphoto\/ui35tNZpWJsJQsmkakGajQ\/o.jpg",
+            "location": {
+              "city": "Berkeley",
+              "address1": "2190 Bancroft Way",
+              "address2": "",
+              "address3": "",
+              "state": "CA",
+              "country": "US",
+              "zip_code": "94704"
+            }
+          },
+          {
+            "rating": 4,
+            "price": "$",
+            "categories": [
+              {
+                "alias": "japanese",
+                "title": "Japanese"
+              }
+            ],
+            "phone": "+15105294885",
+            "id": "sushinista-berkeley",
+            "is_closed": false,
+            "distance": 1178.471723668,
+            "review_count": 58,
+            "name": "Sushinista",
+            "url": "https:\/\/www.yelp.com\/biz\/sushinista-berkeley?adjust_creative=iA8WqqDFclQ9iBGrnq8GMw&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=iA8WqqDFclQ9iBGrnq8GMw",
+            "coordinates": {
+              "latitude": 37.867762246718,
+              "longitude": -122.27005194873
+            },
+            "image_url": "https:\/\/s3-media4.fl.yelpcdn.com\/bphoto\/aC5yrSnQkdcofnFi_CT79g\/o.jpg",
+            "location": {
+              "city": "Berkeley",
+              "address1": "2235 Milvia St",
+              "address2": "",
+              "address3": "",
+              "state": "CA",
+              "country": "US",
+              "zip_code": "94704"
+            }
+          },
+          {
+            "rating": 4.5,
+            "price": "$",
+            "categories": [
+              {
+                "alias": "pizza",
+                "title": "Pizza"
+              },
+              {
+                "alias": "bakeries",
+                "title": "Bakeries"
+              }
+            ],
+            "phone": "+15105493183",
+            "id": "cheese-board-pizza-berkeley",
+            "is_closed": false,
+            "distance": 1891.747144134,
+            "review_count": 4464,
+            "name": "Cheese Board Pizza",
+            "url": "https:\/\/www.yelp.com\/biz\/cheese-board-pizza-berkeley?adjust_creative=iA8WqqDFclQ9iBGrnq8GMw&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=iA8WqqDFclQ9iBGrnq8GMw",
+            "coordinates": {
+              "latitude": 37.880019,
+              "longitude": -122.269444
+            },
+            "image_url": "https:\/\/s3-media4.fl.yelpcdn.com\/bphoto\/UPF6ZVXgyeR63oycPnAh_A\/o.jpg",
+            "location": {
+              "city": "Berkeley",
+              "address1": "1512 Shattuck Ave",
+              "address2": "",
+              "address3": "",
+              "state": "CA",
+              "country": "US",
+              "zip_code": "94709"
+            }
+          }
+        ],
+        "midpt": [
+          37.86626695,
+          -122.2567565
+        ]
+      }
+    }
+  }
+}
