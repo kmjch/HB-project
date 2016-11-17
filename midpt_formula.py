@@ -1,6 +1,7 @@
 import os
 import googlemaps
 
+
 """All the calculations needed for finding the midpoint between two given addresses.
 Needed if user chooses the midpoint way of finding search results, which is the only
 way so far."""
@@ -8,6 +9,7 @@ way so far."""
 # must run 'source secrets.sh' before running this file to make
 # sure the environmental var's are set
 gmaps = googlemaps.Client(key=os.environ['GMAPS_KEY'])
+gmaps_dist = googlemaps.Client(key=os.environ['GMAPS_DIST_KEY'])
 
 
 def mi_to_m(radius):
@@ -34,3 +36,12 @@ def midpt_formula(loc1, loc2):
     xm = (loc1[0] + loc2[0])/2.0
     ym = (loc1[1] + loc2[1])/2.0
     return [xm, ym]
+
+
+def calc_dist(loc1, loc2):
+    """Calculates the distance between two given coordinates."""
+    matrix = googlemaps.distance_matrix.distance_matrix(client=gmaps_dist, origins=loc2, destinations=loc1)
+    # import pdb; pdb.set_trace()
+    return matrix['rows'][0]['elements'][0]['distance']['value']
+
+# def rev_geocoding(coords):

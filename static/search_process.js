@@ -1,22 +1,83 @@
-var map, open_now;
+var map, openNow;
 var markers = [];
 
-// toggles the form input for 
-$('#choose_when').change(showField);
+function initMapAndAuto() {
+  initMap();
+  initAutocomplete();
+}
 
-function showField(evt) {
+// toggles the form input for midpoint or venn diagram
+$('#search-type').change(changeFormType);
+var chooseType = $('#search-type').val();
+function changeFormType(evt) {
+  chooseType = $('#search-type').val();
+  if (chooseType === "venn") {
+    $('.midpt-fields').css("display", "none");
+  } else if (chooseType === "midpt") {
+    $('.midpt-fields').css("display", "block");
+  }
+}
+
+// toggles the form input for searching time to meet up
+$('#choose_when').change(showTimeField);
+
+function showTimeField(evt) {
   var chooseWhen = $('#choose_when').val();
   if (chooseWhen === "now") {
     $('#time').css("display", "none");
-    open_now = true;
+    openNow = true;
   } else if (chooseWhen === "later") {
     $('#time').css("display", "block");
   }
 }
 
+var placeSearch, autocomplete;
+var componentForm = {
+  street_number: 'short_name',
+  route: 'long_name',
+  locality: 'long_name',
+  administrative_area_level_1: 'short_name',
+  country: 'long_name',
+  postal_code: 'short_name'
+};
+
+function initAutocomplete() {
+  // Create the autocomplete object, restricting the search to geographical
+  // location types.
+  console.log("initAutocomplete");
+  autocomplete = new google.maps.places.Autocomplete(
+      /** @type {!HTMLInputElement} */(document.getElementById('cheese')),
+      {types: ['geocode']});
+
+  // When the user selects an address from the dropdown, populate the address
+  // fields in the form.
+  autocomplete.addListener('place_changed', fillInAddress);
+}
+
+function fillInAddress() {
+  // Get the place details from the autocomplete object.
+  var place = autocomplete.getPlace();
+
+  for (var component in componentForm) {
+    document.getElementById(component).value = '';
+    document.getElementById(component).disabled = false;
+  }
+
+  // Get each component of the address from the place details
+  // and fill the corresponding field on the form.
+  for (var i = 0; i < place.address_components.length; i++) {
+    var addressType = place.address_components[i].types[0];
+    if (componentForm[addressType]) {
+      var val = place.address_components[i][componentForm[addressType]];
+      document.getElementById(addressType).value = val;
+      console.log('addressType', addressType);
+    }
+  }
+}
+
 function initMap() {
   var myLatLng = {lat: 37.7886679, lng: -122.4114987};
-
+  console.log("hihimap");
   map = new google.maps.Map(document.getElementById('map'), {
     zoom: 16,
     center: myLatLng
@@ -68,24 +129,30 @@ $(document).ready(function() {
 
     // creates an object out of the form input values
     var formData = {
+      'search-type': chooseType,
       'term1': $('#term1').val(),
       'st_address1': $('#st_address1').val(),
       'city1': $('#city1').val(),
       'state1': $('#state1').val(),
       'radius1': $('#radius1').val(),
-      'term2': $('#term2').val(),
       'st_address2': $('#st_address2').val(),
       'city2': $('#city2').val(),
       'state2': $('#state2').val(),
-      'radius2': $('#radius2').val(),
       'price1': price1.join(''),
       'price2': price2.join(''),
-      'sort_by': $("#sort_by").val(),
-      'limit': $("#limit").val()
+      'limit': $("#limit").val(),
     };
 
-    if (open_now) {
-      formData['open_now'] = true;
+    // Adding more parameters for midpoint calculation if chosen
+    if (chooseType === 'midpt') {
+      formData['radius2'] = $('#radius2').val();
+      formData['sort_by'] = $("#sort_by").val();
+      formData['term2'] = $('#term2').val();
+    }
+
+    // toggling between open now and open at
+    if (openNow) {
+      formData['openNow'] = true;
     } else {
       formData['time'] = $('#time').val();
     }
@@ -103,7 +170,6 @@ $(document).ready(function() {
         var name = responses.businesses[i].name;
         var url = responses.businesses[i].url;
         var id = responses.businesses[i].id;
-        console.log(name);
         businessArray.push(
           "<li class='result' id='search-result" + i + "' data-id='" + id +
           "' data-name='" + name + "'><a href='" + url + "'>" + name + "</a></li>");
@@ -140,9 +206,8 @@ $(document).ready(function() {
               'when': $('#when').val(),
               'rating': $('#rating').val(),
               'restaurant': name,
-              'yelp_id': id
+              'yelp_id': id,
             };
-            console.log(visitData);
             // sending the object visitData to server.py
             $.get('/add_visit.json', visitData, function (results) {
               $('#popup').html(results);
@@ -236,7 +301,9 @@ function addToMap(responses) {
     bindInfoWindow(marker, map, infoWindow, html);
 
     // include the new marker in the boundaries of the map
-    bounds.extend(marker.getPosition());
+    for (var j = 0; j < markers.length; j++) {
+      bounds.extend(markers[i].getPosition());
+    }
   }
 
   function bindInfoWindow(marker, map, infoWindow, html) {

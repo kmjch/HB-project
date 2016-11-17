@@ -38,106 +38,112 @@ def index():
 def search_process():
     """ Processes the request from AJAX to submit a search into the Yelp API. """
 
-    # processing search parameters for person 1
+    # processing search parameters common to each person
+    open_now = request.args.get("open_now")
+    time = request.args.get("time")
+    limit = request.args.get("limit")
+    search_type = request.args.get("search-type")
+
+    # person 1's search parameters
     term1 = request.args.get("term1")
     st_address1 = request.args.get("st_address1")
     city1 = request.args.get("city1")
     state1 = request.args.get("state1")
     radius1 = request.args.get("radius1")
     price1 = str(request.args.get("price1"))
-
-    # processing search parameters for person 2
-    term2 = request.args.get("term2")
+    # person 2's search parameters
     st_address2 = request.args.get("st_address2")
     city2 = request.args.get("city2")
     state2 = request.args.get("state2")
-    radius2 = request.args.get("radius2")
     price2 = str(request.args.get("price2"))
-
-    # processing search parameters common to each person
-    open_now = request.args.get("open_now")
-    time = request.args.get("time")
-    sort_by = request.args.get("sort_by")
-    limit = request.args.get("limit")
 
     # uses the Google Maps API to geocode and functions written in midpt_formula.py
     # to find the midpoint of the two given addresses
-    p1_loc = geocoding(st_address1, city1, state1)
-    p2_loc = geocoding(st_address2, city2, state2)
-    mid_lat, mid_lng = midpt_formula(p1_loc, p2_loc)
-
-    
-
-    # the dictionary of search parameters to submit to the Yelp API
-    params_midpt = {'term': avoid_term_duplicates(term1, term2),
-                    'latitude': mid_lat,
-                    'longitude': mid_lng,
-                    'radius': mi_to_m(stricter_radius(radius1, radius2)),
-                    'sort_by': sort_by,
-                    'limit': limit}
-
-    # adds the search parameter price if either user inputs a price
-    if price1 or price2:
-        params_midpt['price'] = avoid_price_duplicates(price1, price2)
-
-    # adds the business hours parameter if they specify whether they would want
-    # to go to the business now or at a future time
-    if time:
-        params_midpt['open_at'] = unix_time(time)
-    elif open_now:
-        params_midpt['open_now'] = open_now
-
-    params_user1 = {'term': term1,
-                    'latitude': geocoding(st_address1, city1, state1)[0],
-                    'longitude': geocoding(st_address1, city1, state1)[1],
-                    'radius': mi_to_m(radius1),
-                    }
-
-    params_user2 = {'term': term2,
-                    'latitude': geocoding(st_address2, city2, state2)[0],
-                    'longitude': geocoding(st_address2, city2, state2)[1],
-                    'radius': mi_to_m(radius2),
-                    }
+    loc1 = geocoding(st_address1, city1, state1)
+    loc2 = geocoding(st_address2, city2, state2)
+    mid_lat, mid_lng = midpt_formula(loc1, loc2)
 
     # Yelp API request
     url = 'https://api.yelp.com/v3/businesses/search'
-    resp1 = requests.get(url=url, params=params_user1, headers={'Authorization': 'Bearer ' + os.environ['YELP_KEY']})
-    results1 = resp1.json()
-    print "\n\n\n\nresults1: ", results1
-    resp2 = requests.get(url=url, params=params_user2, headers={'Authorization': 'Bearer ' + os.environ['YELP_KEY']})
-    results2 = resp2.json()
-    print "\n\n\n\nresults2: ", results2
-
-    def get_id(business):
-        return business['id']
-    def get_common(results1, results2):
-        list1 = map(get_id, results1['businesses'])
-        list2 = map(get_id, results2['businesses'])
-        return set(list1) & set(list2)
-
-    def get_common_restaurants(results1, results2):
-        new_list = []
-        for business in results1['businesses']:
-            if business['id'] in get_common(results1, results2):
-                new_list.append(business)
-        return new_list
-
-    new_dictionary = {}
-    new_dictionary['person1'] = p1_loc
-    new_dictionary['person2'] = p2_loc
-    new_dictionary['businesses'] = get_common_restaurants(results1, results2)
-
-    return jsonify(new_dictionary)
+    headers = {'Authorization': 'Bearer ' + os.environ['YELP_KEY']}
+    responses = {}
 
     # import pdb; pdb.set_trace()
 
+    if search_type == 'midpt':
+        term2 = request.args.get("term2")
+        radius2 = request.args.get("radius2")
+        sort_by = request.args.get("sort_by")
+        # sort only works for midpt because of the sets used in venn diagram calculations
 
-    # # sends the locations of each person for creating markers on the map
-    # results1['person1'] = p1_loc
+        params_midpt = {'term': avoid_term_duplicates(term1, term2),
+                        'latitude': mid_lat,
+                        'longitude': mid_lng,
+                        'radius': mi_to_m(stricter_radius(radius1, radius2)),
+                        'sort_by': sort_by,
+                        'limit': limit,
+                        }
 
-    # # do a for loop for when I get more than 2 people meeting up
+        if time:
+            params_midpt['open_at'] = unix_time(time)
+        elif open_now:
+            params_midpt['open_now'] = open_now
 
-    # return jsonify(results)
+        # results for Midpoint Formula calculation
+        resp_midpt = requests.get(url=url, params=params_midpt, headers=headers)
+        responses = resp_midpt.json()
+
+    elif search_type == 'venn':
+        # the dictionary of search parameters to submit to the Yelp API
+        params_user1 = {'term': term1,
+                        'latitude': loc1[0],
+                        'longitude': loc1[1],
+                        'radius': mi_to_m(radius1),
+                        }
+        # import pdb; pdb.set_trace()
+        distance = calc_dist(tuple(loc1), tuple(loc2))
+        print "\n\n\n\ndistance: ", distance
+        params_user2 = {'term': term1,
+                        'latitude': loc2[0],
+                        'longitude': loc2[1],
+                        'radius': distance,
+                        }
+
+        print "\n\n\nparams_user1: ", params_user1
+        print "\n\n\nparams_user2: ", params_user2
+
+        # adds the search parameter price if either user inputs a price
+        if price1 or price2:
+            params_midpt['price'] = avoid_price_duplicates(price1, price2)
+
+        # adds the business hours parameter if they specify whether they would want
+        # to go to the business now or at a future time
+        if time:
+            params_user1['open_at'] = unix_time(time)
+            params_user2['open_at'] = unix_time(time)
+        elif open_now:
+            params_user1['open_now'] = open_now
+            params_user2['open_now'] = open_now
+
+        # results for Venn Diagram calculation: two separate Yelp searches for both
+        resp1 = requests.get(url=url, params=params_user1, headers=headers)
+        results1 = resp1.json()
+        resp2 = requests.get(url=url, params=params_user2, headers=headers)
+        results2 = resp2.json()
+        print "\n\n\nresults1: ", results1
+        print "\n\n\nresults2: ", results2
+
+        # finding the results common to both and adding them to a dictionary
+        responses['businesses'] = get_common_restaurants(results1, results2)
+        print "\n\n\nresponses: ", responses
+
+    responses['person1'] = loc1
+    responses['person2'] = loc2
+    return jsonify(responses)
+
+    # sends the locations of each person for creating markers on the map
+
+    # do a for loop for when I get more than 2 people meeting up
 
 
 @app.route('/add_visit.json')

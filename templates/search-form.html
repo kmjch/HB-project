@@ -7,14 +7,60 @@
 <br><br>
 
 <form action="/" method="GET">
+    <label>Type of search:<br>
+        <small>
+            Midpoint formula: search from an area equidistant from Person 1 and 2.<br>
+            Venn Diagram 1: Person 2 walks over to Person 1's area, recommended for closer distances.<br>
+        </small>
+        <select name="search-type" id="search-type">
+        <option value="midpt"> Midpoint Formula</option>
+        <option value="venn"> Venn Diagram</option> 
+    </select><br><br>
     <b>For person 1:</b><br>
-    <label>Search term*: <input type="text" id="term1" name="term1" value="Chinese" required></label><br>
+    <label>Search term*: <input type="text" id="term1" name="term1" value="cafe" required></label><br>
     <label>Enter the address of where you are coming from:<br>
-        Street address: <input type="text" id="st_address1" name="st_address1" value="2540 college ave"></label><br>
-    <label>City: <input type="text" id="city1" name="city1" value="Berkeley"></label><br>
-    <label>State: <input type="text" id="state1" name="state1" value="CA"></label><br>
-    <label>Radius (in mi): <input type="number" id="radius1" name="radius1" value="1"></label><br>
+        Street address: <input type="text" id="st_address1" name="st_address1"></label><br>
+    <label>City: <input type="text" id="city1" name="city1"</label><br>
+    <label>State: <input type="text" id="state1" name="state1"></label><br>
+    <label>Radius (in mi): <input type="number" id="radius1" name="radius1" value=".3"></label><br>
     <!-- feature to implement later: provide option for meters -->
+
+    <div id="locationField">
+      <input id="cheese" placeholder="Enter your address"
+             onFocus="geolocate()" type="text">
+    </div>
+    <table id="address">
+      <tr>
+        <td class="label">Street address</td>
+        <td class="slimField"><input class="field" id="street_number"
+              disabled="true"></td>
+        <td class="wideField" colspan="2"><input class="field" id="route"
+              disabled="true"></td>
+      </tr>
+      <tr>
+        <td class="label">City</td>
+        <!-- Note: Selection of address components in this example is typical.
+             You may need to adjust it for the locations relevant to your app. See
+             https://developers.google.com/maps/documentation/javascript/examples/places-autocomplete-addressform
+        -->
+        <td class="wideField" colspan="3"><input class="field" id="locality"
+              disabled="true"></input></td>
+      </tr>
+      <tr>
+        <td class="label">State</td>
+        <td class="slimField"><input class="field"
+              id="administrative_area_level_1" disabled="true"></input></td>
+        <td class="label">Zip code</td>
+        <td class="wideField"><input class="field" id="postal_code"
+              disabled="true"></input></td>
+      </tr>
+      <tr>
+        <td class="label">Country</td>
+        <td class="wideField" colspan="3"><input class="field"
+              id="country" disabled="true"></input></td>
+      </tr>
+    </table>
+
     <label>Price: 
         <input type="checkbox" name="price1" id="p1_price_1" value="1"> $</label>
         <input type="checkbox" name="price1" id="p1_price_2" value="2"> $$</label> 
@@ -26,12 +72,12 @@
 
     <br><br><b>For person 2:</b><br>
 
-    <label>Search term: <input type="text" id="term2" name="term2" value=""></label><br>
+    <span class="midpt-fields"><label>Search term: <input type="text" id="term2" name="term2" value=""></label><br></span>
     <label>Enter the address of where you are coming from:<br>
-        Street address:<input type="text2" id="st_address2" name="st_address2" value="2310 telegraph ave"></label><br>
-    <label>City: <input type="text" id="city2" name="city2" value="Berkeley"></label><br>
+        Street address:<input type="text2" id="st_address2" name="st_address2" value="embarcadero bart"></label><br>
+    <label>City: <input type="text" id="city2" name="city2" value="sf"></label><br>
     <label>State: <input type="text" id="state2" name="state2" value="CA"></label><br>
-    <label>Radius (in mi): <input type="number" id="radius2" name="radius2" value="2"></label><br>
+    <span class="midpt-fields"><label>Radius (in mi): <input type="number" id="radius2" name="radius2" value="2"></label><br></span>
     <label>Price: 
         <input type="checkbox" name="price2" id="p2_price_1" value="1"> $</label>
         <input type="checkbox" name="price2" id="p2_price_2" value="2"> $$</label> 
@@ -41,19 +87,19 @@
     </label>
 
     <br><br>
-    <label>Sort results by: <select name="sort_by" id="sort_by">
+    <span class="midpt-fields"><label>Sort results by: <select name="sort_by" id="sort_by">
         <option value="best_match"> Best Match</option>
         <option value="rating"> Rating</option> 
         <option value="review_count"> Review Count</option> 
         <option value="distance"> Distance</option> 
-    </select></label><br>
+    </select></label><br></span>
     <label>When do you want to meet?
         <select name="choose_when" id="choose_when">
         <option value="now"> Now</option>
         <option value="later"> Later</option> 
     </select><br>
         <input type="datetime-local" id="time" name="time"></label><br>
-    <label>Limit number of search results to max: <input type="number" id="limit" name="limit" value="20"></label>
+    <label>Limit number of search results to max: <input type="number" id="limit" name="limit" value="20"></label><br>
 
     <br><br>
     <input type="hidden" name="submitting-search-form" value="hi">
@@ -63,8 +109,7 @@
 <div id="search-results"></div>
 
 <br><div id="map"></div>
-<script src="https://maps.googleapis.com/maps/api/js?key={{ GMAPS_JS_KEY }}&callback=initMap"
-async defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key={{ GMAPS_JS_KEY }}&callback=initMapAndAuto&libraries=places" async defer></script>
 <script src="static/search_process.js"></script>
 
 
