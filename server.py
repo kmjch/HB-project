@@ -63,11 +63,6 @@ def search_process():
     loc2 = geocoding(st_address2, city2, state2)
     mid_lat, mid_lng = midpt_formula(loc1, loc2)
 
-    # Yelp API request
-    url = 'https://api.yelp.com/v3/businesses/search'
-    headers = {'Authorization': 'Bearer ' + os.environ['YELP_KEY']}
-    responses = {}
-
     # import pdb; pdb.set_trace()
 
     if search_type == 'midpt':
@@ -89,9 +84,8 @@ def search_process():
         elif open_now:
             params_midpt['open_now'] = open_now
 
-        # results for Midpoint Formula calculation
-        resp_midpt = requests.get(url=url, params=params_midpt, headers=headers)
-        responses = resp_midpt.json()
+        # results for Midpoint Formula calculation Yelp search
+        responses = search_yelp(params_midpt)
 
     elif search_type == 'venn':
         # the dictionary of search parameters to submit to the Yelp API
@@ -126,14 +120,11 @@ def search_process():
             params_user2['open_now'] = open_now
 
         # results for Venn Diagram calculation: two separate Yelp searches for both
-        resp1 = requests.get(url=url, params=params_user1, headers=headers)
-        results1 = resp1.json()
-        resp2 = requests.get(url=url, params=params_user2, headers=headers)
-        results2 = resp2.json()
-        print "\n\n\nresults1: ", results1
-        print "\n\n\nresults2: ", results2
+        results1 = search_yelp(params_user1)
+        results2 = search_yelp(params_user2)
 
         # finding the results common to both and adding them to a dictionary
+        responses = {}
         responses['businesses'] = get_common_restaurants(results1, results2)
         print "\n\n\nresponses: ", responses
 
@@ -146,7 +137,17 @@ def search_process():
     # do a for loop for when I get more than 2 people meeting up
 
 
+def search_yelp(params):
+    """Make a get request to Yelp API with given parameters from user's form inputs."""
+    url = 'https://api.yelp.com/v3/businesses/search'
+    headers = {'Authorization': 'Bearer ' + os.environ['YELP_KEY']}
+    resp = requests.get(url=url, params=params, headers=headers)
+    responses = resp.json()
+    return responses
+
+
 @app.route('/add_visit.json')
+# change to post
 def add_visit():
     """ Adds the visit to the database. """
 
