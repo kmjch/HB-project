@@ -35,8 +35,8 @@ function adder(x, y) {
 }
 var loc1, loc2;
 function autocompleteBox() {
-  var input1 = document.getElementById('st_address1');
-  var input2 = document.getElementById('st_address2');
+  var input1 = document.getElementById('loc1');
+  var input2 = document.getElementById('loc2');
   var searchBox1 = new google.maps.places.SearchBox(input1);
   var searchBox2 = new google.maps.places.SearchBox(input2);
 
@@ -125,13 +125,7 @@ $(document).ready(function() {
       'lng1': loc1.geometry.location.lng(),
       'lat2': loc2.geometry.location.lat(),
       'lng2': loc2.geometry.location.lng(),
-      'st_address1': $('#st_address1').val(),
-      'city1': $('#city1').val(),
-      'state1': $('#state1').val(),
       'radius1': $('#radius1').val(),
-      'st_address2': $('#st_address2').val(),
-      'city2': $('#city2').val(),
-      'state2': $('#state2').val(),
       'price1': price1.join(''),
       'price2': price2.join(''),
       'limit': $("#limit").val(),

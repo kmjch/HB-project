@@ -10,10 +10,6 @@ class MidptTest(unittest.TestCase):
 
     def test_stricter_radius(self):
         self.assertEqual(stricter_radius(3, 2), 2)
-        # which form is better? it seems like this is better because it uses self
-
-    def test_geocoding(self):
-        self.assertEqual(geocoding("683 Sutter St", "San Francisco", "CA"), [37.7886679, -122.4114987])
 
     def test_midpt_formula(self):
         self.assertEqual(midpt_formula([37.86408, -122.254124],

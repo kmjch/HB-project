@@ -48,16 +48,11 @@ def search_process():
     term1 = request.args.get("term1")
     lat1 = float(request.args.get("lat1"))
     lng1 = float(request.args.get("lng1"))
-    # city1 = request.args.get("city1")
-    # state1 = request.args.get("state1")
     radius1 = request.args.get("radius1")
     price1 = str(request.args.get("price1"))
     # person 2's search parameters
     lat2 = float(request.args.get("lat2"))
     lng2 = float(request.args.get("lng2"))
-    # st_address2 = request.args.get("st_address2")
-    # city2 = request.args.get("city2")
-    # state2 = request.args.get("state2")
     price2 = str(request.args.get("price2"))
 
     # uses the Google Maps API to geocode and functions written in midpt_formula.py
