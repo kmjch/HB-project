@@ -46,21 +46,26 @@ def search_process():
 
     # person 1's search parameters
     term1 = request.args.get("term1")
-    st_address1 = request.args.get("st_address1")
-    city1 = request.args.get("city1")
-    state1 = request.args.get("state1")
+    lat1 = float(request.args.get("lat1"))
+    lng1 = float(request.args.get("lng1"))
+    # city1 = request.args.get("city1")
+    # state1 = request.args.get("state1")
     radius1 = request.args.get("radius1")
     price1 = str(request.args.get("price1"))
     # person 2's search parameters
-    st_address2 = request.args.get("st_address2")
-    city2 = request.args.get("city2")
-    state2 = request.args.get("state2")
+    lat2 = float(request.args.get("lat2"))
+    lng2 = float(request.args.get("lng2"))
+    # st_address2 = request.args.get("st_address2")
+    # city2 = request.args.get("city2")
+    # state2 = request.args.get("state2")
     price2 = str(request.args.get("price2"))
 
     # uses the Google Maps API to geocode and functions written in midpt_formula.py
     # to find the midpoint of the two given addresses
-    loc1 = geocoding(st_address1, city1, state1)
-    loc2 = geocoding(st_address2, city2, state2)
+    # loc1 = geocoding(st_address1, city1, state1)
+    # loc2 = geocoding(st_address2, city2, state2)
+    loc1 = [lat1, lng1]
+    loc2 = [lat2, lng2]
     mid_lat, mid_lng = midpt_formula(loc1, loc2)
 
     # import pdb; pdb.set_trace()

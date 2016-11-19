@@ -33,6 +33,34 @@ function showTimeField(evt) {
 function adder(x, y) {
     return x + y;
 }
+var loc1, loc2;
+function autocompleteBox() {
+  var input1 = document.getElementById('st_address1');
+  var input2 = document.getElementById('st_address2');
+  var searchBox1 = new google.maps.places.SearchBox(input1);
+  var searchBox2 = new google.maps.places.SearchBox(input2);
+
+  searchBox1.addListener('places_changed', function() {
+    loc1 = searchBox1.getPlaces()[0];
+    console.log(loc1);
+    if (loc1.length === 0) {
+      // no results
+      return;
+    }
+  });
+  searchBox2.addListener('places_changed', function() {
+    loc2 = searchBox2.getPlaces()[0];
+    console.log(loc2);
+    if (loc2.length === 0) {
+      // no results
+      return;
+    }
+  });
+
+  // searchBox1.addListener('places_changed', getCoordinates(searchBox1));
+  // searchBox2.addListener('places_changed', getCoordinates(searchBox2));
+
+}
 
 function initMap() {
   var myLatLng = {lat: 37.7886679, lng: -122.4114987};
@@ -40,6 +68,8 @@ function initMap() {
     zoom: 16,
     center: myLatLng
   });
+  autocompleteBox();
+
 
   var infoWindow;
 
@@ -91,6 +121,10 @@ $(document).ready(function() {
     var formData = {
       'search-type': chooseType,
       'term1': $('#term1').val(),
+      'lat1': loc1.geometry.location.lat(),
+      'lng1': loc1.geometry.location.lng(),
+      'lat2': loc2.geometry.location.lat(),
+      'lng2': loc2.geometry.location.lng(),
       'st_address1': $('#st_address1').val(),
       'city1': $('#city1').val(),
       'state1': $('#state1').val(),

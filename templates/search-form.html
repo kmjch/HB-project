@@ -4,6 +4,8 @@
 
 {% block content %}
 
+{% raw %}
+
 <br><br>
 
 <form action="/" method="GET">
@@ -73,6 +75,7 @@
 <div id="search-results"></div>
 
 <br><div id="map"></div>
+{% endraw %}
 <script src="https://maps.googleapis.com/maps/api/js?key={{ GMAPS_JS_KEY }}&libraries=places&callback=initMap" async defer></script>
 <script src="static/search_process.js"></script>
 
