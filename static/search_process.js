@@ -17,16 +17,17 @@ function changeFormType(evt) {
 $('#choose_when').change(showTimeField);
 
 function showTimeField(evt) {
-  console.log(evt);
+  // console.log(evt);
 
-  var chooseWhen = evt.target.value;
+  // var chooseWhen = evt.target.value;
+  var chooseWhen = $('#choose_when').val();
   if (chooseWhen === "now") {
     $('#time').css("display", "none");
     openNow = true;
-    console.log(openNow);
+    // console.log(openNow);
   } else if (chooseWhen === "later") {
     $('#time').css("display", "block");
-    console.log($('#time').val());
+    // console.log($('#time').val());
   }
 }
 
@@ -229,6 +230,7 @@ function addToMap(responses) {
   }
 
   setMapOnAll(null);
+  markers = [];
 
   // adding person 1 and person 2's locations
   var marker_person1 = new google.maps.Marker({
@@ -278,6 +280,7 @@ function addToMap(responses) {
                 responses.businesses[i].location.zip_code + '</p>' +
                 '<p>Price level: ' + responses.businesses[i].price + '</p>' +  // Price Level: $
                 '<p>Rating: ' + responses.businesses[i].rating + '</p>' +      // Rating: 3.5
+                '<p>Review Count: ' + responses.businesses[i].review_count + '</p>' +      // Review Count
                 '<p><a href="' + responses.businesses[i].url + '">See ' +      // See Famous Bao on Yelp
                 responses.businesses[i].name + ' on Yelp</a></p>' +
             '</div>');

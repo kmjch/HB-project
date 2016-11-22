@@ -14,4 +14,11 @@
 
   <br><a href="/add-user-details">Update your phone number and addresses!</a>
 
+  <h3>Most highly rated restaurants</h3>
+  <!-- {{ user_visits }} -->
+  {% for visit in user_visits %}
+    visit id: {{ visit.id }}, restaurant: {{ restaurants[0] }}, rating: {{ visit.rating }}<br>
+  {% endfor %}
+  
+
 {% endblock %}

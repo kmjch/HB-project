@@ -57,7 +57,7 @@ class UserExp(db.Model):
     user_id = db.Column(db.Integer,
                         db.ForeignKey('users.id'),
                         nullable=False)
-    rating = db.Column(db.Integer, nullable=True)
+    rating = db.Column(db.Numeric, nullable=True)
 
     # define relationship to users--there are many user_exp's to one user
     user = db.relationship("User", backref='user_exps')
@@ -155,8 +155,8 @@ def make_sample_user_visits():
     visits = db.session.query(Visit.id).all()
     new_user_visits = []
     for visit_id in visits:
-        uv1 = UserExp(visit_id=visit_id, user_id=randint(1, 1000), rating=randint(1, 5))
-        uv2 = UserExp(visit_id=visit_id, user_id=randint(1, 1000), rating=randint(1, 5))
+        uv1 = UserExp(visit_id=visit_id, user_id=randint(1, 351), rating=randint(1, 5))
+        uv2 = UserExp(visit_id=visit_id, user_id=randint(1, 351), rating=randint(1, 5))
         if uv1.user_id != uv2.user_id:
             new_user_visits = [uv1, uv2]
             db.session.add_all(new_user_visits)
