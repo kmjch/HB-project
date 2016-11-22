@@ -16,8 +16,8 @@
 
   <h3>Most highly rated restaurants</h3>
   <!-- {{ user_visits }} -->
-  {% for visit in user_visits %}
-    visit id: {{ visit.id }}, restaurant: {{ restaurants[0] }}, rating: {{ visit.rating }}<br>
+  {% for rating, i in loop %}
+    {{ i + 1 }}. {{ dict_visits_ratings[rating] }}, rating: {{ rating }}<br>
   {% endfor %}
   
 

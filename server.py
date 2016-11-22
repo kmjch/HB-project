@@ -291,19 +291,34 @@ def user_detail(username):
 
     user = User.query.filter_by(username=username).one()
     user_visits = UserExp.query.filter_by(user_id=user.id).all()
+    # from user id, get list of userexperiences
+    # get list of visits so that I can grab the list of restaurant names
+
     list_of_visits = []
-    list_of_restaurants = []
+    list_of_ratings = []
+    dict_visits_ratings = {}
     for user_visit in user_visits:
-        list_of_visits.append(Visit.query.filter_by(id=user_visit.visit_id).one())
-    for restaurant in list_of_visits:
-        list_of_restaurants.append(Restaurant.query.filter_by(id=restaurant.rest_id).one())
+        list_of_visits.append(Visit.query.filter_by(id=user_visit.visit_id).one().rest_id)
+        list_of_ratings.append(UserExp.query.filter_by(visit_id=user_visit.visit_id, user_id=user.id).one().rating)
+
+    list_of_rest_names = []
+    for res_id in list_of_visits:
+        list_of_rest_names.append(Restaurant.query.filter_by(id=res_id).one().name)
+
+    for i in range(len(list_of_visits)):
+        dict_visits_ratings[list_of_ratings[i]] = list_of_rest_names[i]
+
+    sorted_ratings = sorted(list_of_ratings, reverse=True)
+    rest_zip = zip(sorted_ratings, range(len(list_of_visits)))
 
     session['username'] = user.username
 
     return render_template("user.html",
                            user=user,
-                           user_visits=user_visits,
-                           restaurants=list_of_restaurants)
+                           user_visits=list_of_visits,
+                           dict_visits_ratings=dict_visits_ratings,
+                           sorted_ratings=sorted_ratings,
+                           loop=rest_zip)
 
 
 @app.route('/add-user-details')
