@@ -15,10 +15,11 @@
   <br><a href="/add-user-details">Update your phone number and addresses!</a>
 
   <h3>Most highly rated restaurants</h3>
-  <!-- {{ user_visits }} -->
   {% for rating, i in loop %}
     {{ i + 1 }}. {{ dict_visits_ratings[rating] }}, rating: {{ rating }}<br>
   {% endfor %}
+
+  <h3>Recommended for you</h3>
   
 
 {% endblock %}

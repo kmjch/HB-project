@@ -46,7 +46,7 @@ class User(db.Model):
 
 
 class UserExp(db.Model):
-    """ records more information about a visit from a user's perspective. """
+    """ Records more information about a visit from a user's perspective. """
 
     __tablename__ = "uservisits"
 
@@ -72,7 +72,7 @@ class UserExp(db.Model):
 
 
 class Visit(db.Model):
-    """ records when users visit and where. """
+    """ Stores information regarding users' visit to businesses. Links Users, UserExps, and Restaurants. """
 
     __tablename__ = "visits"
 
@@ -92,18 +92,37 @@ class Visit(db.Model):
 
 
 class Restaurant(db.Model):
-    """ """
+    """ Stores information about restaurants. """
 
     __tablename__ = "restaurants"
 
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     yelp_id = db.Column(db.String(64), nullable=False)
     name = db.Column(db.String(64), nullable=False)
+    rating = db.Column(db.Numeric, nullable=True)
+    price = db.Column(db.Integer, nullable=True)  # eg. convert $$ to 2
+    review_count = db.Column(db.Integer, nullable=True)
 
     def __repr__(self):
         """Provide helpful representation when printed."""
 
         return "<Restaurant id=%d name=%s>" % (self.id, self.name)
+
+
+class RestCategory(db.Model):
+    """Stores categories of restaurants from Yelp. """
+
+    __tablename__ = "categories"
+
+    id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    rest_id = db.Column(db.Integer,
+                        db.ForeignKey('restaurants.id'),
+                        nullable=False)
+    categ1 = db.Column(db.String(64), nullable=True)
+    categ2 = db.Column(db.String(64), nullable=True)
+    categ3 = db.Column(db.String(64), nullable=True)
+    rest = db.relationship("Restaurant", backref='categories')
+
 
 
 ##############################################################################
@@ -115,7 +134,8 @@ def make_sample_user_data():
     f = open('MOCK_DATA.json')
     data = json.load(f)
 
-    users_exdata = [User(fname='Michelle', lname='Kim', email='hi@mail.com', username='firstone', password='hihi')]
+    users_exdata = [User(fname='Michelle', lname='Kim', email='hi@mail.com', username='firstone', password='hihi'),
+                    User(fname='Helen', lname='Friend', email='helen@mail.com', username='helen', password='hi')]
     for user in data:
         users_exdata.append(User(fname=user['fname'],
                                  lname=user['lname'],
@@ -126,22 +146,33 @@ def make_sample_user_data():
     db.session.commit()
 
 
+def process_price(string):
+    price_conv = {'$': 1, '$$': 2, '$$$': 3, '$$$$': 4, '$$$$$': 5}
+    return price_conv[string]
+
+
 def add_sample_restaurants():
     """ Add some real restaurants from Berkeley to the database. """
 
     f = open('sample_restaurants.json')
     data = json.load(f)
     restaurants = []
-    for restaurant in data['businesses']:
-        restaurants.append(Restaurant(yelp_id=restaurant['id'],
-                                      name=restaurant['name']))
+    for rest in data['businesses']:
+        restaurants.append(Restaurant(yelp_id=rest['id'],
+                                      name=rest['name'],
+                                      rating=rest['rating'],
+                                      price=process_price(rest['price']),
+                                      review_count=rest['review_count'],
+                                      ))
     db.session.add_all(restaurants)
     db.session.commit()
 
 
 def add_sample_visits():
     """ Add sample data regarding visits by multiple users to the same restaurant, currently for 2 people. """
-    visits = []
+    # visits = [Visit(rest_id=randint(1, 20)),
+              # Visit(rest_id=randint(1, 20)),
+              # Visit(rest_id=randint(1, 20)]
     i = 0
     while i < 600:
         visits.append(Visit(rest_id=randint(1, 20), date=datetime.datetime.now()))

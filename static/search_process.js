@@ -159,9 +159,14 @@ $(document).ready(function() {
         var name = responses.businesses[i].name;
         var url = responses.businesses[i].url;
         var id = responses.businesses[i].id;
+        var rating = responses.businesses[i].rating;
+        var price = responses.businesses[i].price;
+        var review_count = responses.businesses[i].review_count;
+        var categories = responses.businesses[i].categories;
+        var rest_info = [id, name, rating, price, review_count, categories];
         businessArray.push(
           "<li class='result' id='search-result" + i + "' data-id='" + id +
-          "' data-name='" + name + "'><a href='" + url + "'>" + name + "</a></li>");
+          "' data-name='" + name + "' data-rest_info='" + rest_info + "'><a href='" + url + "'>" + name + "</a></li>");
       }
       businessArray.push("</ol>");
       $('#search-results').html(businessArray.join(""));
@@ -172,10 +177,16 @@ $(document).ready(function() {
       // hover over the business listing to be able to save
       $(".result").hover(function() {
         // when you mouse over the link, a button to save the location appears
+        // 'this' refers to the specific search result
         var id = $(this).data('id');
         var name = $(this).data('name');
+        var rating = $(this).data('rating');
+        var price = $(this).data('price');
+        var review_count = $(this).data('review_count');
+        var categories = $(this).data('categories');
+        var rest_info = [id, name, rating, price, review_count, categories];
         $(this).append($("<span id='popup'> <button type='button' data-id='" + id +
-          "' data-name='" + name + "' id='save_search_result'>Save this location" +
+          "' data-name='" + name + "' data-rest_info='" + rest_info + "' id='save_search_result'>Save this location" +
           "</button></span>"));
 
         // when you click the button to save location, a form appears to ask more
@@ -183,19 +194,21 @@ $(document).ready(function() {
           $('#popup').append($("<span><form> <label>With whom? <input type='text'" +
             "id='with_whom'></label> <label>When? <input type='date' id='when'></label>" +
             "<label>Rating <input type='num' id='rating'></label> <button type='button'" +
-            " data-id='" + id + "' data-name='" + name + "' id='save_visit'>Save" +
+            " data-id='" + id + "' data-name='" + name + "' data-rest_info='" + rest_info + "' id='save_visit'>Save" +
             "</button></form></span>"));
 
           // when you click on save, sends an ajax request to save to the database
           $('#save_visit').click(function (evt) {
             var id = $(this).data('id');
             var name = $(this).data('name');
+            var rest_info = $(this).data('rest_info');
             var visitData = {
               'friend': $('#with_whom').val(),
               'when': $('#when').val(),
               'rating': $('#rating').val(),
               'restaurant': name,
               'yelp_id': id,
+              'rest_info': rest_info,
             };
             // sending the object visitData to server.py
             $.get('/add_visit.json', visitData, function (results) {
@@ -271,17 +284,17 @@ function addToMap(responses) {
     // define the content of the window
     html = (
             '<div class="window-content">' +
-                '<p><b>' + responses.businesses[i].name + '</b></p>' +         // Famous Bao 
-                '<p>' + responses.businesses[i].phone + '</p>' +               // phone #
-                '<p>' + responses.businesses[i].location.address1 + '</p>' +   // 2431 durant ave
-                '<p>' + responses.businesses[i].location.address2 + '</p>' +   // Unit A
-                '<p>' + responses.businesses[i].location.city + ', ' +         // Berkeley, CA 94704
+                '<p><b>' + responses.businesses[i].name + '</b>' +              // Famous Bao 
+                responses.businesses[i].phone +                                 // phone #
+                responses.businesses[i].location.address1 +                     // 2431 durant ave
+                responses.businesses[i].location.address2 +                     // Unit A
+                responses.businesses[i].location.city + ', ' +                  // Berkeley, CA 94704
                 responses.businesses[i].location.state + ' ' +
-                responses.businesses[i].location.zip_code + '</p>' +
-                '<p>Price level: ' + responses.businesses[i].price + '</p>' +  // Price Level: $
-                '<p>Rating: ' + responses.businesses[i].rating + '</p>' +      // Rating: 3.5
-                '<p>Review Count: ' + responses.businesses[i].review_count + '</p>' +      // Review Count
-                '<p><a href="' + responses.businesses[i].url + '">See ' +      // See Famous Bao on Yelp
+                responses.businesses[i].location.zip_code +
+                'Price level: ' + responses.businesses[i].price +               // Price Level: $
+                'Rating: ' + responses.businesses[i].rating +                   // Rating: 3.5
+                'Review Count: ' + responses.businesses[i].review_count +       // Review Count
+                '<a href="' + responses.businesses[i].url + '">See ' +          // See Famous Bao on Yelp
                 responses.businesses[i].name + ' on Yelp</a></p>' +
             '</div>');
     

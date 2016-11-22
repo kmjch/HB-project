@@ -14,6 +14,7 @@ from model import *
 from midpt_formula import *
 from yelp_utils import *
 from decimal import Decimal
+# from machine import *
 
 
 app = Flask(__name__)
@@ -85,11 +86,8 @@ def search_process():
         elif open_now:
             params_midpt['open_now'] = open_now
 
-        print '\n\n\n\n\nparams_midpt: ', params_midpt
-
         # results for Midpoint Formula calculation Yelp search
         responses = search_yelp(params_midpt)
-        print '\n\n\n\n\nresponses: ', responses
 
     elif search_type == 'venn':
         # the dictionary of search parameters to submit to the Yelp API
@@ -120,23 +118,18 @@ def search_process():
             params_user1['open_now'] = open_now
             params_user2['open_now'] = open_now
 
-        print "\n\n\n\n\nparams_user1: ", params_user1
-        print "\n\n\n\n\nparams_user2: ", params_user2
         # results for Venn Diagram calculation: two separate Yelp searches for both
         results1 = search_yelp(params_user1)
         results2 = search_yelp(params_user2)
 
-        print '\n\n\n\n\nresults1: ', results1
-        print '\n\n\n\n\nresults2: ', results2
 
         # finding the results common to both and adding them to a dictionary
         responses = {}
         responses['businesses'] = get_common_restaurants(results1, results2)
-        print "\n\n\n\n\nresponses['businesses']: ", responses['businesses']
-        print '\n\n\n\n\nresponses: ', responses
 
     responses['person1'] = loc1
     responses['person2'] = loc2
+    print responses
     return jsonify(responses)
 
     # sends the locations of each person for creating markers on the map
@@ -174,6 +167,8 @@ def add_visit():
         # finds the restaurant's ID, adds the restaurant to the database if not in yet
         restaurant = request.args.get("restaurant")
         r_yelp_id = request.args.get("yelp_id")
+        rest_info = request.args.get("rest_info")
+        print rest_info
 
         if not Restaurant.query.filter_by(name=restaurant).all():
             new_restaurant = Restaurant(yelp_id=r_yelp_id, name=restaurant)

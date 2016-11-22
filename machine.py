@@ -44,13 +44,8 @@ distance_columns = ['rating', 'price', 'review_count']
 
 def euclidean_distance(row):
     """A simple euclidean distance function"""
-    print "\n\n\nin euclidean_distance"
-    print 'row: ', row
     inner_value = 0
     for k in distance_columns:
-        print 'k: ', k
-        print 'row[k]: ', row[k]
-        print 'selected_restaurant[k]: ', selected_restaurant[k]
         inner_value += (row[k] - selected_restaurant[k]) ** 2
     return math.sqrt(inner_value)
 
@@ -82,7 +77,6 @@ distance_frame.sort("dist", inplace=True)
 # gather, the second smallest is the most similar non-gather restaurant)
 second_smallest = distance_frame.iloc[1]["idx"]
 most_similar_to_gather = results.loc[int(second_smallest)]["name"]
-print 'most_similar_to_gather: ', most_similar_to_gather
 
 
 import random
@@ -94,10 +88,9 @@ random_indices = permutation(results.index)
 test_cutoff = math.floor(len(results)/3)
 # Generate the test set by taking the first 1/3 of the randomly shuffled indices.
 test = results.loc[random_indices[1:test_cutoff]]
-print 'test: ', test
+
 # Generate the train set with the rest of the data.
 train = results.loc[random_indices[test_cutoff:]]
-print 'train: ', train
 
 # The columns that we will be making predictions with.
 x_columns = ['rating', 'price', 'review_count']
