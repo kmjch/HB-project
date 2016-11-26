@@ -170,27 +170,55 @@ def add_sample_restaurants():
 
 def add_sample_visits():
     """ Add sample data regarding visits by multiple users to the same restaurant, currently for 2 people. """
-    # visits = [Visit(rest_id=randint(1, 20)),
-              # Visit(rest_id=randint(1, 20)),
-              # Visit(rest_id=randint(1, 20)]
-    i = 0
-    while i < 600:
-        visits.append(Visit(rest_id=randint(1, 20), date=datetime.datetime.now()))
-        i += 1
+    # visits = []
+    # i = 0
+    # while i < 600:
+    #     visits.append(Visit(rest_id=randint(1, 20), date=datetime.datetime.now()))
+    #     i += 1
+    visits = [Visit(rest_id=4),
+              Visit(rest_id=5),
+              Visit(rest_id=9),
+              Visit(rest_id=11),
+              Visit(rest_id=12),
+              Visit(rest_id=14),
+              Visit(rest_id=15),
+              Visit(rest_id=18),
+              Visit(rest_id=20),
+              ]
     db.session.add_all(visits)
     db.session.commit()
 
 
 def make_sample_user_visits():
     """ Create some sample data about user visits. """
-    visits = db.session.query(Visit.id).all()
-    new_user_visits = []
-    for visit_id in visits:
-        uv1 = UserExp(visit_id=visit_id, user_id=randint(1, 351), rating=randint(1, 5))
-        uv2 = UserExp(visit_id=visit_id, user_id=randint(1, 351), rating=randint(1, 5))
-        if uv1.user_id != uv2.user_id:
-            new_user_visits = [uv1, uv2]
-            db.session.add_all(new_user_visits)
+    # visits = db.session.query(Visit.id).all()
+    # new_user_visits = []
+    # for visit_id in visits:
+    #     uv1 = UserExp(visit_id=visit_id, user_id=randint(1, 351), rating=randint(1, 5))
+    #     uv2 = UserExp(visit_id=visit_id, user_id=randint(1, 351), rating=randint(1, 5))
+    #     if uv1.user_id != uv2.user_id:
+    #         new_user_visits = [uv1, uv2]
+    #         db.session.add_all(new_user_visits)
+    new_user_visits = [UserExp(visit_id=1, user_id=1, rating=2),
+                       UserExp(visit_id=2, user_id=1, rating=3.5),
+                       UserExp(visit_id=3, user_id=1, rating=3.5),
+                       UserExp(visit_id=4, user_id=1, rating=4),
+                       UserExp(visit_id=5, user_id=1, rating=2),
+                       UserExp(visit_id=6, user_id=1, rating=2),
+                       UserExp(visit_id=7, user_id=1, rating=4.5),
+                       UserExp(visit_id=8, user_id=1, rating=4),
+                       UserExp(visit_id=9, user_id=1, rating=5),
+                       UserExp(visit_id=1, user_id=2),
+                       UserExp(visit_id=2, user_id=2),
+                       UserExp(visit_id=3, user_id=2),
+                       UserExp(visit_id=4, user_id=2),
+                       UserExp(visit_id=5, user_id=2),
+                       UserExp(visit_id=6, user_id=2),
+                       UserExp(visit_id=7, user_id=2),
+                       UserExp(visit_id=8, user_id=2),
+                       UserExp(visit_id=9, user_id=2),
+                       ]
+    db.session.add_all(new_user_visits)
     db.session.commit()
 
 

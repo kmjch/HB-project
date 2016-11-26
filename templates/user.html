@@ -4,22 +4,60 @@
 
   <h2>{{ user.fname }}'s Account</h2>
 
-  username: {{ user.username }}<br><br>
-  email: {{ user.email }}<br><br>
-  phone number: {{ user.phone_num }}<br><br>
-  <b>home address:</b><br>
-  {{ user.home_str }}<br>{{ user.home_cty }}<br>{{ user.home_sta }} {{ user.home_zip }}<br>
-  <b>work address:</b><br>
-  {{ user.work_str }}<br>{{ user.work_cty }}<br>{{ user.work_sta }} {{ user.work_zip }}<br>
+  <table>
+    <tr>
+      <td><b>username:</b></td>
+      <td>{{ user.username }}</td>
+    </tr>
+    <tr>
+      <td><b>email:</b></td>
+      <td>{{ user.email }}</td>
+    </tr>
+    <tr>
+      <td><b>phone number:</b></td>
+      <td>
+        {% if user.phone_num %}
+        {{ user.phone_num }}<br>
+        {% else %}
+        <small>No phone number entered</small>
+        {% endif %}
+      </td>
+    </tr>
+    <tr>
+      <td><b>home address:</b></td>
+      <td>
+        {% if user.home_str %}
+        {{ user.home_str }}<br>{{ user.home_cty }}<br>{{ user.home_sta }} {{ user.home_zip }}<br>
+        {% else %}
+        <small>No home address entered</small>
+        {% endif %}
+      </td>
+    </tr>
+    <tr>
+      <td><b>work address:</b></td>
+      <td>
+        {% if user.work_str %}
+        {{ user.work_str }}<br>{{ user.work_cty }}<br>{{ user.work_sta }} {{ user.work_zip }}<br>
+        {% else %}
+        <small>No work address entered</small>
+        {% endif %}
+      </td>
+    </tr>
+  </table>
 
   <br><a href="/add-user-details">Update your phone number and addresses!</a>
 
-  <h3>Most highly rated restaurants</h3>
-  {% for rating, i in loop %}
-    {{ i + 1 }}. {{ dict_visits_ratings[rating] }}, rating: {{ rating }}<br>
-  {% endfor %}
+  <h3>Your most highly rated restaurants</h3>
 
+  <table>
+  {% for visit in sorted_ratings %}
+    <tr><td>{{ visit[1] }}</td> <td>{{ visit[0] }}</td></tr>
+  {% endfor %}
+  </table>
+  
   <h3>Recommended for you</h3>
+  Highest rated restaurant: {{ highest_rated }}
+  Most similar to your highest rated restaurant: {{ most_sim }}
   
 
 {% endblock %}

@@ -1,8 +1,5 @@
-import os
-import sys
-import googlemaps
-import requests
-import yelp
+import os, sys, googlemaps, requests, yelp, itertools
+import pandas, json, csv, math
 
 from jinja2 import StrictUndefined
 
@@ -280,40 +277,109 @@ def logout():
     return redirect("/")
 
 
+with open('test.csv') as csvfile:
+    res_data = pandas.read_csv(csvfile, header=0)
+# The names of all the columns in the data.
+print res_data.columns.values
+
+
+# Select gather from our dataset
+selected_restaurant = res_data[res_data['name'] == "'" + highest_rated_restaurant + "'"].iloc[0]
+# selected_restaurant = res['businesses'][0]['name']
+
+# # Choose only the numeric columns (we'll use these to compute euclidean distance)
+distance_columns = ['rating', 'price', 'review_count']
+
+# # rating: res_data['businesses'][i]['rating']
+# # price: res_data['businesses'][i]['price']
+# # review_count: res_data['businesses'][i]['review_count']
+
+# # name: res_data['businesses'][i]['name']
+# # categories: res_data['businesses'][i]['categories'][j]['alias']
+# # categories: res_data['businesses'][i]['categories'][j]['title']
+
+
+def euclidean_distance(row):
+    """A simple euclidean distance function"""
+    inner_value = 0
+    for k in distance_columns:
+        inner_value += (row[k] - selected_restaurant[k]) ** 2
+    return math.sqrt(inner_value)
+
+# Find the distance from each restaurant in the dataset to gather.
+gather_distance = res_data.apply(euclidean_distance, axis=1)
+
+# Select only the numeric columns from the restaurant res_data dataset
+res_numeric = res_data[distance_columns]
+
+# Normalize all of the numeric columns
+res_normalized = (res_numeric - res_numeric.mean()) / res_numeric.std()
+
+from scipy.spatial import distance
+
+# Fill in NA values in res_normalized
+res_normalized.fillna(0, inplace=True)
+
+# Find the normalized vector for the most highly rated restaurant.
+highest_rated_restaurant_normalized = res_normalized[res_data["name"] == "'" + highest_rated_restaurant + "'"]
+
+# Find the distance between gather and everywhere else.
+euclidean_distances = res_normalized.apply(lambda row: distance.euclidean(row, highest_rated_restaurant_normalized), axis=1)
+
+# Create a new dataframe with distances.
+distance_frame = pandas.DataFrame(data={"dist": euclidean_distances, "idx": euclidean_distances.index})
+distance_frame.sort("dist", inplace=True)
+
+# Find the most similar restaurant to gather (the lowest distance to gather is
+# gather, the second smallest is the most similar non-gather restaurant)
+second_smallest = distance_frame.iloc[1]["idx"]
+most_similar_to_highest_rated_restaurant = res_data.loc[int(second_smallest)]["name"]
+
+
+import random
+from numpy.random import permutation
+
+# Randomly shuffle the index of res_data.
+random_indices = permutation(res_data.index)
+# Set a cutoff for how many items we want in the test set (in this case 1/3 of the items)
+test_cutoff = math.floor(len(res_data)/3)
+# Generate the test set by taking the first 1/3 of the randomly shuffled indices.
+test = res_data.loc[random_indices[1:test_cutoff]]
+
+# Generate the train set with the rest of the data.
+train = res_data.loc[random_indices[test_cutoff:]]
+
+# The columns that we will be making predictions with.
+x_columns = ['rating', 'price', 'review_count']
+# The column that we want to predict.
+y_column = ["user_rating"]
+# need to make this
+
+from sklearn.neighbors import KNeighborsRegressor
+# Create the knn model.
+# Look at the five closest neighbors.
+knn = KNeighborsRegressor(n_neighbors=5)
+# Fit the model on the training data.
+knn.fit(train[x_columns], train[y_column])
+# Make point predictions on the test set using the fit model.
+predictions = knn.predict(test[x_columns])
+
 @app.route("/users/<username>")
 def user_detail(username):
     """Show info about user."""
 
     user = User.query.filter_by(username=username).one()
-    user_visits = UserExp.query.filter_by(user_id=user.id).all()
-    # from user id, get list of userexperiences
-    # get list of visits so that I can grab the list of restaurant names
-
-    list_of_visits = []
-    list_of_ratings = []
-    dict_visits_ratings = {}
-    for user_visit in user_visits:
-        list_of_visits.append(Visit.query.filter_by(id=user_visit.visit_id).one().rest_id)
-        list_of_ratings.append(UserExp.query.filter_by(visit_id=user_visit.visit_id, user_id=user.id).one().rating)
-
-    list_of_rest_names = []
-    for res_id in list_of_visits:
-        list_of_rest_names.append(Restaurant.query.filter_by(id=res_id).one().name)
-
-    for i in range(len(list_of_visits)):
-        dict_visits_ratings[list_of_ratings[i]] = list_of_rest_names[i]
-
-    sorted_ratings = sorted(list_of_ratings, reverse=True)
-    rest_zip = zip(sorted_ratings, range(len(list_of_visits)))
-
+    list_ratings = [(user.user_exps[i].rating, user.user_exps[i].visit.restaurant.name) for i in range(len(user.user_exps))]
+    sorted_ratings = sorted(list_ratings, reverse=True)
+    highest_rated_restaurant = sorted_ratings[0][1]
     session['username'] = user.username
 
     return render_template("user.html",
                            user=user,
-                           user_visits=list_of_visits,
-                           dict_visits_ratings=dict_visits_ratings,
                            sorted_ratings=sorted_ratings,
-                           loop=rest_zip)
+                           predictions=predictions,
+                           highest_rated=highest_rated_restaurant,
+                           most_sim=most_similar_to_highest_rated_restaurant)
 
 
 @app.route('/add-user-details')

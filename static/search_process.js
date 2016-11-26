@@ -284,16 +284,16 @@ function addToMap(responses) {
     // define the content of the window
     html = (
             '<div class="window-content">' +
-                '<p><b>' + responses.businesses[i].name + '</b>' +              // Famous Bao 
-                responses.businesses[i].phone +                                 // phone #
-                responses.businesses[i].location.address1 +                     // 2431 durant ave
+                '<p><b>' + responses.businesses[i].name + '</b>' + '<br>' +
+                responses.businesses[i].phone + '<br>' +                                // phone #
+                responses.businesses[i].location.address1 + '<br>' +                    // 2431 durant ave
                 responses.businesses[i].location.address2 +                     // Unit A
                 responses.businesses[i].location.city + ', ' +                  // Berkeley, CA 94704
                 responses.businesses[i].location.state + ' ' +
-                responses.businesses[i].location.zip_code +
-                'Price level: ' + responses.businesses[i].price +               // Price Level: $
-                'Rating: ' + responses.businesses[i].rating +                   // Rating: 3.5
-                'Review Count: ' + responses.businesses[i].review_count +       // Review Count
+                responses.businesses[i].location.zip_code + '<br>' +
+                'Price level: ' + responses.businesses[i].price + '<br>' +              // Price Level: $
+                'Rating: ' + responses.businesses[i].rating + '<br>' +                  // Rating: 3.5
+                'Review Count: ' + responses.businesses[i].review_count + '<br>' +      // Review Count
                 '<a href="' + responses.businesses[i].url + '">See ' +          // See Famous Bao on Yelp
                 responses.businesses[i].name + ' on Yelp</a></p>' +
             '</div>');

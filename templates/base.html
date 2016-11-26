@@ -19,7 +19,10 @@
     
     {% if 'username' in session %}
         Hi {{ session['username'] }}! <br>
-        <a href="/logout">Log out</a>
+        <small>
+            <a href="/users/{{ session['username'] }}">Your profile</a>
+            <a href="/logout">Log out</a>
+        </small>
     {% else %}
         <a href="/register">Register here</a> or <a href="/login">log in!</a><br><br>      
     {% endif %}
