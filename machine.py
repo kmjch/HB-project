@@ -27,9 +27,10 @@ import pandas.io.sql as psql
 
 # engine = create_engine('postgresql://meatup')
 
-connection = pg.connect("dbname=meatup user=vagrant")
-dataframe = psql.read_sql("SELECT * FROM uservisits where user_id = 1", connection)
+# connection = pg.connect("dbname=meatup user=vagrant")
+# results = psql.read_sql("SELECT * FROM restaurants", connection)
 
+# \COPY restaurants TO '/home/vagrant/src/HB-project/test.csv' DELIMITER ',' CSV HEADER;
 
 with open('test.csv') as csvfile:
     results = pandas.read_csv(csvfile, header=0)
@@ -38,7 +39,8 @@ print results.columns.values
 
 
 # Select gather from our dataset
-selected_restaurant = results[results['name'] == 'Gather'].iloc[0]
+# selected_restaurant = results[results['name'] == 'Gather'].iloc[0]
+selected_restaurant = psql.read_sql("SELECT * FROM restaurants WHERE name = 'Simply Bowl'", connection)
 # selected_restaurant = res['businesses'][0]['name']
 
 # # Choose only the numeric columns (we'll use these to compute euclidean distance)

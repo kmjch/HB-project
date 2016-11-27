@@ -156,17 +156,21 @@ $(document).ready(function() {
     $.get('/search.json', formData, function(responses) {
       var businessArray = ["<ol id='results_list'>"];
       for (var i = 0; i < responses['businesses'].length; i++) {
-        var name = responses.businesses[i].name;
+        var name = String(responses.businesses[i].name);
         var url = responses.businesses[i].url;
         var id = responses.businesses[i].id;
-        var rating = responses.businesses[i].rating;
+        var rating = String(responses.businesses[i].rating);
         var price = responses.businesses[i].price;
-        var review_count = responses.businesses[i].review_count;
-        var categories = responses.businesses[i].categories;
-        var rest_info = [id, name, rating, price, review_count, categories];
+        var rc = String(responses.businesses[i].review_count);
+        // var categories = responses.businesses[i].categories;
+        var info = '{"id": "' + id + '", "rating": "' + rating + '", "price": "' +
+                     price + '", "rc": "' + rc + '"}';
+
         businessArray.push(
-          "<li class='result' id='search-result" + i + "' data-id='" + id +
-          "' data-name='" + name + "' data-rest_info='" + rest_info + "'><a href='" + url + "'>" + name + "</a></li>");
+          "<li class='result' id='search-result" + i + ' data-name="' +
+          name + '" data-info="' + info + "' data-id='" + id + "' data-rating='" +
+          rating + "' data-price='" + price + "' data-rc='" + rc + "'><a href='" +
+          url + "'>" + name + "</a></li>");
       }
       businessArray.push("</ol>");
       $('#search-results').html(businessArray.join(""));
@@ -178,15 +182,17 @@ $(document).ready(function() {
       $(".result").hover(function() {
         // when you mouse over the link, a button to save the location appears
         // 'this' refers to the specific search result
-        var id = $(this).data('id');
         var name = $(this).data('name');
+        var id = $(this).data('id');
         var rating = $(this).data('rating');
         var price = $(this).data('price');
-        var review_count = $(this).data('review_count');
-        var categories = $(this).data('categories');
-        var rest_info = [id, name, rating, price, review_count, categories];
-        $(this).append($("<span id='popup'> <button type='button' data-id='" + id +
-          "' data-name='" + name + "' data-rest_info='" + rest_info + "' id='save_search_result'>Save this location" +
+        var rc = $(this).data('rc');
+        var info = $(this).data('info');
+        console.log(info);
+
+        $(this).append($("<span id='popup'> <button type='button' data-name='" +
+          name + "data-info='" + info + "data-id='" + id + "data-rating='" + rating +
+          "data-price='" + price + "data-rc='" + rc + "' id='save_search_result'>Save this location" +
           "</button></span>"));
 
         // when you click the button to save location, a form appears to ask more
@@ -194,21 +200,23 @@ $(document).ready(function() {
           $('#popup').append($("<span><form> <label>With whom? <input type='text'" +
             "id='with_whom'></label> <label>When? <input type='date' id='when'></label>" +
             "<label>Rating <input type='num' id='rating'></label> <button type='button'" +
-            " data-id='" + id + "' data-name='" + name + "' data-rest_info='" + rest_info + "' id='save_visit'>Save" +
-            "</button></form></span>"));
+            "' data-name='" + name + "data-info='" + info + "data-id='" + id +
+            "data-rating='" + rating + "data-price='" + price + "data-rc='" + rc +
+            "' id='save_visit'>Save" + "</button></form></span>"));
 
           // when you click on save, sends an ajax request to save to the database
           $('#save_visit').click(function (evt) {
-            var id = $(this).data('id');
-            var name = $(this).data('name');
             var rest_info = $(this).data('rest_info');
             var visitData = {
               'friend': $('#with_whom').val(),
               'when': $('#when').val(),
               'rating': $('#rating').val(),
-              'restaurant': name,
-              'yelp_id': id,
-              'rest_info': rest_info,
+              'name': name,
+              'id': id,
+              'avg_rating': rating,
+              'price': price,
+              'rc': rc,
+              'info': info,
             };
             // sending the object visitData to server.py
             $.get('/add_visit.json', visitData, function (results) {

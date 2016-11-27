@@ -141,6 +141,11 @@ def search_yelp(params):
     return responses
 
 
+def process_price(price_lvl):
+    dict_prices = {'$': 1, '$$': 2, '$$$': 3, '$$$$': 4, '$$$$$': 5}
+    return dict_prices[price_lvl]
+
+
 @app.route('/add_visit.json')
 # change to post
 def add_visit():
@@ -157,16 +162,26 @@ def add_visit():
         friend_user = User.query.filter_by(username=friend).first()
 
         when = request.args.get("when")
-        rating = Decimal(request.args.get("rating"))
+        user_rating = Decimal(request.args.get("rating"))
 
         # finds the restaurant's ID, adds the restaurant to the database if not in yet
-        restaurant = request.args.get("restaurant")
-        r_yelp_id = request.args.get("yelp_id")
-        rest_info = request.args.get("rest_info")
-        print rest_info
+        restaurant = request.args.get("name")
+        yelp_id = request.args.get("id")
+        avg_rating = request.args.get("avg_rating")
+        price_lvl = request.args.get("price")
+        review_count = request.args.get("rc")
+        info = request.args.get("info")
+        # print '\n\n\n\ninfo: ', info
+        # print '\n\n\n\ninfo string: ' + str(info)
+        # r_yelp_id = info['id']
+        # avg_rating = info['rating']
+        # price_lvl = info['price']
+        # review_count = info['review_count']
 
         if not Restaurant.query.filter_by(name=restaurant).all():
-            new_restaurant = Restaurant(yelp_id=r_yelp_id, name=restaurant)
+            new_restaurant = Restaurant(yelp_id=yelp_id, name=restaurant,
+                                        rating=avg_rating, price=process_price(price_lvl),
+                                        review_count=review_count)
             db.session.add(new_restaurant)
             db.session.commit()
         rest_id = db.session.query(Restaurant.id).filter_by(yelp_id=r_yelp_id).first()[0]
@@ -176,7 +191,7 @@ def add_visit():
         db.session.add(new_visit)
         db.session.commit()
         new_visit_id = db.session.query(Visit.id).filter_by(rest_id=rest_id, date=when).order_by(Visit.date.desc()).first()[0]
-        new_visit_exp = UserExp(visit_id=new_visit_id, user_id=user.id, rating=rating)
+        new_visit_exp = UserExp(visit_id=new_visit_id, user_id=user.id, rating=user_rating)
         f_new_visit_exp = UserExp(visit_id=new_visit_id, user_id=friend_user.id)
         db.session.add(new_visit_exp)
         db.session.add(f_new_visit_exp)
