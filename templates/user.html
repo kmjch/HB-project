@@ -27,7 +27,7 @@
       <td><b>home address:</b></td>
       <td>
         {% if user.home_str %}
-        {{ user.home_str }}<br>{{ user.home_cty }}<br>{{ user.home_sta }} {{ user.home_zip }}<br>
+        {{ user.home_str }}<br>{{ user.home_cty }}, {{ user.home_sta }} {{ user.home_zip }}<br>
         {% else %}
         <small>No home address entered</small>
         {% endif %}
@@ -37,7 +37,7 @@
       <td><b>work address:</b></td>
       <td>
         {% if user.work_str %}
-        {{ user.work_str }}<br>{{ user.work_cty }}<br>{{ user.work_sta }} {{ user.work_zip }}<br>
+        {{ user.work_str }}<br>{{ user.work_cty }}, {{ user.work_sta }} {{ user.work_zip }}<br>
         {% else %}
         <small>No work address entered</small>
         {% endif %}
@@ -56,8 +56,15 @@
   </table>
   
   <h3>Recommended for you</h3>
-  Highest rated restaurant: {{ highest_rated }}
-  Most similar to your highest rated restaurant: {{ most_sim }}
-  
+  <table>
+    <tr>
+      <td>Highest rated restaurant:</td>
+      <td>{{ highest_rated }}</td>
+    </tr>
+    <tr>
+      <td>We recommend:</td>
+      <td>{{ most_sim }}</td>
+    </tr>
+  </table>
 
 {% endblock %}

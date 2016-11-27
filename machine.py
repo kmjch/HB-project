@@ -1,5 +1,8 @@
 # read our dataset in and figure out which columns are present
 import pandas, json, csv, math
+from sqlalchemy import create_engine
+import psycopg2 as pg
+import pandas.io.sql as psql
 
 # json_file = open('sample_restaurants.json')
 # json_str = json_file.read()
@@ -20,6 +23,14 @@ import pandas, json, csv, math
 # classes provided for me in python docs to write in specific encoding
 # import csv, codecs, cStringIO
 # all I need is UnicodeWriter
+
+
+# engine = create_engine('postgresql://meatup')
+
+connection = pg.connect("dbname=meatup user=vagrant")
+dataframe = psql.read_sql("SELECT * FROM uservisits where user_id = 1", connection)
+
+
 with open('test.csv') as csvfile:
     results = pandas.read_csv(csvfile, header=0)
 # The names of all the columns in the data.

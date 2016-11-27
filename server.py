@@ -62,8 +62,6 @@ def search_process():
     loc2 = [lat2, lng2]
     mid_lat, mid_lng = midpt_formula(loc1, loc2)
 
-    # import pdb; pdb.set_trace()
-
     if search_type == 'midpt':
         term2 = request.args.get("term2")
         radius2 = request.args.get("radius2")
@@ -288,6 +286,12 @@ def user_detail(username):
     sorted_ratings = sorted(list_ratings, reverse=True)
     highest_rated_restaurant = sorted_ratings[0][1]
     session['username'] = user.username
+
+    # from sqlalchemy import create_engine
+    # engine = create_engine('postgresql://meatup')
+    # df_users = pandas.read_sql_query('select * from "users"', con=engine)
+    # df_visits = pandas.read_sql_query('select * from "visits"', con=engine)
+    # import pdb; pdb.set_trace()
 
     with open('test.csv') as csvfile:
         res_data = pandas.read_csv(csvfile, header=0)
