@@ -156,7 +156,7 @@ $(document).ready(function() {
     $.get('/search.json', formData, function(responses) {
       var businessArray = ["<ol id='results_list'>"];
       for (var i = 0; i < responses['businesses'].length; i++) {
-        var name = String(responses.businesses[i].name);
+        var name = responses.businesses[i].name;
         var url = responses.businesses[i].url;
         var id = responses.businesses[i].id;
         var rating = String(responses.businesses[i].rating);
@@ -165,12 +165,11 @@ $(document).ready(function() {
         // var categories = responses.businesses[i].categories;
         var info = '{"id": "' + id + '", "rating": "' + rating + '", "price": "' +
                      price + '", "rc": "' + rc + '"}';
+        console.log('info: ', name, info);
 
         businessArray.push(
-          "<li class='result' id='search-result" + i + ' data-name="' +
-          name + '" data-info="' + info + "' data-id='" + id + "' data-rating='" +
-          rating + "' data-price='" + price + "' data-rc='" + rc + "'><a href='" +
-          url + "'>" + name + "</a></li>");
+          "<li class='result' id='search-result" + i +
+          "' data-info='" + info + "'><a href='" + url + "'>" + name + "</a></li>");
       }
       businessArray.push("</ol>");
       $('#search-results').html(businessArray.join(""));
@@ -183,40 +182,48 @@ $(document).ready(function() {
         // when you mouse over the link, a button to save the location appears
         // 'this' refers to the specific search result
         var name = $(this).data('name');
-        var id = $(this).data('id');
-        var rating = $(this).data('rating');
-        var price = $(this).data('price');
-        var rc = $(this).data('rc');
+        // var id = $(this).data('id');
+        // var rating = $(this).data('rating');
+        // var price = $(this).data('price');
+        // var rc = $(this).data('rc');
         var info = $(this).data('info');
         console.log(info);
+        console.log(info.rating);
 
-        $(this).append($("<span id='popup'> <button type='button' data-name='" +
-          name + "data-info='" + info + "data-id='" + id + "data-rating='" + rating +
-          "data-price='" + price + "data-rc='" + rc + "' id='save_search_result'>Save this location" +
+        $(this).append($("<span id='popup'> <button type='button' data-info=" + info + " id='save_search_result'>Save this location" +
           "</button></span>"));
 
         // when you click the button to save location, a form appears to ask more
         $('#save_search_result').click(function (evt) {
-          $('#popup').append($("<span><form> <label>With whom? <input type='text'" +
-            "id='with_whom'></label> <label>When? <input type='date' id='when'></label>" +
-            "<label>Rating <input type='num' id='rating'></label> <button type='button'" +
-            "' data-name='" + name + "data-info='" + info + "data-id='" + id +
-            "data-rating='" + rating + "data-price='" + price + "data-rc='" + rc +
-            "' id='save_visit'>Save" + "</button></form></span>"));
+          $('#popup').append($(
+            "<span>" +
+              "<form>" +
+                "<label>With whom? <input type='text' id='with_whom'></label> " +
+                "<label>When? <input type='date' id='when'></label> " +
+                "<label>Rating <input type='num' id='rating'></label> " +
+                "<button type='button' data-info=" + info + " id='save_visit'>Save" +
+                "</button>" +
+              "</form></span>"));
+
+// <div class="form-group form-group-sm label-floating">
+//   <label class="control-label" for="loc1">Where you are coming from</label>
+//   <input type="text" class="form-control" id="loc1" required placeholder="Enter your location" name="loc1" required>
+// </div>
 
           // when you click on save, sends an ajax request to save to the database
           $('#save_visit').click(function (evt) {
-            var rest_info = $(this).data('rest_info');
+            var info = $(this).data('info');
+            // var name = $(this).data('name');
             var visitData = {
               'friend': $('#with_whom').val(),
               'when': $('#when').val(),
               'rating': $('#rating').val(),
-              'name': name,
-              'id': id,
-              'avg_rating': rating,
-              'price': price,
-              'rc': rc,
-              'info': info,
+              // 'name': info.name,
+              'id': info.id,
+              'avg_rating': info.rating,
+              'price': info.price,
+              'rc': info.rc,
+              // 'info': info,
             };
             // sending the object visitData to server.py
             $.get('/add_visit.json', visitData, function (results) {

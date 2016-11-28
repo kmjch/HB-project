@@ -5,3 +5,4 @@ MOCK_DATA.json
 *.pyc
 .DS_Store
 htmlcov/
+static/bootstrap-material-design-master/

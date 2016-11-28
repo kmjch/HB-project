@@ -6,69 +6,106 @@
 
 {% raw %}
 
-<br><br>
+<div class="panel panel-default">
+  <div class="panel-body">
+    <form action="/" method="GET">
+        <div class="form-group form-group-sm label-floating">
+            <label for="search-type" class="control-label">Type of search</label>
+            <select name="search-type" id="search-type" class="form-control">
+                <option value="midpt"> Search from our midpoint</option>
+                <option value="venn"> Person 2 walks to Person 1's location</option> 
+            </select>
+            <!-- <span class="help-block">Midpoint formula for searching midway, Venn Diagram for person 1 to walk less.</span> -->
+            <!-- <p class="help-block"><small>Midpoint formula for searching midway, Venn Diagram for person 1 to walk less.</small></p> -->
+        </div>
+        <b>For person 1:</b>
 
-<form action="/" method="GET">
-    <label>Type of search:<br>
-        <small>
-            Midpoint formula: search from an area equidistant from Person 1 and 2.<br>
-            Venn Diagram 1: Person 2 walks over to Person 1's area, recommended for closer distances.<br>
-        </small>
-        <select name="search-type" id="search-type">
-        <option value="midpt"> Midpoint Formula</option>
-        <option value="venn"> Venn Diagram</option> 
-    </select><br><br>
-    <b>For person 1:</b><br>
-    <label>Search term*: <input type="text" id="term1" name="term1" value="cafe" required></label><br>
-    <label>Enter where you are coming from: <input type="text" id="loc1" name="loc1"></label><br>
-    <label>Radius (in mi): <input type="number" id="radius1" name="radius1" value=".3"></label><br>
-    <!-- feature to implement later: provide option for meters -->
+<!--         <div class="form-group form-group-sm label-floating">
+            <label for="i4" class="control-label">Email address form-group-sm</label>
+            <input type="email" class="form-control" id="i4">
+            <span class="help-block">Please enter a valid email address</span>
+        </div>
+ -->
+        <div class="form-group form-group-sm label-floating">
+          <label class="control-label" for="term1">What do you want to eat?</label>
+          <input type="text" class="form-control" id="term1" name="term1" value="sandwich" required>
+        </div>
+        <div class="form-group form-group-sm label-floating">
+          <label class="control-label" for="loc1">Where you are coming from</label>
+          <input type="text" class="form-control" id="loc1" required placeholder="Enter your location" name="loc1" required>
+        </div>
+        <div class="form-group form-group-sm label-floating">
+          <label class="control-label" for="radius1">Radius (in mi)</label>
+          <input type="text" class="form-control" id="radius1" name="radius1" value=".3" required>
+        </div>
+        <!-- feature to implement later: provide option for meters -->
+        <div class="form-group form-group-sm label-floating">
+            <label class="control-label" for="p1_price_1">Price: </label>
+                <input type="checkbox" name="price1" id="p1_price_1" value="1"> $
+                <input type="checkbox" name="price1" id="p1_price_2" value="2"> $$
+                <input type="checkbox" name="price1" id="p1_price_3" value="3"> $$$
+                <input type="checkbox" name="price1" id="p1_price_4" value="4"> $$$$
+                <input type="checkbox" name="price1" id="p1_price_5" value="5"> $$$$$
+        </div>
 
-    <label>Price: 
-        <input type="checkbox" name="price1" id="p1_price_1" value="1"> $</label>
-        <input type="checkbox" name="price1" id="p1_price_2" value="2"> $$</label> 
-        <input type="checkbox" name="price1" id="p1_price_3" value="3"> $$$</label> 
-        <input type="checkbox" name="price1" id="p1_price_4" value="4"> $$$$</label> 
-        <input type="checkbox" name="price1" id="p1_price_5" value="5"> $$$$$</label> 
-    </label>
+        <b>For person 2:</b>
 
+        <span class="midpt-fields"><div class="form-group form-group-sm label-floating">
+          <label class="control-label" for="term2">What do you want to eat?</label>
+          <input class="form-control" id="term2" name="term2">
+        </div></span>
+        <div class="form-group form-group-sm label-floating">
+          <label class="control-label" for="loc2">Where you are coming from</label>
+          <input class="form-control" id="loc2" required placeholder="Enter your location" name="loc2" required>
+        </div>
+        <span class="midpt-fields"><div class="form-group form-group-sm label-floating">
+          <label class="control-label" for="radius2">Radius (in mi)</label>
+          <input class="form-control" id="radius2" name="radius2" value="2">
+        </div></span>
+        <!-- feature to implement later: provide option for meters -->
+        <div class="form-group form-group-sm label-floating">
+            <label class="control-label" for="p2_price_1">Price: </label>
+                <input type="checkbox" name="price2" id="p2_price_1" value="1"> $
+                <input type="checkbox" name="price2" id="p2_price_2" value="2"> $$
+                <input type="checkbox" name="price2" id="p2_price_3" value="3"> $$$
+                <input type="checkbox" name="price2" id="p2_price_4" value="4"> $$$$
+                <input type="checkbox" name="price2" id="p2_price_5" value="5"> $$$$$
+        </div>
 
-    <br><br><b>For person 2:</b><br>
+        <span class="midpt-fields"><div class="form-group form-group-sm label-floating">
+            <label for="search-type" class="control-label">Sort results by</label>
+            <select name="sort_by" id="sort_by" class="form-control">
+                <option value="best_match"> Best Match</option>
+                <option value="rating"> Rating</option> 
+                <option value="review_count"> Review Count</option> 
+                <option value="distance"> Distance</option>
+            </select>
+        </div></span>
+        <div class="form-group form-group-sm label-floating">
+            <label for="choose_when" class="control-label">When do you want to meet?</label>
+                <select name="choose_when" id="choose_when" class="form-control">
+                    <option value="now"> Now</option>
+                    <option value="later"> Later</option> 
+                </select>
+                <input class="form-control" type="datetime-local" id="time" name="time">
+        </div>
+        <div class="form-group form-group-sm label-floating">
+          <label class="control-label" for="limit">Limit number of search results to max</label>
+          <input class="form-control" id="limit" name="limit" value="20"></span>
+        </div>
+        <input type="hidden" name="submitting-search-form" value="hi">
 
-    <span class="midpt-fields"><label>Search term: <input type="text" id="term2" name="term2" value=""></label><br></span>
-    <label>Enter where you are coming from: <input type="text" id="loc2" name="loc2"></label><br>
-    <span class="midpt-fields"><label>Radius (in mi): <input type="number" id="radius2" name="radius2" value="2"></label><br></span>
-    <label>Price: 
-        <input type="checkbox" name="price2" id="p2_price_1" value="1"> $</label>
-        <input type="checkbox" name="price2" id="p2_price_2" value="2"> $$</label> 
-        <input type="checkbox" name="price2" id="p2_price_3" value="3"> $$$</label> 
-        <input type="checkbox" name="price2" id="p2_price_4" value="4"> $$$$</label> 
-        <input type="checkbox" name="price2" id="p2_price_5" value="5"> $$$$$</label> 
-    </label>
+        <span class="input-group-btn">
+            <button class="btn btn-primary" type="button" id="search"><small>Search a good location for us to m-eat</small></button>
+        </span>
 
-    <br><br>
-    <span class="midpt-fields"><label>Sort results by: <select name="sort_by" id="sort_by">
-        <option value="best_match"> Best Match</option>
-        <option value="rating"> Rating</option> 
-        <option value="review_count"> Review Count</option> 
-        <option value="distance"> Distance</option> 
-    </select></label><br></span>
-    <label>When do you want to meet?
-        <select name="choose_when" id="choose_when">
-            <option value="now"> Now</option>
-            <option value="later"> Later</option> 
-    </select><br>
-        <input type="datetime-local" id="time" name="time"></label><br>
-    <label>Limit number of search results to max: <input type="number" id="limit" name="limit" value="20"></label><br>
+    </form>
+    </div>
 
-    <br><br>
-    <input type="hidden" name="submitting-search-form" value="hi">
-    <button type="button" id="search">Search a good location for us to m-eat</button>
-</form>
+    <div class="panel-footer"><div id="search-results">Search results will show here!</div></div>
+</div>
 
-<div id="search-results"></div>
-
-<br><div id="map"></div>
+<div id="map"></div>
 {% endraw %}
 <script src="https://maps.googleapis.com/maps/api/js?key={{ GMAPS_JS_KEY }}&libraries=places&callback=initMap" async defer></script>
 <script src="static/search_process.js"></script>

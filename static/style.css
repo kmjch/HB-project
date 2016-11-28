@@ -1,10 +1,18 @@
-html {
-    font-family: 'Source Sans Pro', sans-serif;
-}
 #map {
-    height: 800px;
-    width: 800px;
+    height: 1125px;
+    padding-left: 5px;
 }
 #time {
     display: none;
+}
+.panel {
+    width: 300px;
+    float: left;
+/*    min-height: 200px;
+    z-index:300000;
+    background-color: #fff;
+    padding: 5px;*/
+}
+.ui-autocomplete {
+    position: relative;
 }

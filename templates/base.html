@@ -4,29 +4,56 @@
     <meta charset="UTF-8">
     <title>{% block title %}Eat Together{% endblock %}</title>
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
-    <link rel="stylesheet" href="/static/style.css">
+    
+    <link rel="stylesheet" type="text/css" href="/static/style.css">
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery.js"></script>
-    
+    <script src="/static/bootstrap-material-design-master/dist/js/material.js"></script>
+    <script src="/static/bootstrap-material-design-master/dist/js/ripples.min.js"></script>
+    <script>$.material.init();</script>
+
+    <!-- Material Design fonts -->
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700">
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/icon?family=Material+Icons">
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+    <!-- Bootstrap Material Design -->
+    <link rel="stylesheet" type="text/css" href="/static/bootstrap-material-design-master/dist/css/bootstrap-material-design.css">
+    <link rel="stylesheet" type="text/css" href="/static/bootstrap-material-design-master/dist/css/ripples.min.css">
+
 </head>
 <body>
+    <div class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">Eat Together</a>
+        </div>
+        <div class="navbar-collapse collapse navbar-responsive-collapse">
+          <ul class="nav navbar-nav navbar-right">
+            {% if 'username' in session %}
+            <li><a href="/users/{{ session['username'] }}">Your profile</a></li>
+            <li><a href="/logout">Log out</a></li>
+            {% else %}
+            <li><a href="/register">Register</a></li>
+            <li><a href="/login">Log In</a></li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </div>
     <div id="flash-msgs">
         {% for message in get_flashed_messages() %}
             {{ message }}
         {% endfor %}
     </div>
-    <h1><a href="/">Eat Together</a></h1>
-    
-    {% if 'username' in session %}
-        Hi {{ session['username'] }}! <br>
-        <small>
-            <a href="/users/{{ session['username'] }}">Your profile</a>
-            <a href="/logout">Log out</a>
-        </small>
-    {% else %}
-        <a href="/register">Register here</a> or <a href="/login">log in!</a><br><br>      
-    {% endif %}
-
     {% block content %}Content here{% endblock %}
 </body>
 </html>

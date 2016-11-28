@@ -142,6 +142,7 @@ def search_yelp(params):
 
 
 def process_price(price_lvl):
+    print price_lvl
     dict_prices = {'$': 1, '$$': 2, '$$$': 3, '$$$$': 4, '$$$$$': 5}
     return dict_prices[price_lvl]
 
@@ -170,9 +171,7 @@ def add_visit():
         avg_rating = request.args.get("avg_rating")
         price_lvl = request.args.get("price")
         review_count = request.args.get("rc")
-        info = request.args.get("info")
-        # print '\n\n\n\ninfo: ', info
-        # print '\n\n\n\ninfo string: ' + str(info)
+        # info = request.args.get("info")
         # r_yelp_id = info['id']
         # avg_rating = info['rating']
         # price_lvl = info['price']
