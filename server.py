@@ -443,10 +443,10 @@ if __name__ == "__main__":
     connect_to_db(app)
 
     # Use the DebugToolbar
-    # DebugToolbarExtension(app)
+    DebugToolbarExtension(app)
 
     # Use the Flask Login Library
     # login_manager = LoginManager()
     # login_manager.init_app(app)
 
-    app.run(debug=False, host="0.0.0.0")
+    app.run(debug=True, host="0.0.0.0")
