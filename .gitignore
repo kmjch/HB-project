@@ -6,5 +6,3 @@ MOCK_DATA.json
 .DS_Store
 htmlcov/
 static/bootstrap-material-design-master/
-sample_restaurants.json
-test.csv
