@@ -4,15 +4,21 @@
 
 {% block content %}
 
-<br>
 
-Don't have a username yet? <a href="/register">Register here</a><br><br>
-
-<form action="/login" method="POST">
-    <label>Username*: <input type="text" id="username" name="username" required></label><br>
-    <label>Password*: <input type="password" id="password" name="password" required></label><br>
-
-    <input type="submit" value="Login">
-</form>
+<div class="col-md-4">
+    Don't have a username yet? <a href="/register">Register here</a>
+    <form action="/login" method="POST">
+        <div class="form-group">
+            <label for="username" class="col-md-2 control-label">Username</label>
+            <div class="col-md-10"><input type="text" class="form-control" id="username" placeholder="Username" required></div>
+        </div>
+        
+        <div class="form-group">
+            <label for="password" class="col-md-2 control-label">Password</label>
+            <div class="col-md-10"><input type="password" class="form-control" id="password" placeholder="Password" required></div>
+        </div>
+        <input type="submit" class="btn btn-outline-primary" value="Login">
+    </form>
+</div>
 
 {% endblock %}

@@ -190,7 +190,7 @@ $(document).ready(function() {
         console.log(info);
         console.log(info.rating);
 
-        $(this).append($("<span id='popup'> <button type='button' data-info=" + info + " id='save_search_result'>Save this location" +
+        $(this).append($("<span id='popup'> <button type='button' class='btn btn-secondary btn-xs' data-info=" + info + " id='save_search_result'>Save this location" +
           "</button></span>"));
 
         // when you click the button to save location, a form appears to ask more
@@ -198,17 +198,31 @@ $(document).ready(function() {
           $('#popup').append($(
             "<span>" +
               "<form>" +
-                "<label>With whom? <input type='text' id='with_whom'></label> " +
-                "<label>When? <input type='date' id='when'></label> " +
-                "<label>Rating <input type='num' id='rating'></label> " +
-                "<button type='button' data-info=" + info + " id='save_visit'>Save" +
+              "<div class='form-group form-group-sm label-floating'>" +
+                "<label class='control-label' for='with_whom'>With whom?</label>" +
+                "<input type='text' class='form-control' id='with_whom'></div>" +
+              "<div class='form-group form-group-sm label-floating'>" +
+                "<label class='control-label' for='when'>When?</label> " +
+                "<input type='date' class='form-control' id='when'></label></div>" +
+              "<div class='form-group form-group-sm label-floating'>" +
+                "<label class='control-label' for='rating'>Rating</label> " +
+                "<input type='num' class='form-control' id='rating'></label></div>" +
+                "<button type='button' class='btn btn-secondary btn-xs' " +
+                "data-info=" + info + " id='save_visit'>Save" +
                 "</button>" +
-              "</form></span>"));
+              "</form></span></span>"));
 
+// <button type="button" class="btn btn-primary btn-sm">Small button</button>
 // <div class="form-group form-group-sm label-floating">
 //   <label class="control-label" for="loc1">Where you are coming from</label>
-//   <input type="text" class="form-control" id="loc1" required placeholder="Enter your location" name="loc1" required>
+//   <input type="text" class='form-control' id="loc1" required placeholder="Enter your location" name="loc1" required>
 // </div>
+
+// <span class="input-group-btn">
+//     <button class="btn btn-primary" type="button" id="search">
+//         Search on Yelp
+//     </button>
+// </span>
 
           // when you click on save, sends an ajax request to save to the database
           $('#save_visit').click(function (evt) {

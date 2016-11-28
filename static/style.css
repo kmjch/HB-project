@@ -1,18 +1,44 @@
+#positioning {
+    padding: 5px;
+}
+
 #map {
-    height: 1125px;
+    height: 1183px;
     padding-left: 5px;
 }
+
 #time {
     display: none;
 }
+
 .panel {
     width: 300px;
     float: left;
-/*    min-height: 200px;
-    z-index:300000;
-    background-color: #fff;
-    padding: 5px;*/
 }
+
 .ui-autocomplete {
     position: relative;
+}
+
+#yelp-logo1 {
+    height: 20px;
+    margin-top: -3px;
+}
+
+#yelp-credit {
+    text-align: right;
+    margin-bottom: 0px;
+    font-size: 10px;
+}
+
+#gmaps-logo {
+    height: 20px;
+}
+
+#table-width {
+    width: auto;
+}
+
+#log-or-reg {
+    width: 50%;
 }

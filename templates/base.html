@@ -49,11 +49,12 @@
         </div>
       </div>
     </div>
-    <div id="flash-msgs">
-        {% for message in get_flashed_messages() %}
-            {{ message }}
+    {% for message in get_flashed_messages() %}
+        <div class="alert alert-dismissible alert-info" id="flash-msgs">
+            {{ message }} <button type="button" class="close" data-dismiss="alert">×</button>
+        </div>
         {% endfor %}
-    </div>
-    {% block content %}Content here{% endblock %}
+
+    <div id='positioning'>{% block content %}Content here{% endblock %}</div>
 </body>
 </html>

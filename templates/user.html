@@ -4,7 +4,9 @@
 
   <h2>{{ user.fname }}'s Account</h2>
 
-  <table>
+
+
+  <table class="table table-striped table-hover" id="table-width">
     <tr>
       <td><b>username:</b></td>
       <td>{{ user.username }}</td>
@@ -45,23 +47,23 @@
     </tr>
   </table>
 
-  <br><a href="/add-user-details">Update your phone number and addresses!</a>
+  <a href="/add-user-details">Update your phone number and addresses!</a>
 
   <h3>Your most highly rated restaurants</h3>
 
-  <table>
+  <table class="table table-striped table-hover" id="table-width">
   {% for visit in sorted_ratings %}
     <tr><td>{{ visit[1] }}</td> <td>{{ visit[0] }}</td></tr>
   {% endfor %}
   </table>
   
   <h3>Recommended for you</h3>
-  <table>
+  <table class="table table-striped table-hover" id="table-width">
     <tr>
       <td>Highest rated restaurant:</td>
       <td>{{ highest_rated }}</td>
     </tr>
-    <tr>
+    <tr class="success">
       <td>We recommend:</td>
       <td>{{ most_sim }}</td>
     </tr>

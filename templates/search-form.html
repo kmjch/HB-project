@@ -13,26 +13,21 @@
             <label for="search-type" class="control-label">Type of search</label>
             <select name="search-type" id="search-type" class="form-control">
                 <option value="midpt"> Search from our midpoint</option>
-                <option value="venn"> Person 2 walks to Person 1's location</option> 
+                <option value="venn"> Your friend walks to your location</option> 
             </select>
-            <!-- <span class="help-block">Midpoint formula for searching midway, Venn Diagram for person 1 to walk less.</span> -->
-            <!-- <p class="help-block"><small>Midpoint formula for searching midway, Venn Diagram for person 1 to walk less.</small></p> -->
         </div>
-        <b>For person 1:</b>
-
-<!--         <div class="form-group form-group-sm label-floating">
-            <label for="i4" class="control-label">Email address form-group-sm</label>
-            <input type="email" class="form-control" id="i4">
-            <span class="help-block">Please enter a valid email address</span>
-        </div>
- -->
+        <p id="yelp-credit"><small>Powered by
+            <img src="https://s3-media2.fl.yelpcdn.com/assets/srv0/developer_pages/95212dafe621/assets/img/yelp-2c.png" id='yelp-logo1'>
+             and <img src="https://pbs.twimg.com/profile_images/638753218613280768/zK11Va5r.png" id='gmaps-logo'> Google Maps
+        </small></p>
+        For you:
         <div class="form-group form-group-sm label-floating">
           <label class="control-label" for="term1">What do you want to eat?</label>
           <input type="text" class="form-control" id="term1" name="term1" value="sandwich" required>
         </div>
         <div class="form-group form-group-sm label-floating">
           <label class="control-label" for="loc1">Where you are coming from</label>
-          <input type="text" class="form-control" id="loc1" required placeholder="Enter your location" name="loc1" required>
+          <input type="text" class="form-control" id="loc1" required placeholder="Enter location" name="loc1" required>
         </div>
         <div class="form-group form-group-sm label-floating">
           <label class="control-label" for="radius1">Radius (in mi)</label>
@@ -48,15 +43,15 @@
                 <input type="checkbox" name="price1" id="p1_price_5" value="5"> $$$$$
         </div>
 
-        <b>For person 2:</b>
+        <br>For your friend:
 
         <span class="midpt-fields"><div class="form-group form-group-sm label-floating">
           <label class="control-label" for="term2">What do you want to eat?</label>
           <input class="form-control" id="term2" name="term2">
         </div></span>
         <div class="form-group form-group-sm label-floating">
-          <label class="control-label" for="loc2">Where you are coming from</label>
-          <input class="form-control" id="loc2" required placeholder="Enter your location" name="loc2" required>
+          <label class="control-label" for="loc2">Where your friend is coming from</label>
+          <input class="form-control" id="loc2" required placeholder="Enter location" name="loc2" required>
         </div>
         <span class="midpt-fields"><div class="form-group form-group-sm label-floating">
           <label class="control-label" for="radius2">Radius (in mi)</label>
@@ -96,13 +91,15 @@
         <input type="hidden" name="submitting-search-form" value="hi">
 
         <span class="input-group-btn">
-            <button class="btn btn-primary" type="button" id="search"><small>Search a good location for us to m-eat</small></button>
+            <button class="btn btn-primary" type="button" id="search">
+                Search on Yelp
+            </button>
         </span>
 
     </form>
     </div>
 
-    <div class="panel-footer"><div id="search-results">Search results will show here!</div></div>
+    <div class="panel-footer"><div id="search-results">Search results will show here</div></div>
 </div>
 
 <div id="map"></div>
