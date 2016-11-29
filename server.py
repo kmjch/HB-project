@@ -142,7 +142,7 @@ def search_yelp(params):
 
 
 def process_price(price_lvl):
-    print price_lvl
+    print 'price_lvl: ', price_lvl
     dict_prices = {'$': 1, '$$': 2, '$$$': 3, '$$$$': 4, '$$$$$': 5}
     return dict_prices[price_lvl]
 
@@ -171,11 +171,6 @@ def add_visit():
         avg_rating = request.args.get("avg_rating")
         price_lvl = request.args.get("price")
         review_count = request.args.get("rc")
-        # info = request.args.get("info")
-        # r_yelp_id = info['id']
-        # avg_rating = info['rating']
-        # price_lvl = info['price']
-        # review_count = info['review_count']
 
         if not Restaurant.query.filter_by(name=restaurant).all():
             new_restaurant = Restaurant(yelp_id=yelp_id, name=restaurant,
@@ -183,7 +178,7 @@ def add_visit():
                                         review_count=review_count)
             db.session.add(new_restaurant)
             db.session.commit()
-        rest_id = db.session.query(Restaurant.id).filter_by(yelp_id=r_yelp_id).first()[0]
+        rest_id = db.session.query(Restaurant.id).filter_by(yelp_id=yelp_id).first()[0]
 
         # Adding to the visits and uservisits tables
         new_visit = Visit(rest_id=rest_id, date=when)
@@ -195,11 +190,11 @@ def add_visit():
         db.session.add(new_visit_exp)
         db.session.add(f_new_visit_exp)
         db.session.commit()
-        return " Saved!"
+        return "  <span class='label label-success'>Saved!</span>"
 
     # if not logged in, cannot save
     else:
-        return "    [<a href='/login'>Login to save</a>]"
+        return "  <a href='/login'><span class='label label-default'>Login to save</span></a>"
 
 
 
@@ -307,26 +302,18 @@ def user_detail(username):
     # df_visits = pandas.read_sql_query('select * from "visits"', con=engine)
     # import pdb; pdb.set_trace()
 
-    with open('test.csv') as csvfile:
+    with open('restaurant.csv') as csvfile:
         res_data = pandas.read_csv(csvfile, header=0)
         # change to read from psql meatup
     # The names of all the columns in the data.
     print res_data.columns.values
 
     # Select gather from our dataset
-    selected_restaurant = res_data[res_data['name'] == "Gather"].iloc[0]
+    selected_restaurant = res_data[res_data['name'] == highest_rated_restaurant].iloc[0]
     # selected_restaurant = res['businesses'][0]['name']
 
     # # Choose only the numeric columns (we'll use these to compute euclidean distance)
     distance_columns = ['rating', 'price', 'review_count']
-
-    # # rating: res_data['businesses'][i]['rating']
-    # # price: res_data['businesses'][i]['price']
-    # # review_count: res_data['businesses'][i]['review_count']
-
-    # # name: res_data['businesses'][i]['name']
-    # # categories: res_data['businesses'][i]['categories'][j]['alias']
-    # # categories: res_data['businesses'][i]['categories'][j]['title']
 
     def euclidean_distance(row):
         """A simple euclidean distance function"""
@@ -336,7 +323,7 @@ def user_detail(username):
         return math.sqrt(inner_value)
 
     # Find the distance from each restaurant in the dataset to gather.
-    gather_distance = res_data.apply(euclidean_distance, axis=1)
+    hrr_distance = res_data.apply(euclidean_distance, axis=1)
 
     # Select only the numeric columns from the restaurant res_data dataset
     res_numeric = res_data[distance_columns]
@@ -350,7 +337,7 @@ def user_detail(username):
     res_normalized.fillna(0, inplace=True)
 
     # Find the normalized vector for the most highly rated restaurant.
-    highest_rated_restaurant_normalized = res_normalized[res_data["name"] == "Gather"]
+    highest_rated_restaurant_normalized = res_normalized[res_data["name"] == highest_rated_restaurant]
 
     # Find the distance between gather and everywhere else.
     euclidean_distances = res_normalized.apply(lambda row: distance.euclidean(row, highest_rated_restaurant_normalized), axis=1)
@@ -395,7 +382,6 @@ def user_detail(username):
     return render_template("user.html",
                            user=user,
                            sorted_ratings=sorted_ratings,
-                           # predictions=predictions,
                            highest_rated=highest_rated_restaurant,
                            most_sim=most_similar_to_highest_rated_restaurant)
 
@@ -443,10 +429,10 @@ if __name__ == "__main__":
     connect_to_db(app)
 
     # Use the DebugToolbar
-    DebugToolbarExtension(app)
+    # DebugToolbarExtension(app)
 
     # Use the Flask Login Library
     # login_manager = LoginManager()
     # login_manager.init_app(app)
 
-    app.run(debug=True, host="0.0.0.0")
+    app.run(host="0.0.0.0")
