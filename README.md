@@ -21,4 +21,4 @@ The PostgreSQL databases include tables for keeping track of restaurant and visi
 
 I made this recommendation using euclidean distance on the quantifiable information from Yelp on each business.  To calculate this, I used the Python libraries Pandas and SciPy to analyze the PostgreSQL data and measure the ‘distance’ between each restaurant in terms of its attributes.  Whatever has the least differences in its attributes to the highly rated restaurant is then shown in green here.  I chose euclidean distance as it is one of the components of the k nearest neighbors algorithm from sklearn which I’ve been exploring and want to display in version 2 of ET.
 
-Michelle Kim is a software engineer living in the San Francisco Bay Area.
+Michelle Kim is a software engineer living in the San Francisco Bay Area.  Check out her <a href="https://www.linkedin.com/in/kmjch">Linkedin</a> or <a href="mailto:jmichkim@gmail.com">email</a> her!
