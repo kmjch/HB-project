@@ -7,7 +7,13 @@ Eat Together, or ET for short, makes a Yelp search based on both of their locati
 
 One of my favorite parts about creating ET was realizing I can do so much with the Yelp search results.  When you click the search button, an AJAX request sends your form inputs as search parameters to the Yelp API in Python. Yelp returns a JSON list of businesses that I then parse through to create this ordered list as well as these map markers.
 
-This list consists of links to their respective Yelp sites.  When you hover on one of these links, a button to save this location shows up.  When you click it, you can save your visit to the PostgreSQL databases via SQLAlchemy.  And these markers are clickable, with the infoWindows holding restaurant information from Yelp.
+This list consists of links to their respective Yelp sites.  When you hover on one of these links, a button to save this location shows up.  When you click it, you can save your visit to the PostgreSQL databases via SQLAlchemy.
+
+<img src="http://gifgifs.com/res/1116/583debddcc28a692920390.gif">
+
+And these markers are clickable, with the infoWindows holding restaurant information from Yelp.
+
+<img src="http://gifimgs.com/res/1116/583de9cdd9cd3069068926.gif">
 
 The PostgreSQL databases include tables for keeping track of restaurant and visit information.  You can see your history of visits and ratings and get a recommendation for a restaurant that is similar to your highest rated restaurant.
 
