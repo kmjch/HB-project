@@ -1,21 +1,27 @@
-id,yelp_id,name,rating,price,review_count
-1,kiraku-berkeley,Kiraku,4.5,2,626
-2,the-snack-shack-berkeley,The Snack Shack,4.5,1,67
-3,wood-tavern-oakland,Wood Tavern,4.5,3,1599
-4,koja-kitchen-berkeley,KoJa Kitchen,4,1,410
-5,angelines-louisiana-kitchen-berkeley,Angeline's Louisiana Kitchen,4,2,3342
-6,royal-rangoon-berkeley-2,Royal Rangoon,4,2,448
-7,gather-berkeley,Gather,4,2,1856
-8,eureka-berkeley-3,Eureka!,4,2,1009
-9,simply-bowl-berkeley,Simply Bowl,4,2,392
-10,southie-oakland,Southie,4.5,2,605
-11,brazil-fresh-squeeze-cafe-berkeley,Brazil Fresh Squeeze Cafe,4.5,1,1120
-12,gypsys-trattoria-italiano-berkeley,Gypsy's Trattoria Italiano,4,1,1202
-13,tigerlily-berkeley-berkeley,Tigerlily Berkeley,4,2,298
-14,smokes-poutinerie-berkeley,Smoke's Poutinerie,4,1,556
-15,toss-noodle-bar-berkeley,Toss Noodle Bar,4,1,593
-16,tivoli-caffe-berkeley,Tivoli Caffe,4.5,1,187
-17,the-station-berkeley,The Station,4,1,162
-18,great-china-berkeley,Great China,4,2,1493
-19,sushinista-berkeley,Sushinista,4,1,58
-20,cheese-board-pizza-berkeley,Cheese Board Pizza,4.5,1,4464
+id,yelp_id,name,rating,price,review_count,user_rating
+1,koja-kitchen-berkeley,KoJa Kitchen,4,1,410,2
+2,angelines-louisiana-kitchen-berkeley,Angeline's Louisiana Kitchen,4,2,3342,3.5
+3,simply-bowl-berkeley,Simply Bowl,4,2,392,3.5
+4,brazil-fresh-squeeze-cafe-berkeley,Brazil Fresh Squeeze Cafe,4.5,1,1120,4
+5,gypsys-trattoria-italiano-berkeley,Gypsy's Trattoria Italiano,4,1,1202,2.5
+6,tigerlily-berkeley-berkeley,Tigerlily Berkeley,4,2,298,5
+7,smokes-poutinerie-berkeley,Smoke's Poutinerie,4,1,556,2.5
+8,toss-noodle-bar-berkeley,Toss Noodle Bar,4,1,593,5
+9,great-china-berkeley,Great China,4,2,1493,4
+10,cheese-board-pizza-berkeley,Cheese Board Pizza,4.5,1,4464,5
+11,i-bs-hoagies-berkeley,I B,4,1,415,4
+12,san-francisco-soup-company-berkeley-2,San Francisco Soup Company,3.5,1,190,4
+13,pasta-bene-berkeley,Pasta Bene,4,1,529,4
+14,sacks-coffee-house-berkeley,Sack,3.5,1,296,4
+15,the-melt-berkeley-berkeley-2,The Melt Berkeley,3,1,255,3.5
+16,cheese-n-stuff-berkeley,Cheese,4,1,253,5
+17,montagues-gourmet-sandwiches-berkeley-2,Montague,4.5,1,243,5
+18,julies-cafe-berkeley,Julie,3.5,1,120,3
+19,le-bateau-ivre-berkeley,Le Bateau Ivre,3.5,2,414,3.5
+20,famous-bao-berkeley,Famous Bao,3.5,1,124,4.5
+21,dumpling-express-berkeley,Dumpling Express,3.5,1,228,3.5
+22,lotus-house-berkeley,Lotus House,3,1,266,3.5
+23,mandarin-house-berkeley,Mandarin House,2,1,163,1
+24,viet-nam-village-berkeley,Viet Nam Village,3.5,1,146,3
+25,tea-press-berkeley-2,Tea Press,4,1,313,3
+26,steves-bar-b-que-berkeley,Steve,3.5,1,414,1

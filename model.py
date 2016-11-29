@@ -100,7 +100,7 @@ class Restaurant(db.Model):
     yelp_id = db.Column(db.String(64), nullable=False)
     name = db.Column(db.String(64), nullable=False)
     rating = db.Column(db.Numeric, nullable=True)
-    price = db.Column(db.Integer, nullable=True)  # eg. convert $$ to 2
+    price = db.Column(db.Integer, nullable=True)
     review_count = db.Column(db.Integer, nullable=True)
 
     def __repr__(self):
@@ -109,7 +109,7 @@ class Restaurant(db.Model):
         return "<Restaurant id=%d name=%s>" % (self.id, self.name)
 
 
-class RestCategory(db.Model):
+class Category(db.Model):
     """Stores categories of restaurants from Yelp. """
 
     __tablename__ = "categories"
@@ -122,6 +122,14 @@ class RestCategory(db.Model):
     categ2 = db.Column(db.String(64), nullable=True)
     categ3 = db.Column(db.String(64), nullable=True)
     rest = db.relationship("Restaurant", backref='categories')
+
+    def __repr__(self):
+        """Provide helpful representation when printed."""
+
+        return "<Category rest_id=%d categ1=%s categ2=%s categ3=%s>" % (self.rest_id,
+                                                                        self.categ1,
+                                                                        self.categ2,
+                                                                        self.categ3)
 
 
 

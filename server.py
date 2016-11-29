@@ -171,22 +171,47 @@ def add_visit():
         avg_rating = request.args.get("avg_rating")
         price_lvl = request.args.get("price")
         review_count = request.args.get("rc")
+        categs = request.args.get("categs")
+        list_categs = categs.split(",")
 
         if not Restaurant.query.filter_by(name=restaurant).all():
-            new_restaurant = Restaurant(yelp_id=yelp_id, name=restaurant,
-                                        rating=avg_rating, price=process_price(price_lvl),
+            new_restaurant = Restaurant(yelp_id=yelp_id,
+                                        name=restaurant,
+                                        rating=avg_rating,
+                                        price=process_price(price_lvl),
                                         review_count=review_count)
             db.session.add(new_restaurant)
             db.session.commit()
+
         rest_id = db.session.query(Restaurant.id).filter_by(yelp_id=yelp_id).first()[0]
+        if not Category.query.filter_by(rest_id=rest_id).all():
+            if len(list_categs) == 3:
+                categ1, categ2, categ3 = list_categs
+            elif len(list_categs) == 2:
+                categ1, categ2 = list_categs
+                categ3 = None
+            else:
+                categ1 = list_categs
+                categ2 = None
+                categ3 = None
+            new_categs = Category(rest_id=rest_id,
+                                  categ1=categ1,
+                                  categ2=categ2,
+                                  categ3=categ3)
+            db.session.add(new_categs)
+            db.session.commit()
 
         # Adding to the visits and uservisits tables
         new_visit = Visit(rest_id=rest_id, date=when)
         db.session.add(new_visit)
         db.session.commit()
-        new_visit_id = db.session.query(Visit.id).filter_by(rest_id=rest_id, date=when).order_by(Visit.date.desc()).first()[0]
-        new_visit_exp = UserExp(visit_id=new_visit_id, user_id=user.id, rating=user_rating)
-        f_new_visit_exp = UserExp(visit_id=new_visit_id, user_id=friend_user.id)
+        new_visit_id = db.session.query(Visit.id).filter_by(rest_id=rest_id,
+                                                            date=when).order_by(Visit.date.desc()).first()[0]
+        new_visit_exp = UserExp(visit_id=new_visit_id,
+                                user_id=user.id,
+                                rating=user_rating)
+        f_new_visit_exp = UserExp(visit_id=new_visit_id,
+                                  user_id=friend_user.id)
         db.session.add(new_visit_exp)
         db.session.add(f_new_visit_exp)
         db.session.commit()
@@ -302,7 +327,7 @@ def user_detail(username):
     # df_visits = pandas.read_sql_query('select * from "visits"', con=engine)
     # import pdb; pdb.set_trace()
 
-    with open('restaurant.csv') as csvfile:
+    with open('test.csv') as csvfile:
         res_data = pandas.read_csv(csvfile, header=0)
         # change to read from psql meatup
     # The names of all the columns in the data.
@@ -313,7 +338,7 @@ def user_detail(username):
     # selected_restaurant = res['businesses'][0]['name']
 
     # # Choose only the numeric columns (we'll use these to compute euclidean distance)
-    distance_columns = ['rating', 'price', 'review_count']
+    distance_columns = ['rating', 'price', 'review_count', 'user_rating']
 
     def euclidean_distance(row):
         """A simple euclidean distance function"""
@@ -322,7 +347,7 @@ def user_detail(username):
             inner_value += (row[k] - selected_restaurant[k]) ** 2
         return math.sqrt(inner_value)
 
-    # Find the distance from each restaurant in the dataset to gather.
+    # Find the distance from each restaurant in the dataset to hrr.
     hrr_distance = res_data.apply(euclidean_distance, axis=1)
 
     # Select only the numeric columns from the restaurant res_data dataset
@@ -330,11 +355,13 @@ def user_detail(username):
 
     # Normalize all of the numeric columns
     res_normalized = (res_numeric - res_numeric.mean()) / res_numeric.std()
+    print 'res_normalized: ', res_normalized
 
     from scipy.spatial import distance
 
     # Fill in NA values in res_normalized
     res_normalized.fillna(0, inplace=True)
+    print 'res_normalized: after filling in NA values ', res_normalized
 
     # Find the normalized vector for the most highly rated restaurant.
     highest_rated_restaurant_normalized = res_normalized[res_data["name"] == highest_rated_restaurant]
@@ -351,38 +378,47 @@ def user_detail(username):
     second_smallest = distance_frame.iloc[1]["idx"]
     most_similar_to_highest_rated_restaurant = res_data.loc[int(second_smallest)]["name"]
 
-    # import random
-    # from numpy.random import permutation
+    import random
+    from numpy.random import permutation
 
-    # # Randomly shuffle the index of res_data.
-    # random_indices = permutation(res_data.index)
-    # # Set a cutoff for how many items we want in the test set (in this case 1/3 of the items)
-    # test_cutoff = math.floor(len(res_data)/3)
-    # # Generate the test set by taking the first 1/3 of the randomly shuffled indices.
-    # test = res_data.loc[random_indices[1:test_cutoff]]
+    # Randomly shuffle the index of res_data.
+    random_indices = permutation(res_data.index)
+    # Set a cutoff for how many items we want in the test set (in this case 1/3 of the items)
+    test_cutoff = math.floor(len(res_data)/3)
+    # Generate the test set by taking the first 1/3 of the randomly shuffled indices.
+    test = res_data.loc[random_indices[1:test_cutoff]]
 
-    # # Generate the train set with the rest of the data.
-    # train = res_data.loc[random_indices[test_cutoff:]]
+    # Generate the train set with the rest of the data.
+    train = res_data.loc[random_indices[test_cutoff:]]
 
-    # # The columns that we will be making predictions with.
-    # x_columns = ['rating', 'price', 'review_count']
-    # # The column that we want to predict.
-    # y_column = ["user_rating"]
-    # # need to make this
+    # The columns that we will be making predictions with.
+    x_columns = ['rating', 'price', 'review_count']
+    # The column that we want to predict.
+    y_column = ['user_rating']
 
-    # from sklearn.neighbors import KNeighborsRegressor
-    # # Create the knn model.
-    # # Look at the five closest neighbors.
-    # knn = KNeighborsRegressor(n_neighbors=5)
-    # # Fit the model on the training data.
-    # knn.fit(train[x_columns], train[y_column])
-    # # Make point predictions on the test set using the fit model.
-    # predictions = knn.predict(test[x_columns])
+    from sklearn.neighbors import KNeighborsRegressor
+    # Create the knn model.
+    # Look at the five closest neighbors.
+    knn = KNeighborsRegressor(n_neighbors=5)
+    # Fit the model on the training data.
+    knn.fit(train[x_columns], train[y_column])
+    # Make point predictions on the test set using the fit model.
+    predictions = knn.predict(test[x_columns])
+
+    # Get the actual values for the test set.
+    actual = test[y_column]
+
+    # Compute the mean squared error of predictions.
+    mse = (((predictions - actual) ** 2).sum()) / len(predictions)
 
     return render_template("user.html",
                            user=user,
                            sorted_ratings=sorted_ratings,
                            highest_rated=highest_rated_restaurant,
+                           predictions=predictions,
+                           actual=actual,
+                           knn=knn,
+                           mse=mse,
                            most_sim=most_similar_to_highest_rated_restaurant)
 
 
