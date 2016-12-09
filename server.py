@@ -124,7 +124,6 @@ def search_process():
 
     responses['person1'] = loc1
     responses['person2'] = loc2
-    print responses
     return jsonify(responses)
 
     # sends the locations of each person for creating markers on the map
@@ -142,7 +141,6 @@ def search_yelp(params):
 
 
 def process_price(price_lvl):
-    print 'price_lvl: ', price_lvl
     dict_prices = {'$': 1, '$$': 2, '$$$': 3, '$$$$': 4, '$$$$$': 5}
     return dict_prices[price_lvl]
 
@@ -362,7 +360,6 @@ def process_user_details():
 
     db.session.add(u)
     db.session.commit()
-    # print u.username
 
     flash("Updated your profile!")
     return redirect("/users/%s" % session['username'])

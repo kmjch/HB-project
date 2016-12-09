@@ -43,7 +43,6 @@ function autocompleteBox() {
 
   searchBox1.addListener('places_changed', function() {
     loc1 = searchBox1.getPlaces()[0];
-    console.log(loc1);
     if (loc1.length === 0) {
       // no results
       return;
@@ -51,7 +50,6 @@ function autocompleteBox() {
   });
   searchBox2.addListener('places_changed', function() {
     loc2 = searchBox2.getPlaces()[0];
-    console.log(loc2);
     if (loc2.length === 0) {
       // no results
       return;
