@@ -364,6 +364,10 @@ def process_user_details():
     flash("Updated your profile!")
     return redirect("/users/%s" % session['username'])
 
+@app.route("/error")
+def error():
+    raise Exception("Error!")
+
 
 # a function for showing nothing instead of 'None' if any of the fields are NULL, generalizing the variables so that any of the fields can use this same function
 
@@ -373,7 +377,7 @@ if __name__ == "__main__":
     # point that we invoke the DebugToolbarExtension
     app.debug = True
 
-    connect_to_db(app)
+    connect_to_db(app, os.environ.get("DATABASE_URL"))
 
     # Use the DebugToolbar
     # DebugToolbarExtension(app)
@@ -383,4 +387,5 @@ if __name__ == "__main__":
     # login_manager.init_app(app)
 
     PORT = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=PORT)
+    DEBUG = "NO_DEBUG" not in os.environ
+    app.run(host="0.0.0.0", port=PORT, debug=DEBUG)
