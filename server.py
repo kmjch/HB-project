@@ -223,7 +223,7 @@ def add_visit():
 
 # Other pages
 
-@app.route('/register')
+@app.route('/register', methods=["GET", "POST"])
 def show_register_form():
     """ Display the signup form. """
     return render_template("register-form.html")
@@ -363,6 +363,7 @@ def process_user_details():
 
     flash("Updated your profile!")
     return redirect("/users/%s" % session['username'])
+
 
 @app.route("/error")
 def error():
