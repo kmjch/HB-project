@@ -223,13 +223,13 @@ def add_visit():
 
 # Other pages
 
-@app.route('/register', methods=["GET", "POST"])
+@app.route('/register')
 def show_register_form():
     """ Display the signup form. """
     return render_template("register-form.html")
 
 
-@app.route('/register-process', methods=["POST"])
+@app.route('/register-process', methods=["GET", "POST"])
 def register_process():
     """Process registration of new user."""
 
@@ -263,8 +263,6 @@ def register_process():
     elif check_username != []:
         flash("Username already taken. Do you mean to log in?")
         return render_template("register-form.html")
-
-    # need to change these, but will do later because this is not a priority
 
 
 @app.route('/login', methods=['GET'])
