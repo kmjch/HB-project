@@ -229,16 +229,16 @@ def show_register_form():
     return render_template("register-form.html")
 
 
-@app.route('/register-process', methods=["GET", "POST"])
+@app.route('/register-process', methods=["POST"])
 def register_process():
     """Process registration of new user."""
 
     # Get form variables
-    fname = request.form["fname"]
-    lname = request.form["lname"]
-    email = request.form["email"]
-    username = request.form["username"]
-    password = request.form["password"]
+    fname = request.form.get("fname")
+    lname = request.form.get("lname")
+    email = request.form.get("email")
+    username = request.form.get("username")
+    password = request.form.get("password")
 
     # check if already in the database
     check_email = User.query.filter_by(email=email).all()
