@@ -312,9 +312,10 @@ def user_detail(username):
     """Show info about user."""
 
     user = User.query.filter_by(username=username).one()
-    list_ratings = [(user.user_exps[i].rating, user.user_exps[i].visit.restaurant.name) for i in range(len(user.user_exps))]
-    sorted_ratings = sorted(list_ratings, reverse=True)
-    highest_rated_restaurant = sorted_ratings[0][1]
+    if user.user_exps:
+        list_ratings = [(user.user_exps[i].rating, user.user_exps[i].visit.restaurant.name) for i in range(len(user.user_exps))]
+        sorted_ratings = sorted(list_ratings, reverse=True)
+        highest_rated_restaurant = sorted_ratings[0][1]
     session['username'] = user.username
 
     # from sqlalchemy import create_engine
