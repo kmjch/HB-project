@@ -316,6 +316,7 @@ def user_detail(username):
         list_ratings = [(user.user_exps[i].rating, user.user_exps[i].visit.restaurant.name) for i in range(len(user.user_exps))]
         sorted_ratings = sorted(list_ratings, reverse=True)
         highest_rated_restaurant = sorted_ratings[0][1]
+        most_sim = predict_restaurant(highest_rated_restaurant)
     session['username'] = user.username
 
     # from sqlalchemy import create_engine
@@ -323,8 +324,6 @@ def user_detail(username):
     # df_users = pandas.read_sql_query('select * from "users"', con=engine)
     # df_visits = pandas.read_sql_query('select * from "visits"', con=engine)
     # import pdb; pdb.set_trace()
-
-    most_sim = predict_restaurant(highest_rated_restaurant)
 
     return render_template("user.html",
                            user=user,
