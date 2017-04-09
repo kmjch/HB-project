@@ -1,36 +1,34 @@
-# # read our dataset in and figure out which columns are present
+# read our dataset in and figure out which columns are present
 import pandas, json, csv, math
 from sqlalchemy import create_engine
 import psycopg2 as pg
 import pandas.io.sql as psql
 
-# # json_file = open('sample_restaurants.json')
-# # json_str = json_file.read()
-# # res = json.loads(json_str)
-# # write_csv = csv.writer(open("test.csv", "w"))
+# json_file = open('sample_restaurants.json')
+# json_str = json_file.read()
+# res = json.loads(json_str)
+# write_csv = csv.writer(open("test.csv", "w"))
 
-# # write_csv.writerow(['name', 'rating', 'price', 'review_count'])
-
-
-# # for i in range(len(res['businesses'])):
-# #     write_csv.writerow([res['businesses'][i]['name'],
-# #                         res['businesses'][i]['rating'],
-# #                         res['businesses'][i]['price'],
-# #                         res['businesses'][i]['review_count']])
+# write_csv.writerow(['name', 'rating', 'price', 'review_count'])
+# for i in range(len(res['businesses'])):
+#     write_csv.writerow([res['businesses'][i]['name'],
+#                         res['businesses'][i]['rating'],
+#                         res['businesses'][i]['price'],
+#                         res['businesses'][i]['review_count']])
 
 
-# # write utf-8 in csv file
-# # classes provided for me in python docs to write in specific encoding
-# # import csv, codecs, cStringIO
-# # all I need is UnicodeWriter
+# write utf-8 in csv file
+# classes provided for me in python docs to write in specific encoding
+# import csv, codecs, cStringIO
+# all I need is UnicodeWriter
 
 
-# # engine = create_engine('postgresql://meatup')
+# engine = create_engine('postgresql://meatup')
 
-# # connection = pg.connect("dbname=meatup user=vagrant")
-# # results = psql.read_sql("SELECT * FROM restaurants", connection)
+# connection = pg.connect("dbname=meatup user=vagrant")
+# results = psql.read_sql("SELECT * FROM restaurants", connection)
 
-# # \COPY restaurants TO '/home/vagrant/src/HB-project/restaurant.csv' DELIMITER ',' CSV HEADER;
+# \COPY restaurants TO '/home/vagrant/src/HB-project/restaurant.csv' DELIMITER ',' CSV HEADER;
 def predict_restaurant(highest_rated_restaurant):
     with open('test.csv') as csvfile:
         res_data = pandas.read_csv(csvfile, header=0)

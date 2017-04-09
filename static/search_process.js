@@ -17,7 +17,6 @@ function changeFormType(evt) {
 $('#choose_when').change(showTimeField);
 
 function showTimeField(evt) {
-  // console.log(evt);
 
   // var chooseWhen = evt.target.value;
   var chooseWhen = $('#choose_when').val();
@@ -34,6 +33,7 @@ function showTimeField(evt) {
 function adder(x, y) {
     return x + y;
 }
+
 var loc1, loc2;
 function autocompleteBox() {
   var input1 = document.getElementById('loc1');
@@ -56,9 +56,6 @@ function autocompleteBox() {
     }
   });
 
-  // searchBox1.addListener('places_changed', getCoordinates(searchBox1));
-  // searchBox2.addListener('places_changed', getCoordinates(searchBox2));
-
 }
 
 function initMap() {
@@ -72,7 +69,7 @@ function initMap() {
 
   var infoWindow;
 
-// for geolocation to work, have to run on localhost rather than 0.0.0.0
+  // for geolocation to work, have to run on localhost rather than 0.0.0.0
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function(position) {
       var pos = {
@@ -177,7 +174,7 @@ $(document).ready(function() {
 
       // add search results as markers onto the map
       addToMap(responses);
-      
+
       // hover over the business listing to be able to save
       $(".result").hover(function() {
         // when you mouse over the link, a button to save the location appears
@@ -256,7 +253,7 @@ $(document).ready(function() {
 // function addHovers() {
 
 
-    
+
 // }
 
 function addToMap(responses) {
@@ -323,7 +320,7 @@ function addToMap(responses) {
                 '<a href="' + responses.businesses[i].url + '">See ' +          // See Famous Bao on Yelp
                 responses.businesses[i].name + ' on Yelp</a></p>' +
             '</div>');
-    
+
     marker.addListener('click', function() {
       infoWindow.open(map, marker);
     });
@@ -347,4 +344,3 @@ function addToMap(responses) {
   // map will shift to include all search results
   map.fitBounds(bounds);
 }
-

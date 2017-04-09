@@ -318,7 +318,7 @@ def user_detail(username):
         highest_rated_restaurant = sorted_ratings[0][1]
         most_sim = predict_restaurant(highest_rated_restaurant)
     else:
-        sorted_ratings = [('No restaurants rated yet.', ' ')]
+        sorted_ratings = [('No restaurants rated yet.', '')]
         highest_rated_restaurant = 'No restaurants rated yet.'
         most_sim = 'Rate a restaurant to get a recommendation!'
     session['username'] = user.username
