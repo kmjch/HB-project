@@ -45,14 +45,14 @@ class FlaskTestsDatabase(TestCase):
         db.create_all()
         seed_data()
 
-    # def test_login(self):
-    #     """Test login page."""
+    def test_login(self):
+        """Test login page."""
 
-    #     result = self.client.post("/login",
-    #                               data={"username": "firstone", "password": "hihi"},
-    #                               follow_redirects=True)
-    #     self.assertNotIn("log in", result.data)
-    #     self.assertIn("Michelle's Account", result.data)
+        result = self.client.post("/login",
+                                  data={"username": "firstone", "password": "hihi"},
+                                  follow_redirects=True)
+        self.assertNotIn("log in", result.data)
+        self.assertIn("Michelle's Account", result.data)
     # put into the other set of tests that test login function
 
     def test_add_visit(self):
