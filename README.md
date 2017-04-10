@@ -3,7 +3,7 @@ Eat Together helps two people decide on a place to to share a meal together.
 
 <img src="http://gifimgs.com/res/1116/583de71331479307869642.gif">
 
-Eat Together, or ET for short, makes a Yelp search based on both of their locations and preferences.  You can choose whether you want to search from a midpoint of your two locations, or if you would rather have your friend come to your area.  The latter was a little bit harder to implement but interesting as was an opportunity to involve higher order functions.
+Eat Together, or ET for short, makes a Yelp search based on both of their locations and preferences.  You can choose whether you want to search from a midpoint of your two locations, or if you would rather have your friend come to your area.  The latter was a little bit harder to implement but interesting as it was an opportunity to involve higher order functions.
 
 One of my favorite parts about creating ET was realizing I can do so much with the Yelp search results.  When you click the search button, an AJAX request sends your form inputs as search parameters to the Yelp API in Python. Yelp returns a JSON list of businesses that I then parse through to create this ordered list as well as these map markers.
 
