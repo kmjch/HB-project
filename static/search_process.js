@@ -269,19 +269,19 @@ function addToMap(responses) {
   markers = [];
 
   // adding person 1 and person 2's locations
-  var marker_person1 = new google.maps.Marker({
-      position: {lat: responses.person1[0], lng: responses.person1[1]},
+  var your_marker = new google.maps.Marker({
+      position: {lat: responses.your_location[0], lng: responses.your_location[1]}, // change your_location?
       label: "Person 1",
       map: map
   });
-  markers.push(marker_person1);
+  markers.push(your_marker);
 
-  var marker_person2 = new google.maps.Marker({
-      position: {lat: responses.person2[0], lng: responses.person2[1]},
+  var friends_marker = new google.maps.Marker({
+      position: {lat: responses.friends_location[0], lng: responses.friends_location[1]},
       label: "Person 2",
       map: map
   });
-  markers.push(marker_person2);
+  markers.push(friends_marker);
 
   // do a for loop for when I get more than 2 people meeting up
 

@@ -44,34 +44,34 @@ def search_process():
     search_type = request.args.get("search-type")
 
     # person 1's search parameters
-    term1 = request.args.get("term1")
-    lat1 = float(request.args.get("lat1"))
-    lng1 = float(request.args.get("lng1"))
-    radius1 = request.args.get("radius1")
-    price1 = str(request.args.get("price1"))
+    your_term = request.args.get("your_term")
+    your_latitude = float(request.args.get("your_latitude"))
+    your_longitude = float(request.args.get("your_longitude"))
+    your_radius = request.args.get("your_radius")
+    your_price = str(request.args.get("your_price"))
     # person 2's search parameters
-    lat2 = float(request.args.get("lat2"))
-    lng2 = float(request.args.get("lng2"))
-    price2 = str(request.args.get("price2"))
+    friends_latitude = float(request.args.get("friends_latitude"))
+    friends_longitude = float(request.args.get("friends_longitude"))
+    friends_price = str(request.args.get("friends_price"))
 
     # uses the Google Maps API to geocode and functions written in midpt_formula.py
     # to find the midpoint of the two given addresses
-    # loc1 = geocoding(st_address1, city1, state1)
-    # loc2 = geocoding(st_address2, city2, state2)
-    loc1 = [lat1, lng1]
-    loc2 = [lat2, lng2]
-    mid_lat, mid_lng = midpt_formula(loc1, loc2)
+    # your_location = geocoding(st_address1, city1, state1)
+    # friends_location = geocoding(st_address2, city2, state2)
+    your_location = [your_latitude, your_longitude]
+    friends_location = [friends_latitude, friends_longitude]
+    mid_lat, mid_lng = midpt_formula(your_location, friends_location)
 
     if search_type == 'midpt':
-        term2 = request.args.get("term2")
-        radius2 = request.args.get("radius2")
+        friends_term = request.args.get("friends_term")
+        friends_radius = request.args.get("friends_radius")
         sort_by = request.args.get("sort_by")
         # sort only works for midpt because of the sets used in venn diagram calculations
 
-        params_midpt = {'term': avoid_term_duplicates(term1, term2),
+        params_midpt = {'term': avoid_term_duplicates(your_term, friends_term),
                         'latitude': mid_lat,
                         'longitude': mid_lng,
-                        'radius': mi_to_m(stricter_radius(radius1, radius2)),
+                        'radius': mi_to_m(stricter_radius(your_radius, friends_radius)),
                         'sort_by': sort_by,
                         'limit': limit,
                         }
@@ -86,44 +86,43 @@ def search_process():
 
     elif search_type == 'venn':
         # the dictionary of search parameters to submit to the Yelp API
-        params_user1 = {'term': term1,
-                        'latitude': loc1[0],
-                        'longitude': loc1[1],
-                        'radius': mi_to_m(radius1),
-                        }
+        your_parameters = {'term': your_term,
+                           'latitude': your_location[0],
+                           'longitude': your_location[1],
+                           'radius': mi_to_m(your_radius),
+                           }
         # import pdb; pdb.set_trace()
-        distance = calc_dist(tuple(loc1), tuple(loc2))
-        params_user2 = {'term': term1,
-                        'latitude': loc2[0],
-                        'longitude': loc2[1],
-                        'radius': distance,
-                        }
+        distance_between_us = calculate_distance(tuple(your_location), tuple(friends_location))
+        friends_parameters = {'term': your_term,
+                              'latitude': friends_location[0],
+                              'longitude': friends_location[1],
+                              'radius': distance_between_us,
+                              }
 
         # adds the search parameter price if either user inputs a price
-        if price1 or price2:
-            params_user1['price'] = avoid_price_duplicates(price1, price2)
-            params_user2['price'] = avoid_price_duplicates(price1, price2)
+        if your_price or friends_price:
+            your_parameters['price'] = avoid_price_duplicates(your_price, friends_price)
+            friends_parameters['price'] = avoid_price_duplicates(your_price, friends_price)
 
         # adds the business hours parameter if they specify whether they would want
         # to go to the business now or at a future time
         if time:
-            params_user1['open_at'] = unix_time(time)
-            params_user2['open_at'] = unix_time(time)
+            your_parameters['open_at'] = unix_time(time)
+            friends_parameters['open_at'] = unix_time(time)
         elif open_now:
-            params_user1['open_now'] = open_now
-            params_user2['open_now'] = open_now
+            your_parameters['open_now'] = open_now
+            friends_parameters['open_now'] = open_now
 
         # results for Venn Diagram calculation: two separate Yelp searches for both
-        results1 = search_yelp(params_user1)
-        results2 = search_yelp(params_user2)
+        your_search_results = search_yelp(your_parameters)
+        friends_search_results = search_yelp(friends_parameters)
 
 
         # finding the results common to both and adding them to a dictionary
-        responses = {}
-        responses['businesses'] = get_common_restaurants(results1, results2)
+        responses = {'businesses': get_common_restaurants(your_search_results, friends_search_results)}
 
-    responses['person1'] = loc1
-    responses['person2'] = loc2
+    responses['your_location'] = your_location
+    responses['friends_location'] = friends_location
     return jsonify(responses)
 
     # sends the locations of each person for creating markers on the map

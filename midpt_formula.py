@@ -31,7 +31,7 @@ def midpt_formula(loc1, loc2):
     return [xm, ym]
 
 
-def calc_dist(loc1, loc2):
+def calculate_distance(loc1, loc2):
     """Calculates the distance between two given coordinates."""
     matrix = googlemaps.distance_matrix.distance_matrix(client=gmaps_dist, origins=loc2, destinations=loc1)
     # import pdb; pdb.set_trace()
