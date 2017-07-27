@@ -139,7 +139,7 @@ def search_yelp(params):
     return responses
 
 
-def process_price(price_lvl):
+def turn_to_nums(price_lvl):
     dict_prices = {'$': 1, '$$': 2, '$$$': 3, '$$$$': 4, '$$$$$': 5}
     return dict_prices[price_lvl]
 
@@ -175,7 +175,7 @@ def add_visit():
             new_restaurant = Restaurant(yelp_id=yelp_id,
                                         name=restaurant,
                                         rating=avg_rating,
-                                        price=process_price(price_lvl),
+                                        price=turn_to_nums(price_lvl),
                                         review_count=review_count)
             db.session.add(new_restaurant)
             db.session.commit()
